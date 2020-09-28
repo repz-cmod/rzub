@@ -23,20 +23,20 @@ public class MysqlAnalyticsDao implements AnalyticsDao {
 
     @Override
     public void playerJoined(String serverId, String clientId, String trackerId) {
-        playerTrackerRepository.deleteAllByClientIdAndInIsNull(clientId);
-        playerTrackerRepository.deleteAllByClientIdAndOutIsNull(clientId);
+        playerTrackerRepository.deleteAllByClientIdAndJoinDateIsNull(clientId);
+        playerTrackerRepository.deleteAllByClientIdAndLeftDateIsNull(clientId);
 
         playerTrackerRepository.save(PlayerTrackEntity.builder()
                 .serverId(serverId)
                 .clientId(clientId)
                 .trackerId(trackerId)
-                .in(new Date())
+                .joinDate(new Date())
                 .build());
     }
 
     @Override
     public void playerLeft(String serverId, String clientId, String trackerId) {
-        playerTrackerRepository.updateOut(clientId, trackerId, serverId, new Date());
+        playerTrackerRepository.updateLeftDate(clientId, trackerId, serverId, new Date());
     }
 
     @Override

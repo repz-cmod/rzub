@@ -17,15 +17,15 @@ public class IW4AdminApi {
     private final RestTemplate restTemplate;
 
     @Autowired
-    public IW4AdminApi(ConfigModel configModel, RestTemplate restTemplate) {
+    public IW4AdminApi(ConfigModel configModel) {
         this.configModel = configModel;
-        this.restTemplate = restTemplate;
+        this.restTemplate = new RestTemplate();
     }
 
     public List<ServerStatusModel.Server> getServerList(){
         String iw4adminUrl = new String(configModel.getIw4adminUrl());
         if(iw4adminUrl.endsWith("/")){
-            iw4adminUrl = iw4adminUrl.substring(0, iw4adminUrl.length() - 2);
+            iw4adminUrl = iw4adminUrl.substring(0, iw4adminUrl.length() - 1);
         }
         ResponseEntity<List<ServerStatusModel.Server>> responseEntity = restTemplate.exchange(iw4adminUrl + "/api/status",
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<ServerStatusModel.Server>>() {

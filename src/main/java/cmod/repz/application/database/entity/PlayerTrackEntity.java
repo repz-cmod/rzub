@@ -2,7 +2,6 @@ package cmod.repz.application.database.entity;
 
 import cmod.repz.application.config.ColumnName;
 import lombok.*;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -29,9 +28,9 @@ public class PlayerTrackEntity {
     @Column(name = ColumnName.CLIENT_ID, nullable = false)
     private String clientId;
     @Column
-    private Date in;
+    private Date joinDate;
     @Column
-    private Date out;
+    private Date leftDate;
     @Column(name = TRACKER_ID)
     private String trackerId;
 }

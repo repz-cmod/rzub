@@ -2,7 +2,6 @@ package cmod.repz.application.database.entity;
 
 import cmod.repz.application.config.ColumnName;
 import lombok.*;
-
 import javax.persistence.*;
 import java.util.Date;
 
