@@ -4,6 +4,7 @@ import cmod.repz.application.database.entity.PlayerTrackEntity;
 import cmod.repz.application.database.entity.ServerTrackEntity;
 import cmod.repz.application.database.repository.PlayerTrackerRepository;
 import cmod.repz.application.database.repository.ServerTrackerRepository;
+import cmod.repz.application.model.ServerStatusModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,11 +40,15 @@ public class MysqlAnalyticsDao implements AnalyticsDao {
     }
 
     @Override
-    public void trackServer(String serverId, int playerCount) {
+    public void trackServer(ServerStatusModel.Server server) {
         serverTrackerRepository.save(ServerTrackEntity.builder()
                 .date(new Date())
-                .playerCount(playerCount)
-                .serverId(serverId)
+                .playerCount(server.getCurrentPlayers())
+                .serverId(String.valueOf(server.getId()))
+                .game(server.getGame())
+                .mapName(server.getMap().getName())
+                .name(server.getName())
+                .port(server.getPort())
                 .build());
     }
 }

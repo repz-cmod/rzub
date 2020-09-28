@@ -2,6 +2,7 @@ package cmod.repz.application.database.entity;
 
 import cmod.repz.application.config.ColumnName;
 import lombok.*;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -23,6 +24,16 @@ public class ServerTrackEntity {
     private long id;
     @Column(name = ColumnName.SERVER_ID, nullable = false)
     private String serverId;
+    @Column
     private Date date;
+    @Column(name = ColumnName.PLAYER_COUNT)
     private int playerCount;
+    @Column(name = ColumnName.SERVER_NAME, nullable = false)
+    private String name;
+    @Column
+    private int port;
+    @Column
+    private String game;
+    @Column(name = ColumnName.MAP_NAME, nullable = false)
+    private String mapName;
 }
