@@ -6,6 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.Date;
 
+import static cmod.repz.application.config.ColumnName.TRACKER_ID;
 import static cmod.repz.application.config.TableName.PLAYER_TRACK_TABLE;
 
 @Entity
@@ -18,6 +19,7 @@ import static cmod.repz.application.config.TableName.PLAYER_TRACK_TABLE;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Builder
 public class PlayerTrackEntity {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -30,6 +32,6 @@ public class PlayerTrackEntity {
     private Date in;
     @Column
     private Date out;
-    @Column
+    @Column(name = TRACKER_ID)
     private String trackerId;
 }

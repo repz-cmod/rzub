@@ -16,6 +16,7 @@ import static cmod.repz.application.config.TableName.SERVER_TRACK_TABLE;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Builder
 public class ServerTrackEntity {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
