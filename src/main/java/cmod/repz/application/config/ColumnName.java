@@ -6,6 +6,7 @@ public interface ColumnName {
     String PLAYER_COUNT = "player_count";
     String MAX_PLAYER_COUNT = "max_player_count";
     String CLIENT_ID = "client_id";
+    String PLAYER_NAME = "player_name";
     String TRACKER_ID = "tracker_id";
     String MAP_NAME = "map_name";
 }

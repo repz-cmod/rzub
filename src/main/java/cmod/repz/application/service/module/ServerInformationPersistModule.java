@@ -6,10 +6,10 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class InformationPersistModule implements ApplicationListener<ServerStatusEvent> {
+public class ServerInformationPersistModule implements ApplicationListener<ServerStatusEvent> {
     private final AnalyticsDao analyticsDao;
 
-    public InformationPersistModule(AnalyticsDao analyticsDao) {
+    public ServerInformationPersistModule(AnalyticsDao analyticsDao) {
         this.analyticsDao = analyticsDao;
     }
 

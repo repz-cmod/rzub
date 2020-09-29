@@ -27,6 +27,8 @@ public class PlayerTrackEntity {
     private String serverId;
     @Column(name = ColumnName.CLIENT_ID, nullable = false)
     private String clientId;
+    @Column(name = ColumnName.PLAYER_NAME, nullable = false)
+    private String playerName;
     @Column
     private Date joinDate;
     @Column
