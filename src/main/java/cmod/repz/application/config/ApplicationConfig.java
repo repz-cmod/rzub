@@ -24,7 +24,7 @@ public class ApplicationConfig {
     @Bean
     public ConfigModel configModel() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(new File("./config.js"), ConfigModel.class);
+        return objectMapper.readValue(new File("./config.json"), ConfigModel.class);
     }
 
     @Bean
