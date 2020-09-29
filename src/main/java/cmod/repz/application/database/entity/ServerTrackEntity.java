@@ -27,12 +27,7 @@ public class ServerTrackEntity {
     private Date date;
     @Column(name = ColumnName.PLAYER_COUNT)
     private int playerCount;
-    @Column(name = ColumnName.SERVER_NAME, nullable = false)
-    private String name;
-    @Column
-    private int port;
-    @Column
-    private String game;
+    private double percentage;
     @Column(name = ColumnName.MAP_NAME, nullable = false)
     private String mapName;
 }
