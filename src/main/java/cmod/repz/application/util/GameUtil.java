@@ -3,12 +3,10 @@ package cmod.repz.application.util;
 public class GameUtil {
     public static String cleanColors(String input){
         int index = 0;
-        do {
-            index = input.indexOf("^");
+        while ((index = input.indexOf("^")) != -1){
             input = setCharAt(input, index, "");
             input = setCharAt(input, index, "");
-        }while (index != -1);
-
+        }
         return input;
     }
 
