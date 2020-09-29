@@ -56,6 +56,7 @@ public class MysqlAnalyticsDao implements AnalyticsDao {
                 .playerCount(server.getCurrentPlayers())
                 .serverId(String.valueOf(server.getId()))
                 .mapName(server.getMap().getName())
+                .maxPlayerCount(server.getMaxPlayers())
                 .percentage(MathUtil.percent(server.getCurrentPlayers(), server.getMaxPlayers()))
                 .build());
         addServer(server);
