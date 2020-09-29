@@ -2,6 +2,7 @@ package cmod.repz.application.database.entity;
 
 import cmod.repz.application.config.ColumnName;
 import lombok.*;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -27,6 +28,9 @@ public class ServerTrackEntity {
     private Date date;
     @Column(name = ColumnName.PLAYER_COUNT)
     private int playerCount;
+    @Column(name = ColumnName.MAX_PLAYER_COUNT)
+    private int maxPlayerCount;
+    @Column
     private double percentage;
     @Column(name = ColumnName.MAP_NAME, nullable = false)
     private String mapName;
