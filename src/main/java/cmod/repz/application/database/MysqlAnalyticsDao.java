@@ -6,7 +6,7 @@ import cmod.repz.application.database.entity.ServerTrackEntity;
 import cmod.repz.application.database.repository.PlayerTrackerRepository;
 import cmod.repz.application.database.repository.ServerRepository;
 import cmod.repz.application.database.repository.ServerTrackerRepository;
-import cmod.repz.application.model.ServerStatusModel;
+import cmod.repz.application.model.Iw4adminApiModel;
 import cmod.repz.application.util.GameUtil;
 import cmod.repz.application.util.MathUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +51,7 @@ public class MysqlAnalyticsDao implements AnalyticsDao {
     }
 
     @Override
-    public void trackServer(ServerStatusModel.Server server) {
+    public void trackServer(Iw4adminApiModel.Server server) {
         serverTrackerRepository.save(ServerTrackEntity.builder()
                 .date(new Date())
                 .playerCount(server.getCurrentPlayers())
@@ -63,7 +63,7 @@ public class MysqlAnalyticsDao implements AnalyticsDao {
         addServer(server);
     }
 
-    private synchronized void addServer(ServerStatusModel.Server server){
+    private synchronized void addServer(Iw4adminApiModel.Server server){
         if(persistedServerIds.contains(server.getId()))
             return;
         try{

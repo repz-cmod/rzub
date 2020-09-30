@@ -24,7 +24,6 @@ public class ScheduledServerInfoTrackerService {
     public void runTask(){
         log.debug("Running server tracking task");
         applicationEventPublisher.publishEvent(new ServerStatusEvent(this, iw4AdminApi.getServerList()));
-
     }
 
 }

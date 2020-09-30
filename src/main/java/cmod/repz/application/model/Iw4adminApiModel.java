@@ -6,7 +6,37 @@ import lombok.ToString;
 
 import java.util.List;
 
-public class ServerStatusModel {
+public class Iw4adminApiModel {
+
+    @Getter
+    @Setter
+    @ToString
+    public static class Stat {
+        private String name;
+        private String serverName;
+        private String serverGame;
+        private int totalSecondsPlayed;
+        private int kills;
+        private int deaths;
+        private int ranking;
+    }
+
+    @Getter
+    @Setter
+    @ToString
+    public static class FindApiResult {
+        private int totalFoundClients;
+        private List<BasicClient> clients;
+    }
+
+    @Getter
+    @Setter
+    @ToString
+    public static class BasicClient {
+        private int clientId;
+        private String xuid;
+        private String name;
+    }
 
     @Getter
     @Setter
