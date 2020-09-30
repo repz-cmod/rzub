@@ -32,7 +32,7 @@ public class MysqlAnalyticsDao implements AnalyticsDao {
     }
 
     @Override
-    public void playerJoined(String serverId, String clientId, String trackerId) {
+    public void playerJoined(String serverId, String clientId, String clientName, String trackerId) {
         playerTrackerRepository.deleteAllByClientIdAndJoinDateIsNull(clientId);
         playerTrackerRepository.deleteAllByClientIdAndLeftDateIsNull(clientId);
 
@@ -40,6 +40,7 @@ public class MysqlAnalyticsDao implements AnalyticsDao {
                 .serverId(serverId)
                 .clientId(clientId)
                 .trackerId(trackerId)
+                .playerName(clientName)
                 .joinDate(new Date())
                 .build());
     }
