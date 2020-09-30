@@ -25,6 +25,7 @@ public class PlayerTrackController {
         return SuccessResultDto.getInstance();
     }
 
+    @PostMapping("/client/leave")
     public @ResponseBody
     SuccessResultDto playerLeft(@RequestBody @Valid PlayerTackDto playerTackDto){
         analyticsDao.playerLeft(playerTackDto.getServerId(), playerTackDto.getClientId(), playerTackDto.getTrackerId());
