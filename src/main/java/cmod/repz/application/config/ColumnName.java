@@ -7,6 +7,8 @@ public interface ColumnName {
     String MAX_PLAYER_COUNT = "max_player_count";
     String CLIENT_ID = "client_id";
     String PLAYER_NAME = "player_name";
+    String JOIN_DATE = "join_date";
+    String LEAVE_DATE = "leave_date";
     String TRACKER_ID = "tracker_id";
     String MAP_NAME = "map_name";
 }

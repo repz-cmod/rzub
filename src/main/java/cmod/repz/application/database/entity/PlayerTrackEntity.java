@@ -27,12 +27,12 @@ public class PlayerTrackEntity {
     private String serverId;
     @Column(name = ColumnName.CLIENT_ID, nullable = false)
     private String clientId;
-    @Column(name = ColumnName.PLAYER_NAME, nullable = false)
+    @Column(name = ColumnName.PLAYER_NAME)
     private String playerName;
-    @Column
+    @Column(name = ColumnName.JOIN_DATE)
     private Date joinDate;
-    @Column
-    private Date leftDate;
+    @Column(name = ColumnName.LEAVE_DATE)
+    private Date leaveDate;
     @Column(name = TRACKER_ID)
     private String trackerId;
 }

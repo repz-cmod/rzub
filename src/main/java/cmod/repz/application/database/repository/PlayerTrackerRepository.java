@@ -9,8 +9,8 @@ import java.util.Date;
 
 public interface PlayerTrackerRepository extends JpaRepository<PlayerTrackEntity, Long> {
     void deleteAllByClientIdAndJoinDateIsNull(String clientId);
-    void deleteAllByClientIdAndLeftDateIsNull(String clientId);
+    void deleteAllByClientIdAndLeaveDateIsNull(String clientId);
     @Modifying(clearAutomatically = true, flushAutomatically = true)
-    @Query("update #{#entityName} pt set pt.leftDate = :leftDate where pt.clientId = :clientId AND pt.trackerId = :trackerId AND pt.serverId = :serverId")
-    void updateLeftDate(String clientId, String trackerId, String serverId, Date leftDate);
+    @Query("update #{#entityName} pt set pt.leaveDate = :leaveDate where pt.clientId = :clientId AND pt.trackerId = :trackerId AND pt.serverId = :serverId")
+    void updateLeftDate(String clientId, String trackerId, String serverId, Date leaveDate);
 }

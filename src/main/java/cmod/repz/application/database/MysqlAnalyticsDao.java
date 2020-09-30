@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.Set;
 
@@ -32,9 +33,10 @@ public class MysqlAnalyticsDao implements AnalyticsDao {
     }
 
     @Override
+    @Transactional
     public void playerJoined(String serverId, String clientId, String clientName, String trackerId) {
         playerTrackerRepository.deleteAllByClientIdAndJoinDateIsNull(clientId);
-        playerTrackerRepository.deleteAllByClientIdAndLeftDateIsNull(clientId);
+        playerTrackerRepository.deleteAllByClientIdAndLeaveDateIsNull(clientId);
 
         playerTrackerRepository.save(PlayerTrackEntity.builder()
                 .serverId(serverId)
@@ -46,11 +48,13 @@ public class MysqlAnalyticsDao implements AnalyticsDao {
     }
 
     @Override
+    @Transactional
     public void playerLeft(String serverId, String clientId, String trackerId) {
         playerTrackerRepository.updateLeftDate(clientId, trackerId, serverId, new Date());
     }
 
     @Override
+    @Transactional
     public void trackServer(Iw4adminApiModel.Server server) {
         serverTrackerRepository.save(ServerTrackEntity.builder()
                 .date(new Date())
