@@ -32,7 +32,7 @@ public class InMemoryDiscordListenerRepository implements DiscordListenerReposit
 
     @Override
     public Object getListenerOfCommand(String command) {
-        return commandListenerMap.get(command);
+        return commandListenerMap.get(command.toLowerCase());
     }
 
     @Override
