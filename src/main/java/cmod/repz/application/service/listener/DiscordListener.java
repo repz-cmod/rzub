@@ -37,7 +37,13 @@ public class DiscordListener extends ListenerAdapter {
             Object listenerOfCommand = discordListenerRepository.getListenerOfCommand(commandAndArgs[0]);
             if(listenerOfCommand != null){
                 try {
-                    listenerOfCommand.getClass().getMethod("onCommand").invoke(listenerOfCommand, event, Arrays.copyOfRange(commandAndArgs, 1, commandAndArgs.length-1));
+                    String[] args;
+                    if(commandAndArgs.length > 1){
+                        args = Arrays.copyOfRange(commandAndArgs, 1, commandAndArgs.length - 1);
+                    }else {
+                        args = new String[]{};
+                    }
+                    listenerOfCommand.getClass().getMethod("onCommand", GuildMessageReceivedEvent.class, String[].class).invoke(listenerOfCommand, event, args);
                 } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                     log.error("Failed to invoke method `onCommand()`", e);
                 }
@@ -45,7 +51,7 @@ public class DiscordListener extends ListenerAdapter {
         }else {
             discordListenerRepository.getMessageListeners().forEach(discordMessageListener -> {
                 try {
-                    discordMessageListener.getClass().getMethod("onMessage").invoke(discordMessageListener, event);
+                    discordMessageListener.getClass().getMethod("onMessage", GuildMessageReceivedEvent.class).invoke(discordMessageListener, event);
                 } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                     log.error("Failed to invoke method `onMessage()`", e);
                 }
