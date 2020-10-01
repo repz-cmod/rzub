@@ -14,6 +14,9 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.Objects;
 
+/*
+ * Gets registered player stats from iw4admin
+ */
 @DiscordListenerComponent(command = "mystat")
 @Slf4j
 public class IW4AdminUserStatsDiscordModule implements DiscordCommandListener {

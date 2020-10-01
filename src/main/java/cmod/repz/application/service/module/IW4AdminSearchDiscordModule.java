@@ -13,8 +13,10 @@ import net.dv8tion.jda.api.exceptions.RateLimitedException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.awt.*;
-import java.util.concurrent.atomic.AtomicReference;
 
+/*
+ * Searches in iw4admin for a player
+ */
 @DiscordListenerComponent(command = "iwl")
 @Slf4j
 public class IW4AdminSearchDiscordModule implements DiscordCommandListener {

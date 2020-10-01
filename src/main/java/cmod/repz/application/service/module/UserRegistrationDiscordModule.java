@@ -15,6 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.Objects;
 
+/*
+ * Registers a player
+ */
 @DiscordListenerComponent(command = "register")
 @Slf4j
 public class UserRegistrationDiscordModule implements DiscordCommandListener {

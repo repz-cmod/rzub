@@ -11,6 +11,9 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
+/*
+ * Gets player stats for each game from iw4admin
+ */
 @DiscordListenerComponent(command = "iwstat")
 @Slf4j
 public class IW4AdminStatsDiscordModule implements DiscordCommandListener {
