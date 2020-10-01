@@ -1,6 +1,7 @@
 package cmod.repz.application.config;
 
 import cmod.repz.application.model.ConfigModel;
+import cmod.repz.application.service.listener.DiscordListener;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -29,6 +30,11 @@ import java.io.IOException;
 @EnableAsync
 @EnableJpaRepositories(basePackages = "cmod.repz.application.database.repository")
 public class ApplicationConfig {
+    private final DiscordListener discordListener;
+
+    public ApplicationConfig(DiscordListener discordListener) {
+        this.discordListener = discordListener;
+    }
 
     @Bean
     public ConfigModel configModel() throws IOException {
@@ -56,6 +62,7 @@ public class ApplicationConfig {
         builder.setBulkDeleteSplittingEnabled(false);
         builder.setCompression(Compression.NONE);
         builder.setActivity(Activity.watching("Repz Servers"));
+        builder.addEventListeners(discordListener);
         return builder.build();
     }
 

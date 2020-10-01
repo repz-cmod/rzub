@@ -4,5 +4,8 @@
         "url": "jdbc:mysql://localhost:3306/repz_analytics",
         "username": "repz",
         "password": "Cm0dr3pz?"
+    },
+    "discord": {
+        "token": "NzYxMTQ2MTc0NzgyNDM5NDM0.X3WWnQ.12XNUdM96xUSYb8WzI9zU94f-Oc"
     }
 }
