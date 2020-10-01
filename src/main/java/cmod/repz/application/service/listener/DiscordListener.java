@@ -1,14 +1,18 @@
 package cmod.repz.application.service.listener;
 
 import cmod.repz.application.database.repository.DiscordListenerRepository;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Nonnull;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
 @Component
+@Slf4j
 public class DiscordListener extends ListenerAdapter {
     private final DiscordListenerRepository discordListenerRepository;
 
@@ -30,13 +34,21 @@ public class DiscordListener extends ListenerAdapter {
         if(messageContent.startsWith("!")){
             String substring = messageContent.substring(1);
             String[] commandAndArgs = substring.split(" ");
-            DiscordCommandListener listenerOfCommand = discordListenerRepository.getListenerOfCommand(commandAndArgs[0]);
+            Object listenerOfCommand = discordListenerRepository.getListenerOfCommand(commandAndArgs[0]);
             if(listenerOfCommand != null){
-                listenerOfCommand.onCommand(event, Arrays.copyOfRange(commandAndArgs, 1, commandAndArgs.length-1));
+                try {
+                    listenerOfCommand.getClass().getMethod("onCommand").invoke(listenerOfCommand, event, Arrays.copyOfRange(commandAndArgs, 1, commandAndArgs.length-1));
+                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                    log.error("Failed to invoke method `onCommand()`", e);
+                }
             }
         }else {
             discordListenerRepository.getMessageListeners().forEach(discordMessageListener -> {
-                discordMessageListener.onMessage(event, messageContent);
+                try {
+                    discordMessageListener.getClass().getMethod("onMessage").invoke(discordMessageListener, event);
+                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                    log.error("Failed to invoke method `onMessage()`", e);
+                }
             });
         }
 
