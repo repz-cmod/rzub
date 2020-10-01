@@ -1,4 +1,4 @@
-package cmod.repz.application.service.module;
+package cmod.repz.application.service;
 
 import cmod.repz.application.model.IW4AdminStatResult;
 import cmod.repz.application.model.Iw4adminApiModel;

@@ -11,4 +11,6 @@ public interface ColumnName {
     String LEAVE_DATE = "leave_date";
     String TRACKER_ID = "tracker_id";
     String MAP_NAME = "map_name";
+    String DISCORD_USER_ID = "d_user_id";
+    String IW4ADMIN_CLIENT_ID = "iwa_client_id";
 }
