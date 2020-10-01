@@ -13,6 +13,7 @@ import java.util.List;
 public class IW4AdminStatResult {
     private double kd;
     private List<MapRanking> rankings;
+    private String clientId;
 
     @Getter
     @Setter

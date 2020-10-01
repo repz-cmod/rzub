@@ -42,6 +42,7 @@ public class CacheableIw4adminStatsLookup {
         });
 
         return IW4AdminStatResult.builder()
+                .clientId(clientId)
                 .kd(((double) atomicKills.get()) / atomicDeaths.get())
                 .rankings(mapRankings)
                 .build();
