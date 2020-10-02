@@ -10,7 +10,7 @@
     },
     "xlrDatabase": {
         "mw2": {
-            "url": "jdbc:mysql://localhost:3306/repz_analytics",
+            "url": "jdbc:mysql://localhost:3306/xlr_mw2",
             "username": "repz",
             "password": "Cm0dr3pz?"
         }

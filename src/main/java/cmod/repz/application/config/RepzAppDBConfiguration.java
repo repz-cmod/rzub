@@ -1,6 +1,7 @@
 package cmod.repz.application.config;
 
 import cmod.repz.application.model.ConfigModel;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +22,7 @@ import java.util.HashMap;
         entityManagerFactoryRef = "repzEntityManager",
         transactionManagerRef = "repzTransactionManager")
 public class RepzAppDBConfiguration {
-    @Bean
+    @Bean("repzDataSource")
     @Primary
     @DependsOn("configModel")
     public DataSource repzDataSource(ConfigModel configModel) {
@@ -30,12 +31,14 @@ public class RepzAppDBConfiguration {
                 .username(configModel.getDatabase().getUsername())
                 .password(configModel.getDatabase().getPassword())
                 .url(configModel.getDatabase().getUrl())
+                .driverClassName("com.mysql.jdbc.Driver")
                 .build();
     }
 
-    @Bean
+    @Bean("repzEntityManager")
     @DependsOn("repzDataSource")
-    public LocalContainerEntityManagerFactoryBean repzEntityManager(DataSource repzDataSource) {
+    @Primary
+    public LocalContainerEntityManagerFactoryBean repzEntityManager(@Qualifier("repzDataSource") DataSource repzDataSource) {
         LocalContainerEntityManagerFactoryBean em
                 = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(repzDataSource);
@@ -51,9 +54,10 @@ public class RepzAppDBConfiguration {
         return em;
     }
 
-    @Bean
+    @Bean("repzTransactionManager")
     @DependsOn("repzEntityManager")
-    public PlatformTransactionManager repzTransactionManager(LocalContainerEntityManagerFactoryBean repzEntityManager) {
+    @Primary
+    public PlatformTransactionManager repzTransactionManager(@Qualifier("repzEntityManager") LocalContainerEntityManagerFactoryBean repzEntityManager) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(repzEntityManager.getObject());
         return transactionManager;
