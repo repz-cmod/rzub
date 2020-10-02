@@ -28,7 +28,6 @@ import java.io.IOException;
 @Configuration
 @EnableScheduling
 @EnableAsync
-@EnableJpaRepositories(basePackages = "cmod.repz.application.database.repository")
 public class ApplicationConfig {
     private final DiscordListener discordListener;
 
