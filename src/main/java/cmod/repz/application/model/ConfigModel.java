@@ -12,7 +12,7 @@ public class ConfigModel {
     private Database database;
     private Discord discord;
     private Map<String, Database> xlrDatabase;
-
+    private Map<String, String> messages;
 
     @Getter
     @Setter
