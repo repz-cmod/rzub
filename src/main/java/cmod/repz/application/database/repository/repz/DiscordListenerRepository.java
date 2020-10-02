@@ -1,4 +1,4 @@
-package cmod.repz.application.database.repository;
+package cmod.repz.application.database.repository.repz;
 
 import java.util.List;
 

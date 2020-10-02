@@ -2,12 +2,11 @@ package cmod.repz.application.service.module;
 
 import cmod.repz.application.annotation.DiscordListenerComponent;
 import cmod.repz.application.database.entity.DiscordUserEntity;
-import cmod.repz.application.database.repository.DiscordUserRepository;
+import cmod.repz.application.database.repository.repz.DiscordUserRepository;
 import cmod.repz.application.model.Iw4adminApiModel;
 import cmod.repz.application.service.api.IW4AdminApi;
 import cmod.repz.application.service.listener.DiscordCommandListener;
 import lombok.extern.slf4j.Slf4j;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.springframework.beans.factory.annotation.Autowired;

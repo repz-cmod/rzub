@@ -1,8 +1,7 @@
 package cmod.repz.application.service;
 
-import cmod.repz.application.database.repository.DiscordListenerRepository;
+import cmod.repz.application.database.repository.repz.DiscordListenerRepository;
 import cmod.repz.application.service.listener.DiscordCommandListener;
-import cmod.repz.application.service.listener.DiscordMessageListener;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 

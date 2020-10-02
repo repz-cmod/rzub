@@ -1,4 +1,4 @@
-package cmod.repz.application.database.repository;
+package cmod.repz.application.database.repository.repz;
 
 import cmod.repz.application.database.entity.PlayerTrackEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,7 +1,7 @@
 package cmod.repz.application.config;
 
 import cmod.repz.application.annotation.DiscordListenerComponent;
-import cmod.repz.application.database.repository.DiscordListenerRepository;
+import cmod.repz.application.database.repository.repz.DiscordListenerRepository;
 import cmod.repz.application.service.listener.DiscordCommandListener;
 import cmod.repz.application.service.listener.DiscordMessageListener;
 import lombok.extern.slf4j.Slf4j;

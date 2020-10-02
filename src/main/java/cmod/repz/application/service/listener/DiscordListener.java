@@ -1,7 +1,6 @@
 package cmod.repz.application.service.listener;
 
-import cmod.repz.application.database.repository.DiscordListenerRepository;
-import lombok.SneakyThrows;
+import cmod.repz.application.database.repository.repz.DiscordListenerRepository;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;

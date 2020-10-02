@@ -43,18 +43,6 @@ public class ApplicationConfig {
     }
 
     @Bean
-    @Primary
-    @DependsOn("configModel")
-    public DataSource dataSource(ConfigModel configModel) {
-        return DataSourceBuilder
-                .create()
-                .username(configModel.getDatabase().getUsername())
-                .password(configModel.getDatabase().getPassword())
-                .url(configModel.getDatabase().getUrl())
-                .build();
-    }
-
-    @Bean
     @DependsOn("configModel")
     public JDA discord(ConfigModel configModel) throws LoginException {
         JDABuilder builder = JDABuilder.createDefault(configModel.getDiscord().getToken());
