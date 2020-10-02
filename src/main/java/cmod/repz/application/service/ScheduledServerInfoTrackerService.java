@@ -19,11 +19,11 @@ public class ScheduledServerInfoTrackerService {
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
-    @Scheduled(fixedRate = 30000)
-    @Async
-    public void runTask(){
-        log.debug("Running server tracking task");
-        applicationEventPublisher.publishEvent(new ServerStatusEvent(this, iw4AdminApi.getServerList()));
-    }
+//    @Scheduled(fixedRate = 30000)
+//    @Async
+//    public void runTask(){
+//        log.debug("Running server tracking task");
+//        applicationEventPublisher.publishEvent(new ServerStatusEvent(this, iw4AdminApi.getServerList()));
+//    }
 
 }
