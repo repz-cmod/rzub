@@ -6,7 +6,6 @@ import cmod.repz.application.database.repository.repz.DiscordUserRepository;
 import cmod.repz.application.model.ConfigModel;
 import cmod.repz.application.service.listener.DiscordCommandListener;
 import lombok.extern.slf4j.Slf4j;
-import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,6 @@ public class UserRegistrationDiscordModule implements DiscordCommandListener {
     @Override
     @Transactional
     public void onCommand(GuildMessageReceivedEvent event, String[] args) {
-        MessageChannel messageChannel = event.getMessage().getChannel();
         try {
             DiscordUserEntity discordUserEntity = discordUserRepository.findByUserId(Objects.requireNonNull(event.getMember()).getUser().getId());
             if(discordUserEntity == null){
@@ -60,10 +58,9 @@ public class UserRegistrationDiscordModule implements DiscordCommandListener {
                 if(!discordUserEntity.isMessageSent()){
                     sendMessage(event, discordUserEntity.getToken());
                     messageSent(discordUserEntity);
-                }else {
-                    event.getMessage().addReaction("✅").complete();
                 }
             }
+            event.getMessage().delete().complete();
         }catch (Exception e){
             log.error("Failed to handle user registration", e);
         }

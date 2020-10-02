@@ -34,18 +34,16 @@ public class DiscordUserEntity {
     private String nickname;
     private String username;
 
-
     @Column(name = IW4ADMIN_CLIENT_ID)
     private String iw4adminClientId;
-    @Column(name = PLAYER_NAME)
-    private String clientName;
     @Column(name = B3_MW2_CLIENT_ID)
     private String b3MW2ClientId;
     @Column(name = B3_BO2_CLIENT_ID)
     private String b3BO2ClientId;
-    @Column(name = B3_BF3_CLIENT_ID)
-    private String b3BF3mw2ClientId;
-    private String guid;
+    private String mw2Guid;
+    private String bo2Guid;
+    private String mw2Name;
+    private String bo2Name;
     @Column(name = "token", nullable = false)
     private String token;
     private Date creationDate;
