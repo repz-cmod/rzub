@@ -26,12 +26,10 @@ public class DiscordListenerScanner {
             beansWithAnnotation.values().forEach(bean -> {
                 if(AopUtils.isAopProxy(bean)){
                     Class<?> aClass = AopUtils.getTargetClass(bean);
-                    log.info("Scanning "+ aClass.getName());
                     DiscordListenerComponent discordListenerComponent = aClass.getAnnotation(DiscordListenerComponent.class);
                     if(discordListenerComponent == null)
                         return;
                     if(bean instanceof DiscordCommandListener){
-                        log.info(discordListenerComponent.command());
                         discordListenerRepository.addCommandListener(discordListenerComponent.command(), bean);
                     }else if(bean instanceof DiscordMessageListener){
                         discordListenerRepository.addMessageListener(bean);
