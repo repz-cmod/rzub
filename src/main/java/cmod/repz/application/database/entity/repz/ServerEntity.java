@@ -1,4 +1,4 @@
-package cmod.repz.application.database.entity;
+package cmod.repz.application.database.entity.repz;
 
 import cmod.repz.application.config.ColumnName;
 import lombok.*;

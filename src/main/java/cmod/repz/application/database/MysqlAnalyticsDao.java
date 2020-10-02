@@ -1,8 +1,8 @@
 package cmod.repz.application.database;
 
-import cmod.repz.application.database.entity.PlayerTrackEntity;
-import cmod.repz.application.database.entity.ServerEntity;
-import cmod.repz.application.database.entity.ServerTrackEntity;
+import cmod.repz.application.database.entity.repz.PlayerTrackEntity;
+import cmod.repz.application.database.entity.repz.ServerEntity;
+import cmod.repz.application.database.entity.repz.ServerTrackEntity;
 import cmod.repz.application.database.repository.repz.PlayerTrackerRepository;
 import cmod.repz.application.database.repository.repz.ServerRepository;
 import cmod.repz.application.database.repository.repz.ServerTrackerRepository;

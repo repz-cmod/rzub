@@ -1,7 +1,7 @@
 package cmod.repz.application.service.module;
 
 import cmod.repz.application.annotation.DiscordListenerComponent;
-import cmod.repz.application.database.entity.DiscordUserEntity;
+import cmod.repz.application.database.entity.repz.DiscordUserEntity;
 import cmod.repz.application.database.repository.repz.DiscordUserRepository;
 import cmod.repz.application.model.IW4AdminStatResult;
 import cmod.repz.application.service.CacheableIw4adminStatsLookup;

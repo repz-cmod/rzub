@@ -1,4 +1,4 @@
-package cmod.repz.application.database.entity;
+package cmod.repz.application.database.entity.repz;
 
 import lombok.*;
 
