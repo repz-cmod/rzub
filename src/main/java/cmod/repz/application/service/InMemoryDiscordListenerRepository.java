@@ -2,6 +2,7 @@ package cmod.repz.application.service;
 
 import cmod.repz.application.database.repository.repz.DiscordListenerRepository;
 import cmod.repz.application.service.listener.DiscordCommandListener;
+import cmod.repz.application.service.listener.DiscordMessageListener;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
@@ -23,7 +24,7 @@ public class InMemoryDiscordListenerRepository implements DiscordListenerReposit
 
     @Override
     public synchronized void addMessageListener(Object discordMessageListener) {
-        Assert.isTrue(discordMessageListener instanceof DiscordCommandListener, "obj must be instance of DiscordMessageListener");
+        Assert.isTrue(discordMessageListener instanceof DiscordMessageListener, "obj must be instance of DiscordMessageListener");
         if (!discordMessageListeners.contains(discordMessageListener)) {
             discordMessageListeners.add(discordMessageListener);
         }
