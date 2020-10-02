@@ -18,18 +18,18 @@ public class XlrPlayerStatEntity {
     private int kills;
     private int deaths;
     @Column(name = "teamkills")
-    private int teamKills;
+    private short teamKills;
     @Column(name = "teamdeaths")
-    private int teamDeaths;
-    private int suicides;
-    private int ratio;
+    private short teamDeaths;
+    private short suicides;
+    private float ratio;
     private int skill;
-    private int skills;
+    private short assists;
     @Column(name = "curstreak")
-    private int currentStreak;
+    private short currentStreak;
     @Column(name = "winstreak")
-    private int winStreak;
+    private short winStreak;
     @Column(name = "losestreak")
-    private int loseStreak;
+    private short loseStreak;
     private int rounds;
 }
