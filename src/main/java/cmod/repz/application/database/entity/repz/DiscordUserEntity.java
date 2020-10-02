@@ -3,15 +3,9 @@ package cmod.repz.application.database.entity.repz;
 import lombok.*;
 
 import javax.persistence.*;
-
 import java.util.Date;
 
-import static cmod.repz.application.config.ColumnName.DISCORD_USER_ID;
-import static cmod.repz.application.config.ColumnName.IW4ADMIN_CLIENT_ID;
-import static cmod.repz.application.config.ColumnName.B3_MW2_CLIENT_ID;
-import static cmod.repz.application.config.ColumnName.B3_BO2_CLIENT_ID;
-import static cmod.repz.application.config.ColumnName.B3_BF3_CLIENT_ID;
-import static cmod.repz.application.config.ColumnName.PLAYER_NAME;
+import static cmod.repz.application.config.ColumnName.*;
 import static cmod.repz.application.config.TableName.DISCORD_USER;
 
 @Entity
@@ -34,8 +28,10 @@ public class DiscordUserEntity {
     private String nickname;
     private String username;
 
-    @Column(name = IW4ADMIN_CLIENT_ID)
-    private String iw4adminClientId;
+    @Column(name = IW4ADMIN_MW2_CLIENT_ID)
+    private String iw4adminMw2ClientId;
+    @Column(name = IW4ADMIN_BO2_CLIENT_ID)
+    private String iw4adminBo2ClientId;
     @Column(name = B3_MW2_CLIENT_ID)
     private String b3MW2ClientId;
     @Column(name = B3_BO2_CLIENT_ID)

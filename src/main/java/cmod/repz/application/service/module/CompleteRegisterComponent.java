@@ -39,8 +39,8 @@ public class CompleteRegisterComponent {
         }
 
         if(discordRegisterDto.getGame().equals("IW4")){
+            discordUserEntity.setIw4adminMw2ClientId(discordRegisterDto.getClientId());
             discordUserEntity.setMw2Name(discordRegisterDto.getPlayerName());
-            discordUserEntity.setB3MW2ClientId(discordRegisterDto.getClientId());
             discordUserEntity.setMw2Guid(discordRegisterDto.getClientId());
             ClientEntity clientEntity = xlrMw2ClientRepository.findByGuid(discordRegisterDto.getXuid());
             if(clientEntity != null){

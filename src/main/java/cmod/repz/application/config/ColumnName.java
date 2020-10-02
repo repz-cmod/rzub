@@ -14,6 +14,8 @@ public interface ColumnName {
     String DISCORD_USER_ID = "d_user_id";
     String IW4ADMIN_CLIENT_ID = "iwa_client_id";
     String B3_MW2_CLIENT_ID = "b3_mw2_client_id";
+    String IW4ADMIN_MW2_CLIENT_ID = "iw4admin_mw2_client_id";
     String B3_BO2_CLIENT_ID = "b3_bo2_client_id";
+    String IW4ADMIN_BO2_CLIENT_ID = "iw4admin_bo2_client_id";
     String B3_BF3_CLIENT_ID = "b3_bf3_client_id";
 }
