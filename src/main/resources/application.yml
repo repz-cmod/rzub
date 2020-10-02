@@ -1,8 +1,5 @@
-spring:
-  jpa:
-    hibernate:
-      ddl-auto: create-drop
-    generate-ddl: true
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-  datasource:
-    driver-class-name: com.mysql.jdbc.Driver
+logging:
+  file:
+    name: repz.log
+  level:
+    ROOT: info
