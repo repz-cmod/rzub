@@ -52,7 +52,7 @@ var plugin = {
     },
 
     onEventAsync: function (gameEvent, server) {
-        if(gameEvent.Type === 100){ //client sent a message
+        if(gameEvent.Type === 110){
             try{
                 this.onMessage(gameEvent, server);
             }catch (error){
