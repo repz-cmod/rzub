@@ -10,5 +10,6 @@ To run on windows:
 3- Copy env/config.json to run directory if you haven't already.
 4- Configure config.json in run directory to point to the valid databases
 5- Call run.cmd to run project
+6- Configure and copy all files under plugins folder to iw4admin plugins folder
 
 After first run, you dont need to run first 4 steps anymore.
