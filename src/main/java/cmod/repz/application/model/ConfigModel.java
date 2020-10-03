@@ -13,6 +13,7 @@ public class ConfigModel {
     private Discord discord;
     private Map<String, Database> xlrDatabase;
     private Map<String, String> messages;
+    private String xlrMw2Prefix;
 
     @Getter
     @Setter

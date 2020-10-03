@@ -4,6 +4,7 @@ import cmod.repz.application.database.entity.xlr.XlrPlayerStatEntity;
 import cmod.repz.application.model.IW4AdminStatResult;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import org.springframework.lang.Nullable;
 
 import java.awt.*;
 import java.text.DecimalFormat;
@@ -11,7 +12,7 @@ import java.text.DecimalFormat;
 public class DiscordUtil {
     private static final DecimalFormat df2 = new DecimalFormat("#.##");
 
-    public static MessageEmbed getXlrStatResult(String game, XlrPlayerStatEntity xlrPlayerStatEntity){
+    public static MessageEmbed getXlrStatResult(String game, XlrPlayerStatEntity xlrPlayerStatEntity, @Nullable String url){
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append("Ratio: ");
@@ -41,6 +42,12 @@ public class DiscordUtil {
         stringBuilder.append("Lose Streak: ");
         stringBuilder.append(xlrPlayerStatEntity.getLoseStreak());
         stringBuilder.append("\n");
+
+        if(url != null){
+            stringBuilder.append("[Open xlrstats page](");
+            stringBuilder.append(url);
+            stringBuilder.append(")");
+        }
 
         return new EmbedBuilder()
                 .setColor(Color.BLACK)

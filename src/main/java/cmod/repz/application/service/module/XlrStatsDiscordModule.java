@@ -5,6 +5,7 @@ import cmod.repz.application.database.entity.repz.DiscordUserEntity;
 import cmod.repz.application.database.entity.xlr.XlrPlayerStatEntity;
 import cmod.repz.application.database.repository.repz.DiscordUserRepository;
 import cmod.repz.application.database.repository.xlr.mw2.XlrMw2StatsRepository;
+import cmod.repz.application.model.ConfigModel;
 import cmod.repz.application.service.listener.DiscordCommandListener;
 import cmod.repz.application.util.DiscordUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -21,10 +22,12 @@ import java.util.Objects;
 public class XlrStatsDiscordModule implements DiscordCommandListener {
     private final XlrMw2StatsRepository xlrMw2StatsRepository;
     private final DiscordUserRepository discordUserRepository;
+    private final ConfigModel configModel;
 
-    public XlrStatsDiscordModule(XlrMw2StatsRepository xlrMw2StatsRepository, DiscordUserRepository discordUserRepository) {
+    public XlrStatsDiscordModule(XlrMw2StatsRepository xlrMw2StatsRepository, DiscordUserRepository discordUserRepository, ConfigModel configModel) {
         this.xlrMw2StatsRepository = xlrMw2StatsRepository;
         this.discordUserRepository = discordUserRepository;
+        this.configModel = configModel;
     }
 
     @Override
@@ -43,6 +46,7 @@ public class XlrStatsDiscordModule implements DiscordCommandListener {
                         clientId = getClientIdByDiscordUser(Objects.requireNonNull(event.getMember()).getUser().getId(), game);
                     }catch (Exception e){
                         messageChannel.sendMessage("Either your user is not registered or you haven't registered in this game").complete();
+                        return;
                     }
                 }
 
@@ -71,7 +75,7 @@ public class XlrStatsDiscordModule implements DiscordCommandListener {
             return;
         }
 
-        messageChannel.sendMessage(DiscordUtil.getXlrStatResult(game, xlrPlayerStatEntity)).complete();
+        messageChannel.sendMessage(DiscordUtil.getXlrStatResult(game, xlrPlayerStatEntity, configModel.getXlrMw2Prefix() + xlrPlayerStatEntity.getId())).complete();
     }
 
     private String getClientIdByDiscordUser(String userId, String game) throws Exception {
