@@ -1,6 +1,7 @@
 package cmod.repz.application.config;
 
 import cmod.repz.application.annotation.DiscordListenerComponent;
+import cmod.repz.application.database.repository.repz.CommandDescRepository;
 import cmod.repz.application.database.repository.repz.DiscordListenerRepository;
 import cmod.repz.application.service.listener.DiscordCommandListener;
 import cmod.repz.application.service.listener.DiscordMessageListener;
@@ -15,9 +16,11 @@ import java.util.Map;
 @Slf4j
 public class DiscordListenerScanner {
     private final DiscordListenerRepository discordListenerRepository;
+    private final CommandDescRepository commandDescRepository;
 
-    public DiscordListenerScanner(DiscordListenerRepository discordListenerRepository) {
+    public DiscordListenerScanner(DiscordListenerRepository discordListenerRepository, CommandDescRepository commandDescRepository) {
         this.discordListenerRepository = discordListenerRepository;
+        this.commandDescRepository = commandDescRepository;
     }
 
     public void scan(ApplicationContext applicationContext){
@@ -31,6 +34,7 @@ public class DiscordListenerScanner {
                         return;
                     if(bean instanceof DiscordCommandListener){
                         discordListenerRepository.addCommandListener(discordListenerComponent.command(), bean);
+                        commandDescRepository.addCommand(discordListenerComponent.command(), discordListenerComponent.description());
                     }else if(bean instanceof DiscordMessageListener){
                         discordListenerRepository.addMessageListener(bean);
                     }

@@ -15,4 +15,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DiscordListenerComponent {
     String command() default "";
+    String description() default "";
 }
