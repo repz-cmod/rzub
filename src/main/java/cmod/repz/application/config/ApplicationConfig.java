@@ -1,6 +1,7 @@
 package cmod.repz.application.config;
 
 import cmod.repz.application.model.ConfigModel;
+import cmod.repz.application.model.RepzBotProperties;
 import cmod.repz.application.service.listener.DiscordListener;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.dv8tion.jda.api.JDA;
@@ -11,6 +12,7 @@ import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.Compression;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +30,7 @@ import java.io.IOException;
 @Configuration
 @EnableScheduling
 @EnableAsync
+@EnableConfigurationProperties(value = RepzBotProperties.class)
 public class ApplicationConfig {
     private final DiscordListener discordListener;
 

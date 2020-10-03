@@ -3,3 +3,15 @@ logging:
     name: repz.log
   level:
     ROOT: info
+
+repz:
+  bot:
+    responses:
+      - "I'm not your google assistance, so please use valid commands to talk to me. try `!help` to see them."
+      - "My developer is not smart enough to make me as smart as himself!  try `!help` to see commands I support."
+      - "Ssshhh, just use my commands. (see `!help`)"
+      - "Yes master?"
+      - "I'm not as dumb as you think I would be. I can understand certain commands. Can you?"
+      - "I'm only loyal to my creator mr Sep (**SocialDistance**) and my current owner, mr Ta$y! but I would care about what you say if you use valid commands from `!help`."
+      - "Yes, hello?"
+      - "Try `!help`. Thanks."
