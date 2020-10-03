@@ -33,7 +33,6 @@ public class DiscordListener extends ListenerAdapter {
         if(messageContent.startsWith("!")){
             String substring = messageContent.substring(1);
             String[] commandAndArgs = substring.split(" ");
-            log.info("input commands: "+ Arrays.toString(commandAndArgs));
             Object listenerOfCommand = discordListenerRepository.getListenerOfCommand(commandAndArgs[0]);
             if(listenerOfCommand != null){
                 try {

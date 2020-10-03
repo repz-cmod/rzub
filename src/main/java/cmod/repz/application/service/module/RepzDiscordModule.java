@@ -19,7 +19,6 @@ public class RepzDiscordModule implements DiscordCommandListener {
 
     @Override
     public void onCommand(GuildMessageReceivedEvent event, String[] args) {
-        log.info("Discord message arrived:" + Arrays.toString(args));
         event.getMessage().getChannel().sendMessage(repzRandomResponse.getRandomResponse()).complete();
     }
 }
