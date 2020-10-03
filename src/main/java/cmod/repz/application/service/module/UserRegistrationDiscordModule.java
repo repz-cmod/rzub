@@ -18,7 +18,7 @@ import java.util.Objects;
 /*
  * Registers a player
  */
-@DiscordListenerComponent(command = "register")
+@DiscordListenerComponent(command = "register", description = "registers your discord account to repz games")
 @Slf4j
 public class UserRegistrationDiscordModule implements DiscordCommandListener {
     private final DiscordUserRepository discordUserRepository;

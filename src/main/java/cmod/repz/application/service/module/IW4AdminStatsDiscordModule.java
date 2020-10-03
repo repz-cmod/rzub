@@ -16,7 +16,7 @@ import java.util.Objects;
 /*
  * Gets player stats for each game from iw4admin
  */
-@DiscordListenerComponent(command = "iwstats")
+@DiscordListenerComponent(command = "iwstats", description = "returns player stats in iw4admin")
 @Slf4j
 public class IW4AdminStatsDiscordModule implements DiscordCommandListener {
     private final CacheableIw4adminStatsLookup cacheableIw4adminStatsLookup;

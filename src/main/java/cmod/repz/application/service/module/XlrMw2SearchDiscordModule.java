@@ -19,7 +19,7 @@ import java.util.List;
 /*
  * Searches in iw4admin for a player
  */
-@DiscordListenerComponent(command = "xlrl")
+@DiscordListenerComponent(command = "xlrl", description = "looks up for player in xlr")
 @Slf4j
 public class XlrMw2SearchDiscordModule implements DiscordCommandListener {
     private final XlrMw2ClientRepository xlrMw2ClientRepository;

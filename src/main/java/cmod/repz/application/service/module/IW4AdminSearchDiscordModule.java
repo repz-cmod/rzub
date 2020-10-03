@@ -17,7 +17,7 @@ import java.awt.*;
 /*
  * Searches in iw4admin for a player
  */
-@DiscordListenerComponent(command = "iwl")
+@DiscordListenerComponent(command = "iwl", description = "looks up for a player in iw4admin")
 @Slf4j
 public class IW4AdminSearchDiscordModule implements DiscordCommandListener {
     private final IW4AdminApi iw4AdminApi;

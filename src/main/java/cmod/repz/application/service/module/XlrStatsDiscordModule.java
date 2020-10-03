@@ -8,7 +8,6 @@ import cmod.repz.application.database.repository.xlr.mw2.XlrMw2StatsRepository;
 import cmod.repz.application.service.listener.DiscordCommandListener;
 import cmod.repz.application.util.DiscordUtil;
 import lombok.extern.slf4j.Slf4j;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
@@ -17,7 +16,7 @@ import java.util.Objects;
 /*
  * Gets registered player stats from iw4admin
  */
-@DiscordListenerComponent(command = "xlrstats")
+@DiscordListenerComponent(command = "xlrstats", description = "returns player xlrstats")
 @Slf4j
 public class XlrStatsDiscordModule implements DiscordCommandListener {
     private final XlrMw2StatsRepository xlrMw2StatsRepository;
@@ -58,7 +57,7 @@ public class XlrStatsDiscordModule implements DiscordCommandListener {
                     sendXlrPlayerStatMessage(game, clientId, xlrPlayerStatEntity, messageChannel);
                 }catch (Exception e){
                     log.error("Failed to lookup client", e);
-                    Message message = messageChannel.sendMessage("Can't process your message atm! try again later.").complete();
+                    messageChannel.sendMessage("Can't process your message atm! try again later.").complete();
                 }
             }
         } catch (Exception e) {

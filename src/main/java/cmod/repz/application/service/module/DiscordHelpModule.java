@@ -3,7 +3,6 @@ package cmod.repz.application.service.module;
 import cmod.repz.application.annotation.DiscordListenerComponent;
 import cmod.repz.application.database.repository.repz.CommandDescRepository;
 import cmod.repz.application.service.listener.DiscordCommandListener;
-import cmod.repz.application.util.GameUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
