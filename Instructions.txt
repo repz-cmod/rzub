@@ -1,0 +1,13 @@
+Requirements:
+
+- You should have Java Open JDK 8 installed.
+- You should have maven installed
+
+To run on windows:
+
+- Run make.cmd file. It builds project and puts the jar file in run directory. YOU DO NOT NEED TO MAKE PROJECT UNLESS CODE IS UPDATED.
+- Copy env/config.json to run directory if you haven't already.
+- Configure config.json in run directory to point to the valid databases
+- Call run.cmd to run project
+
+After first run, you dont need to run first 3 steps anymore.
