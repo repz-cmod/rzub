@@ -8,4 +8,5 @@ import java.util.List;
 public interface XlrMw2ClientRepository extends JpaRepository<ClientEntity, Integer> {
     List<ClientEntity> findAllByNameLike(String name);
     ClientEntity findByGuid(String guid);
+    ClientEntity findByGuidLike(String guid);
 }
