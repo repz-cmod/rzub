@@ -38,7 +38,7 @@ public class RepzAppDBConfiguration {
     @Bean("repzEntityManager")
     @DependsOn("repzDataSource")
     @Primary
-    public LocalContainerEntityManagerFactoryBean repzEntityManager(@Qualifier("repzDataSource") DataSource repzDataSource) {
+    public LocalContainerEntityManagerFactoryBean repzEntityManager(@Qualifier("repzDataSource") DataSource repzDataSource, ConfigModel configModel) {
         LocalContainerEntityManagerFactoryBean em
                 = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(repzDataSource);
@@ -47,7 +47,7 @@ public class RepzAppDBConfiguration {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
         HashMap<String, Object> properties = new HashMap<>();
-        properties.put("hibernate.hbm2ddl.auto", "create-drop");
+        properties.put("hibernate.hbm2ddl.auto", configModel.getDatabase().getHbm2ddl());
         properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
         em.setJpaPropertyMap(properties);
 
