@@ -5,9 +5,10 @@ Requirements:
 
 To run on windows:
 
-- Run make.cmd file. It builds project and puts the jar file in run directory. YOU DO NOT NEED TO MAKE PROJECT UNLESS CODE IS UPDATED.
-- Copy env/config.json to run directory if you haven't already.
-- Configure config.json in run directory to point to the valid databases
-- Call run.cmd to run project
+1- Create a mysql database for this app and run repz_db.sql inside db you created.
+2- Run make.cmd file. It builds project and puts the jar file in run directory. YOU DO NOT NEED TO MAKE PROJECT UNLESS CODE IS UPDATED.
+3- Copy env/config.json to run directory if you haven't already.
+4- Configure config.json in run directory to point to the valid databases
+5- Call run.cmd to run project
 
-After first run, you dont need to run first 3 steps anymore.
+After first run, you dont need to run first 4 steps anymore.
