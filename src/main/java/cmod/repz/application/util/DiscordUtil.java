@@ -27,7 +27,7 @@ public class DiscordUtil {
     private static String getPlayers(List<ClientEntity> clientEntities){
         StringBuilder stringBuilder = new StringBuilder();
         clientEntities.forEach(clientEntity -> {
-            stringBuilder.append(clientEntity.getId());
+            stringBuilder.append(GameUtil.cleanColors(clientEntity.getName()));
             stringBuilder.append("\n");
         });
         return stringBuilder.toString();
