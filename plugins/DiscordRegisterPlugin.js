@@ -33,8 +33,14 @@ var plugin = {
             client.DefaultRequestHeaders.Add("User-Agent", "iw4admin plugin");
             var content = new System.Net.Http.StringContent(JSON.stringify(data), System.Text.Encoding.UTF8, "application/json");
             var result = client.PostAsync(registrationUrl, content).Result;
+            var co = result.Content;
+            var parsedJSON = JSON.parse(co.ReadAsStringAsync().Result);
             result.Dispose();
             client.Dispose();
+
+            if(parsedJSON.status === "ok"){
+                origin.Tell("Registration is successful.");
+            }
         } catch (error) {
             this.logger.WriteWarning('There was a problem sending message to discord ' + error.message);
         }
@@ -45,14 +51,14 @@ var plugin = {
         if(gameEvent.Origin === undefined || gameEvent.Origin == null)
             return;
         const message = gameEvent.Message;
-        if(message !== undefined && message.startsWith("!discord ")) {
-            let token = message.replace("!discord ", "");
+        if(message !== undefined && (message.startsWith("!discord ") || message.startsWith("/!discord "))) {
+            let token = message.replace("!discord ", "").replace("/", "");
             this.register(server, gameEvent.Origin, token);
         }
     },
 
     onEventAsync: function (gameEvent, server) {
-        if(gameEvent.Type === 110){
+        if(gameEvent.Type === 110 || gameEvent.Type === 110){
             try{
                 this.onMessage(gameEvent, server);
             }catch (error){
