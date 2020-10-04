@@ -1,5 +1,6 @@
 package cmod.repz.application.util;
 
+import cmod.repz.application.database.entity.xlr.ClientEntity;
 import cmod.repz.application.database.entity.xlr.XlrPlayerStatEntity;
 import cmod.repz.application.model.IW4AdminStatResult;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -8,9 +9,38 @@ import org.springframework.lang.Nullable;
 
 import java.awt.*;
 import java.text.DecimalFormat;
+import java.util.List;
 
 public class DiscordUtil {
     private static final DecimalFormat df2 = new DecimalFormat("#.##");
+
+    public static MessageEmbed getTopXlrResult(String game, List<XlrPlayerStatEntity> xlrPlayerStatEntityList, List<ClientEntity> clientEntities){
+        EmbedBuilder embedBuilder = new EmbedBuilder()
+                .setColor(Color.RED)
+                .setTitle("XLRTop stats for " + game)
+                .addField("Player", getPlayers(clientEntities), true)
+                .addField("Skill", getSkills(xlrPlayerStatEntityList), true);
+
+        return embedBuilder.build();
+    }
+
+    private static String getPlayers(List<ClientEntity> clientEntities){
+        StringBuilder stringBuilder = new StringBuilder();
+        clientEntities.forEach(clientEntity -> {
+            stringBuilder.append(clientEntity.getId());
+            stringBuilder.append("\n");
+        });
+        return stringBuilder.toString();
+    }
+
+    private static String getSkills(List<XlrPlayerStatEntity> xlrPlayerStatEntityList){
+        StringBuilder stringBuilder = new StringBuilder();
+        xlrPlayerStatEntityList.forEach(xlrPlayerStatEntity -> {
+            stringBuilder.append(xlrPlayerStatEntity.getSkill());
+            stringBuilder.append("\n");
+        });
+        return stringBuilder.toString();
+    }
 
     public static MessageEmbed getXlrStatResult(String game, XlrPlayerStatEntity xlrPlayerStatEntity, @Nullable String url){
         StringBuilder stringBuilder = new StringBuilder();
