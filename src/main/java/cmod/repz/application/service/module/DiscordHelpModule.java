@@ -31,7 +31,7 @@ public class DiscordHelpModule implements DiscordCommandListener {
                 .addField("Command", getCommands(commands), true)
                 .addField("Description", getDescriptions(commands, commandDescriptions), true);
         try {
-            event.getMessage().getChannel().sendMessage(embedBuilder.build()).complete();
+            event.getAuthor().openPrivateChannel().flatMap(privateChannel -> privateChannel.sendMessage(embedBuilder.build())).queue();
         }catch (Exception e){
             log.error("Failed to send results of !help command.", e);
         }
