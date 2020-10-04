@@ -4,6 +4,7 @@ import cmod.repz.application.annotation.DiscordListenerComponent;
 import cmod.repz.application.database.entity.repz.DiscordUserEntity;
 import cmod.repz.application.database.entity.xlr.XlrPlayerStatEntity;
 import cmod.repz.application.database.repository.repz.DiscordUserRepository;
+import cmod.repz.application.database.repository.xlr.bo2.XlrBo2StatsRepository;
 import cmod.repz.application.database.repository.xlr.mw2.XlrMw2StatsRepository;
 import cmod.repz.application.model.ConfigModel;
 import cmod.repz.application.service.listener.DiscordCommandListener;
@@ -21,11 +22,13 @@ import java.util.Objects;
 @Slf4j
 public class XlrStatsDiscordModule implements DiscordCommandListener {
     private final XlrMw2StatsRepository xlrMw2StatsRepository;
+    private final XlrBo2StatsRepository xlrBo2StatsRepository;
     private final DiscordUserRepository discordUserRepository;
     private final ConfigModel configModel;
 
-    public XlrStatsDiscordModule(XlrMw2StatsRepository xlrMw2StatsRepository, DiscordUserRepository discordUserRepository, ConfigModel configModel) {
+    public XlrStatsDiscordModule(XlrMw2StatsRepository xlrMw2StatsRepository, XlrBo2StatsRepository xlrBo2StatsRepository, DiscordUserRepository discordUserRepository, ConfigModel configModel) {
         this.xlrMw2StatsRepository = xlrMw2StatsRepository;
+        this.xlrBo2StatsRepository = xlrBo2StatsRepository;
         this.discordUserRepository = discordUserRepository;
         this.configModel = configModel;
     }
@@ -37,7 +40,7 @@ public class XlrStatsDiscordModule implements DiscordCommandListener {
             if(args.length < 1){
                 messageChannel.sendMessage("Please provide clientId and game. Like: `!xlrstats <game> <clientId>` for none-registered users and `!xlrstats <game>` for registered users").complete();
             }else {
-                String game = args[0];
+                String game = args[0].toLowerCase();
                 String clientId = null;
                 if(args.length == 2){
                     clientId = args[1];
@@ -53,8 +56,10 @@ public class XlrStatsDiscordModule implements DiscordCommandListener {
                 try {
                     XlrPlayerStatEntity xlrPlayerStatEntity;
                     if(game.equals("mw2")){
-                        xlrPlayerStatEntity = xlrMw2StatsRepository.findByClientId(Integer.valueOf(clientId));
-                    }else {
+                        xlrPlayerStatEntity = xlrMw2StatsRepository.findByClientId(Integer.parseInt(clientId));
+                    } else if(game.equals("bo2")){
+                        xlrPlayerStatEntity = xlrBo2StatsRepository.findByClientId(Integer.parseInt(clientId));
+                    } else {
                         messageChannel.sendMessage("Supported games at this moment: `mw2`").complete();
                         return;
                     }
