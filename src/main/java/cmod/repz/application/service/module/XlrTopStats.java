@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@DiscordListenerComponent(command = "xlrtop", description = "looks up for player in xlr")
+@DiscordListenerComponent(command = "xlrtop", description = "Returns list of top xlr players of a game")
 @Slf4j
 public class XlrTopStats implements DiscordCommandListener {
     private final CacheableXlrTopStats cacheableXlrTopStats;
