@@ -14,11 +14,17 @@
             "url": "jdbc:mysql://localhost:3306/xlr_mw2",
             "username": "repz",
             "password": "Cm0dr3pz?"
+        },
+        "bo2": {
+            "url": "jdbc:mysql://localhost:3306/xlr_bo2",
+            "username": "repz",
+            "password": "Cm0dr3pz?"
         }
     },
     "messages": {
         "registration": "Thanks for registering to RepZ through discord. Your private token is `$token`. To complete your registration, connect to any RepZ server in mw2/bo2 and enter this command: `!discord $token`",
         "registrationComplete": "You have successfully registered yourself to our discord. Game: `$game`, Player Name `$playerName`"
     },
-    "xlrMw2Prefix": "https://www.repz.pw/xlrstatsmw2/54/player_stats/view/"
+    "xlrMw2Prefix": "https://www.repz.pw/xlrstatsmw2/54/player_stats/view/",
+    "xlrBo2Prefix": "https://www.repz.pw/xlrstatsbo2/54/player_stats/view/"
 }

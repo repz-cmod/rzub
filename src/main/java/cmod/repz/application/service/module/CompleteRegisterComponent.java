@@ -60,7 +60,7 @@ public class CompleteRegisterComponent {
             discordUserEntity.setIw4adminBo2ClientId(discordRegisterDto.getClientId());
             discordUserEntity.setBo2Name(discordRegisterDto.getPlayerName());
             String guid = getGUID(discordRegisterDto.getClientId(), discordRegisterDto.getPlayerName());
-            discordUserEntity.setBo2Guid(guid);
+            discordUserEntity.setBo2Guid(String.valueOf(Integer.parseInt(guid,16)));
             ClientEntity clientEntity = xlrBo2ClientRepository.findByGuidLike(guid);
             if(clientEntity != null){
                 discordUserEntity.setB3BO2ClientId(String.valueOf(clientEntity.getId()));

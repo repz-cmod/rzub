@@ -79,8 +79,13 @@ public class XlrStatsDiscordModule implements DiscordCommandListener {
             messageChannel.sendMessage("No stat found for client "+ clientId + " in xlr").complete();
             return;
         }
-
-        messageChannel.sendMessage(DiscordUtil.getXlrStatResult(game, xlrPlayerStatEntity, configModel.getXlrMw2Prefix() + xlrPlayerStatEntity.getId())).complete();
+        String prefix = null;
+        if(game.equals("mw2")){
+            prefix = configModel.getXlrMw2Prefix();
+        }else {
+            prefix = configModel.getXlrBo2Prefix();
+        }
+        messageChannel.sendMessage(DiscordUtil.getXlrStatResult(game, xlrPlayerStatEntity, prefix + xlrPlayerStatEntity.getId())).complete();
     }
 
     private String getClientIdByDiscordUser(String userId, String game) throws Exception {
@@ -94,8 +99,13 @@ public class XlrStatsDiscordModule implements DiscordCommandListener {
                 throw new Exception("User not found");
             }
             return b3MW2ClientId;
+        }else if(game.equals("bo2")) {
+            String clientId = discordUserEntity.getB3BO2ClientId();
+            if(clientId == null){
+                throw new Exception("User not found");
+            }
+            return clientId;
         }
-        //todo: bo2
         throw new Exception("User not found");
     }
 

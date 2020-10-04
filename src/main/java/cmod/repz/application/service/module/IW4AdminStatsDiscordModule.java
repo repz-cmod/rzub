@@ -45,8 +45,6 @@ public class IW4AdminStatsDiscordModule implements DiscordCommandListener {
                         if (discordUserEntity.getIw4adminBo2ClientId() != null) {
                             sendStats(messageChannel, discordUserEntity.getIw4adminBo2ClientId());
                         }
-
-                        //todo: handle bo2
                     }else {
                         messageChannel.sendMessage("Please provide clientId of iw4admin `!iwstats <clientId>` or register using `!register` command").complete();
                     }
