@@ -29,30 +29,30 @@ public class IW4AdminStatsDiscordModule implements DiscordCommandListener {
 
     @Override
     public void onCommand(GuildMessageReceivedEvent event, String[] args) {
-            try {
-                MessageChannel messageChannel = event.getMessage().getChannel();
-                if(args.length > 0){
-                    String clientId = args[0];
-                    sendStats(messageChannel, clientId);
-                }else {
-                    DiscordUserEntity discordUserEntity = discordUserRepository.findByUserId(Objects.requireNonNull(event.getMember()).getUser().getId());
-                    if(discordUserEntity != null){
-                        //send mw2 stats
-                        if (discordUserEntity.getIw4adminMw2ClientId() != null) {
-                            sendStats(messageChannel, discordUserEntity.getIw4adminMw2ClientId());
-                        }
-
-                        if (discordUserEntity.getIw4adminBo2ClientId() != null) {
-                            sendStats(messageChannel, discordUserEntity.getIw4adminBo2ClientId());
-                        }
-                    }else {
-                        messageChannel.sendMessage("Please provide clientId of iw4admin `!iwstats <clientId>` or register using `!register` command").complete();
+        try {
+            MessageChannel messageChannel = event.getMessage().getChannel();
+            if(args.length > 0){
+                String clientId = args[0];
+                sendStats(messageChannel, clientId);
+            }else {
+                DiscordUserEntity discordUserEntity = discordUserRepository.findByUserId(Objects.requireNonNull(event.getMember()).getUser().getId());
+                if(discordUserEntity != null){
+                    //send mw2 stats
+                    if (discordUserEntity.getIw4adminMw2ClientId() != null) {
+                        sendStats(messageChannel, discordUserEntity.getIw4adminMw2ClientId());
                     }
 
+                    if (discordUserEntity.getIw4adminBo2ClientId() != null) {
+                        sendStats(messageChannel, discordUserEntity.getIw4adminBo2ClientId());
+                    }
+                }else {
+                    messageChannel.sendMessage("Please provide clientId of iw4admin `!iwstats <clientId>` or register using `!register` command").complete();
                 }
-            } catch (Exception e) {
-                log.error("Failed to send response for command !iwstats", e);
+
             }
+        } catch (Exception e) {
+            log.error("Failed to send response for command !iwstats", e);
+        }
     }
 
     public void sendStats(MessageChannel messageChannel, String clientId) throws Exception {
