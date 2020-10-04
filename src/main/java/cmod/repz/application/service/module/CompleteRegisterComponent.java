@@ -3,6 +3,7 @@ package cmod.repz.application.service.module;
 import cmod.repz.application.database.entity.repz.DiscordUserEntity;
 import cmod.repz.application.database.entity.xlr.ClientEntity;
 import cmod.repz.application.database.repository.repz.DiscordUserRepository;
+import cmod.repz.application.database.repository.xlr.bo2.XlrBo2ClientRepository;
 import cmod.repz.application.database.repository.xlr.mw2.XlrMw2ClientRepository;
 import cmod.repz.application.model.ConfigModel;
 import cmod.repz.application.model.Iw4adminApiModel;
@@ -23,14 +24,16 @@ public class CompleteRegisterComponent {
     private final JDA jda;
     private final DiscordUserRepository discordUserRepository;
     private final XlrMw2ClientRepository xlrMw2ClientRepository;
+    private final XlrBo2ClientRepository xlrBo2ClientRepository;
     private final ConfigModel configModel;
     private final IW4AdminApi iw4AdminApi;
 
     @Autowired
-    public CompleteRegisterComponent(JDA jda, DiscordUserRepository discordUserRepository, XlrMw2ClientRepository xlrMw2ClientRepository, ConfigModel configModel, IW4AdminApi iw4AdminApi) {
+    public CompleteRegisterComponent(JDA jda, DiscordUserRepository discordUserRepository, XlrMw2ClientRepository xlrMw2ClientRepository, XlrBo2ClientRepository xlrBo2ClientRepository, ConfigModel configModel, IW4AdminApi iw4AdminApi) {
         this.jda = jda;
         this.discordUserRepository = discordUserRepository;
         this.xlrMw2ClientRepository = xlrMw2ClientRepository;
+        this.xlrBo2ClientRepository = xlrBo2ClientRepository;
         this.configModel = configModel;
         this.iw4AdminApi = iw4AdminApi;
     }
@@ -53,7 +56,18 @@ public class CompleteRegisterComponent {
             }
         }
 
-        //todo: bo2
+        if(discordRegisterDto.getGame().equals("T6")){
+            discordUserEntity.setIw4adminBo2ClientId(discordRegisterDto.getClientId());
+            discordUserEntity.setBo2Name(discordRegisterDto.getPlayerName());
+            String guid = getGUID(discordRegisterDto.getClientId(), discordRegisterDto.getPlayerName());
+            discordUserEntity.setBo2Guid(guid);
+            ClientEntity clientEntity = xlrBo2ClientRepository.findByGuidLike(guid);
+            if(clientEntity != null){
+                discordUserEntity.setB3BO2ClientId(String.valueOf(clientEntity.getId()));
+            }
+        }
+
+        discordUserRepository.save(discordUserEntity);
 
         try {
             Objects.requireNonNull(jda.getUserById(discordUserEntity.getUserId())).openPrivateChannel().flatMap(privateChannel -> privateChannel.sendMessage(getMessage(discordRegisterDto))).queue();
