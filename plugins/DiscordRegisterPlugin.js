@@ -6,7 +6,7 @@ const registrationUrl = "http://localhost:8083/plugin/v1/discord/register"; //re
 //plugin code here, do not make any changes unless you know what you are doing
 var plugin = {
     author: 'sepehr-gh',
-    version: 1.1,
+    version: 1.2,
     name: 'Discord Registration Plugin',
     logger: null,
     manager: null,

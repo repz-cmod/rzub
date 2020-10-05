@@ -40,7 +40,7 @@ public class CompleteRegisterComponent {
         this.iw4AdminApi = iw4AdminApi;
     }
 
-    @Transactional
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
     public AbstractResultDto completeRegistration(DiscordRegisterDto discordRegisterDto){
         DiscordUserEntity discordUserEntity = discordUserRepository.findByToken(discordRegisterDto.getToken());
         if(discordUserEntity == null){
@@ -49,7 +49,7 @@ public class CompleteRegisterComponent {
 
         boolean changed = false;
 
-        if(discordRegisterDto.getGame().equals("IW4") && discordUserEntity.getIw4adminMw2ClientId() == null){
+        if(discordRegisterDto.getGame().toUpperCase().equals("IW4") && discordUserEntity.getIw4adminMw2ClientId() == null){
             discordUserEntity.setIw4adminMw2ClientId(discordRegisterDto.getClientId());
             discordUserEntity.setMw2Name(discordRegisterDto.getPlayerName());
             String guid = getGUID(discordRegisterDto.getClientId(), discordRegisterDto.getPlayerName());
@@ -61,7 +61,7 @@ public class CompleteRegisterComponent {
             changed = true;
         }
 
-        if(discordRegisterDto.getGame().equals("T6") && discordUserEntity.getIw4adminBo2ClientId() == null){
+        if(discordRegisterDto.getGame().toUpperCase().equals("T6") && discordUserEntity.getIw4adminBo2ClientId() == null){
             discordUserEntity.setIw4adminBo2ClientId(discordRegisterDto.getClientId());
             discordUserEntity.setBo2Name(discordRegisterDto.getPlayerName());
             String guid = getGUID(discordRegisterDto.getClientId(), discordRegisterDto.getPlayerName());
@@ -74,16 +74,19 @@ public class CompleteRegisterComponent {
             changed = true;
         }
 
+        boolean success = false;
 
         try {
             if(changed){
                 discordUserRepository.save(discordUserEntity);
+                success = true;
                 Objects.requireNonNull(jda.getUserById(Long.parseLong(discordUserEntity.getUserId()))).openPrivateChannel().flatMap(privateChannel -> privateChannel.sendMessage(getMessage(discordRegisterDto))).queue();
             }
         }catch (Exception e){
             log.error("Failed to update discord user and send discord pm.", e);
-            return FailedResultDto.getInstance();
         }
+        if(success)
+            return FailedResultDto.getInstance();
         return new SuccessResultDto();
     }
 
