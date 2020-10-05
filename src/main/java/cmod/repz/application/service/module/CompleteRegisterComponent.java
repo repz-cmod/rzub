@@ -71,7 +71,7 @@ public class CompleteRegisterComponent {
         discordUserRepository.save(discordUserEntity);
 
         try {
-            Objects.requireNonNull(jda.getUserById(discordUserEntity.getUserId())).openPrivateChannel().flatMap(privateChannel -> privateChannel.sendMessage(getMessage(discordRegisterDto))).queue();
+            Objects.requireNonNull(jda.getUserById(Long.parseLong(discordUserEntity.getUserId()))).openPrivateChannel().flatMap(privateChannel -> privateChannel.sendMessage(getMessage(discordRegisterDto))).queue();
         }catch (Exception e){
             log.error("Failed to send discord pm.", e);
         }
