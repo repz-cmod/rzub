@@ -86,8 +86,8 @@ public class CompleteRegisterComponent {
             log.error("Failed to update discord user and send discord pm.", e);
         }
         if(success)
-            return FailedResultDto.getInstance();
-        return new SuccessResultDto();
+            return new SuccessResultDto();
+        return FailedResultDto.getInstance();
     }
 
     private String getMessage(DiscordRegisterDto discordRegisterDto) {
