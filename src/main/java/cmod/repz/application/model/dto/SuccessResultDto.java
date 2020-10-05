@@ -5,9 +5,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SuccessResultDto {
-    private String status = "ok";
+public class SuccessResultDto extends AbstractResultDto{
     private final static SuccessResultDto successResultDto = new SuccessResultDto();
+
+    public SuccessResultDto() {
+        super("ok");
+    }
 
     public static SuccessResultDto getInstance(){
         return successResultDto;

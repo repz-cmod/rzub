@@ -7,7 +7,9 @@ import cmod.repz.application.database.repository.xlr.bo2.XlrBo2ClientRepository;
 import cmod.repz.application.database.repository.xlr.mw2.XlrMw2ClientRepository;
 import cmod.repz.application.model.ConfigModel;
 import cmod.repz.application.model.Iw4adminApiModel;
+import cmod.repz.application.model.dto.AbstractResultDto;
 import cmod.repz.application.model.dto.DiscordRegisterDto;
+import cmod.repz.application.model.dto.FailedResultDto;
 import cmod.repz.application.model.dto.SuccessResultDto;
 import cmod.repz.application.service.api.IW4AdminApi;
 import lombok.extern.slf4j.Slf4j;
@@ -39,10 +41,10 @@ public class CompleteRegisterComponent {
     }
 
     @Transactional
-    public SuccessResultDto completeRegistration(DiscordRegisterDto discordRegisterDto){
+    public AbstractResultDto completeRegistration(DiscordRegisterDto discordRegisterDto){
         DiscordUserEntity discordUserEntity = discordUserRepository.findByToken(discordRegisterDto.getToken());
         if(discordUserEntity == null){
-            throw new RuntimeException("Invalid Token");
+            return FailedResultDto.getInstance();
         }
 
         boolean changed = false;
@@ -79,7 +81,8 @@ public class CompleteRegisterComponent {
                 Objects.requireNonNull(jda.getUserById(Long.parseLong(discordUserEntity.getUserId()))).openPrivateChannel().flatMap(privateChannel -> privateChannel.sendMessage(getMessage(discordRegisterDto))).queue();
             }
         }catch (Exception e){
-            log.error("Failed to send discord pm.", e);
+            log.error("Failed to update discord user and send discord pm.", e);
+            return FailedResultDto.getInstance();
         }
         return new SuccessResultDto();
     }
