@@ -6,7 +6,7 @@ const registrationUrl = "http://localhost:8083/plugin/v1/discord/register"; //re
 //plugin code here, do not make any changes unless you know what you are doing
 var plugin = {
     author: 'sepehr-gh',
-    version: 1.0,
+    version: 1.1,
     name: 'Discord Registration Plugin',
     logger: null,
     manager: null,
@@ -14,7 +14,7 @@ var plugin = {
     //sends discord message about the ban
     register: function(server, origin, token){
         var game;
-        if(server.Game === 2){
+        if(server.GameName  === 2){
             game = "IW4";
         }else {
             game = "T6";
@@ -35,14 +35,20 @@ var plugin = {
             var result = client.PostAsync(registrationUrl, content).Result;
             var co = result.Content;
             var parsedJSON = JSON.parse(co.ReadAsStringAsync().Result);
+            co.Dispose();
             result.Dispose();
             client.Dispose();
+            
+            this.logger.WriteWarning(parsedJSON);
 
             if(parsedJSON.status === "ok"){
                 origin.Tell("Registration is successful.");
+            }else {
+                origin.Tell("Registration failed.");
             }
         } catch (error) {
             this.logger.WriteWarning('There was a problem sending message to discord ' + error.message);
+            origin.Tell("Registration failed.");
         }
     },
 
@@ -53,13 +59,15 @@ var plugin = {
         const message = gameEvent.Message;
         if(message !== undefined && (message.startsWith("!discord ") || message.startsWith("/!discord "))) {
             let token = message.replace("!discord ", "").replace("/", "");
+            this.logger.WriteWarning("Token: " + token + " | message: " + message);
             this.register(server, gameEvent.Origin, token);
         }
     },
 
     onEventAsync: function (gameEvent, server) {
-        if(gameEvent.Type === 110 || gameEvent.Type === 110){
+        if(gameEvent.Type === 110 || gameEvent.Type === 100){
             try{
+                this.logger.WriteWarning("Type" +  gameEvent.Type + ", message:" + gameEvent.Message);
                 this.onMessage(gameEvent, server);
             }catch (error){
                 this.logger.WriteWarning('There was a with handling message in DRP: ' + error.message);
