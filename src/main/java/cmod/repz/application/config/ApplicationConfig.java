@@ -44,7 +44,7 @@ public class ApplicationConfig {
     @DependsOn("configModel")
     public JDA discord(ConfigModel configModel) throws LoginException {
         JDABuilder builder = JDABuilder.createDefault(configModel.getDiscord().getToken());
-        builder.disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE);
+        configureMemoryUsage(builder);
         builder.setBulkDeleteSplittingEnabled(false);
         builder.setCompression(Compression.NONE);
         builder.setActivity(Activity.watching("Repz Servers"));
@@ -53,11 +53,11 @@ public class ApplicationConfig {
     }
 
     public void configureMemoryUsage(JDABuilder builder) {
-        builder.disableCache(CacheFlag.ACTIVITY);
-        builder.setMemberCachePolicy(MemberCachePolicy.VOICE.or(MemberCachePolicy.OWNER));
+        builder.enableCache(CacheFlag.CLIENT_STATUS);
+        builder.setMemberCachePolicy(MemberCachePolicy.DEFAULT);
         builder.setChunkingFilter(ChunkingFilter.NONE);
         builder.disableIntents(GatewayIntent.GUILD_PRESENCES, GatewayIntent.GUILD_MESSAGE_TYPING);
-        builder.setLargeThreshold(50);
+        builder.setLargeThreshold(100);
     }
 
 }

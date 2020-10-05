@@ -11,9 +11,11 @@ import cmod.repz.application.model.dto.AbstractResultDto;
 import cmod.repz.application.model.dto.DiscordRegisterDto;
 import cmod.repz.application.model.dto.FailedResultDto;
 import cmod.repz.application.model.dto.SuccessResultDto;
+import cmod.repz.application.service.DiscordUserCache;
 import cmod.repz.application.service.api.IW4AdminApi;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,15 +31,17 @@ public class CompleteRegisterComponent {
     private final XlrBo2ClientRepository xlrBo2ClientRepository;
     private final ConfigModel configModel;
     private final IW4AdminApi iw4AdminApi;
+    private final DiscordUserCache discordUserCache;
 
     @Autowired
-    public CompleteRegisterComponent(JDA jda, DiscordUserRepository discordUserRepository, XlrMw2ClientRepository xlrMw2ClientRepository, XlrBo2ClientRepository xlrBo2ClientRepository, ConfigModel configModel, IW4AdminApi iw4AdminApi) {
+    public CompleteRegisterComponent(JDA jda, DiscordUserRepository discordUserRepository, XlrMw2ClientRepository xlrMw2ClientRepository, XlrBo2ClientRepository xlrBo2ClientRepository, ConfigModel configModel, IW4AdminApi iw4AdminApi, DiscordUserCache discordUserCache) {
         this.jda = jda;
         this.discordUserRepository = discordUserRepository;
         this.xlrMw2ClientRepository = xlrMw2ClientRepository;
         this.xlrBo2ClientRepository = xlrBo2ClientRepository;
         this.configModel = configModel;
         this.iw4AdminApi = iw4AdminApi;
+        this.discordUserCache = discordUserCache;
     }
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
@@ -80,7 +84,10 @@ public class CompleteRegisterComponent {
             if(changed){
                 discordUserRepository.save(discordUserEntity);
                 success = true;
-                Objects.requireNonNull(jda.getUserById(Long.parseLong(discordUserEntity.getUserId()))).openPrivateChannel().flatMap(privateChannel -> privateChannel.sendMessage(getMessage(discordRegisterDto))).queue();
+                User jdaUser = getJDAUser(discordUserEntity);
+                if(jdaUser != null){
+                    jdaUser.openPrivateChannel().flatMap(privateChannel -> privateChannel.sendMessage(getMessage(discordRegisterDto))).queue();
+                }
             }
         }catch (Exception e){
             log.error("Failed to update discord user and send discord pm.", e);
@@ -88,6 +95,14 @@ public class CompleteRegisterComponent {
         if(success)
             return new SuccessResultDto();
         return FailedResultDto.getInstance();
+    }
+
+    private User getJDAUser(DiscordUserEntity discordUserEntity) {
+        User jdaUser = jda.getUserById(discordUserEntity.getUserId());
+        if(jdaUser == null){
+            jdaUser = discordUserCache.getUserAndRemove(Long.parseLong(discordUserEntity.getUserId()));
+        }
+        return jdaUser;
     }
 
     private String getMessage(DiscordRegisterDto discordRegisterDto) {

@@ -1,6 +1,7 @@
 package cmod.repz.application.service.listener;
 
 import cmod.repz.application.database.repository.repz.DiscordListenerRepository;
+import cmod.repz.application.service.DiscordUserCache;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -14,9 +15,11 @@ import java.util.Arrays;
 @Slf4j
 public class DiscordListener extends ListenerAdapter {
     private final DiscordListenerRepository discordListenerRepository;
+    private final DiscordUserCache discordUserCache;
 
-    public DiscordListener(DiscordListenerRepository discordListenerRepository) {
+    public DiscordListener(DiscordListenerRepository discordListenerRepository, DiscordUserCache discordUserCache) {
         this.discordListenerRepository = discordListenerRepository;
+        this.discordUserCache = discordUserCache;
     }
 
     @Override
@@ -29,6 +32,8 @@ public class DiscordListener extends ListenerAdapter {
         if(messageContent.length() < 3){
             return;
         }
+
+        discordUserCache.addToCache(event.getAuthor());
 
         if(messageContent.startsWith("!")){
             String substring = messageContent.substring(1);
