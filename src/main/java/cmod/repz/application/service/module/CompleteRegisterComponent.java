@@ -45,7 +45,9 @@ public class CompleteRegisterComponent {
             throw new RuntimeException("Invalid Token");
         }
 
-        if(discordRegisterDto.getGame().equals("IW4")){
+        boolean changed = false;
+
+        if(discordRegisterDto.getGame().equals("IW4") && discordUserEntity.getIw4adminMw2ClientId() == null){
             discordUserEntity.setIw4adminMw2ClientId(discordRegisterDto.getClientId());
             discordUserEntity.setMw2Name(discordRegisterDto.getPlayerName());
             String guid = getGUID(discordRegisterDto.getClientId(), discordRegisterDto.getPlayerName());
@@ -54,9 +56,10 @@ public class CompleteRegisterComponent {
             if(clientEntity != null){
                 discordUserEntity.setB3MW2ClientId(String.valueOf(clientEntity.getId()));
             }
+            changed = true;
         }
 
-        if(discordRegisterDto.getGame().equals("T6")){
+        if(discordRegisterDto.getGame().equals("T6") && discordUserEntity.getIw4adminBo2ClientId() == null){
             discordUserEntity.setIw4adminBo2ClientId(discordRegisterDto.getClientId());
             discordUserEntity.setBo2Name(discordRegisterDto.getPlayerName());
             String guid = getGUID(discordRegisterDto.getClientId(), discordRegisterDto.getPlayerName());
@@ -66,12 +69,15 @@ public class CompleteRegisterComponent {
             if(clientEntity != null){
                 discordUserEntity.setB3BO2ClientId(String.valueOf(clientEntity.getId()));
             }
+            changed = true;
         }
 
-        discordUserRepository.save(discordUserEntity);
 
         try {
-            Objects.requireNonNull(jda.getUserById(Long.parseLong(discordUserEntity.getUserId()))).openPrivateChannel().flatMap(privateChannel -> privateChannel.sendMessage(getMessage(discordRegisterDto))).queue();
+            if(changed){
+                discordUserRepository.save(discordUserEntity);
+                Objects.requireNonNull(jda.getUserById(Long.parseLong(discordUserEntity.getUserId()))).openPrivateChannel().flatMap(privateChannel -> privateChannel.sendMessage(getMessage(discordRegisterDto))).queue();
+            }
         }catch (Exception e){
             log.error("Failed to send discord pm.", e);
         }
