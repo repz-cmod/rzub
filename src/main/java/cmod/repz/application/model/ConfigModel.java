@@ -15,6 +15,7 @@ public class ConfigModel {
     private Map<String, String> messages;
     private String xlrMw2Prefix;
     private String xlrBo2Prefix;
+    private Map<String, String> links;
 
     @Getter
     @Setter

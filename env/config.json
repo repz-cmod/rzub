@@ -21,6 +21,9 @@
             "password": "Cm0dr3pz?"
         }
     },
+    "links": {
+        "forum": "https://cmod.pw/forum/"
+    },
     "messages": {
         "registration": "Thanks for registering to RepZ through discord. Your private token is `$token`. To complete your registration, connect to any RepZ server in mw2/bo2 and enter this command: `!discord $token`",
         "registrationComplete": "You have successfully registered yourself to our discord. Game: `$game`, Player Name `$playerName`"
