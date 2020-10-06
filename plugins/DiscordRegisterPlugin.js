@@ -21,7 +21,7 @@ var plugin = {
         }
 
         var data = {
-            playerName: origin.CleanedName,
+            playerName: origin.Name,
             clientId: origin.ClientId,
             game: game,
             xuid: origin.NetworkId,

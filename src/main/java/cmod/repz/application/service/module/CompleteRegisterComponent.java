@@ -13,6 +13,7 @@ import cmod.repz.application.model.dto.FailedResultDto;
 import cmod.repz.application.model.dto.SuccessResultDto;
 import cmod.repz.application.service.DiscordUserCache;
 import cmod.repz.application.service.api.IW4AdminApi;
+import cmod.repz.application.util.GameUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.User;
@@ -55,7 +56,7 @@ public class CompleteRegisterComponent {
 
         if(discordRegisterDto.getGame().toUpperCase().equals("IW4") && discordUserEntity.getIw4adminMw2ClientId() == null){
             discordUserEntity.setIw4adminMw2ClientId(discordRegisterDto.getClientId());
-            discordUserEntity.setMw2Name(discordRegisterDto.getPlayerName());
+            discordUserEntity.setMw2Name(GameUtil.cleanColors(discordRegisterDto.getPlayerName()));
             String guid = getGUID(discordRegisterDto.getClientId(), discordRegisterDto.getPlayerName());
             discordUserEntity.setMw2Guid(guid);
             ClientEntity clientEntity = xlrMw2ClientRepository.findByGuidLike(guid);
@@ -67,7 +68,7 @@ public class CompleteRegisterComponent {
 
         if(discordRegisterDto.getGame().toUpperCase().equals("T6") && discordUserEntity.getIw4adminBo2ClientId() == null){
             discordUserEntity.setIw4adminBo2ClientId(discordRegisterDto.getClientId());
-            discordUserEntity.setBo2Name(discordRegisterDto.getPlayerName());
+            discordUserEntity.setBo2Name(GameUtil.cleanColors(discordRegisterDto.getPlayerName()));
             String guid = getGUID(discordRegisterDto.getClientId(), discordRegisterDto.getPlayerName());
             guid = String.valueOf(Integer.parseInt(guid,16));
             discordUserEntity.setBo2Guid(guid);
