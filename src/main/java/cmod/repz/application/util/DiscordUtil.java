@@ -9,10 +9,13 @@ import org.springframework.lang.Nullable;
 
 import java.awt.*;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class DiscordUtil {
     private static final DecimalFormat df2 = new DecimalFormat("#.##");
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss z");
 
     public static MessageEmbed getTop10XlrResultBothGames(List<XlrPlayerStatEntity> mw2, List<XlrPlayerStatEntity> bo2, ConfigModel configModel){
         return new EmbedBuilder()
@@ -28,7 +31,7 @@ public class DiscordUtil {
                 .addField("Player", getLinkedPlayers(bo2, configModel.getXlrBo2Prefix()), true)
                 .addField("Skill", getSkills(bo2), true)
                 .addField("Ratio", getRatios(bo2), true)
-                .setFooter("Priodic Top XLR Stats")
+                .setFooter("Priodic Top XLR Stats | " + dateFormat.format(new Date()))
                 .build();
     }
 
