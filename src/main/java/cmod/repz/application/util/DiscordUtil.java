@@ -28,6 +28,7 @@ public class DiscordUtil {
                 .addField("Player", getLinkedPlayers(bo2, configModel.getXlrBo2Prefix()), true)
                 .addField("Skill", getSkills(bo2), true)
                 .addField("Ratio", getRatios(bo2), true)
+                .setFooter("Priodic Top XLR Stats")
                 .build();
     }
 
