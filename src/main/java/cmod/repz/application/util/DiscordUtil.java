@@ -14,20 +14,20 @@ import java.util.List;
 public class DiscordUtil {
     private static final DecimalFormat df2 = new DecimalFormat("#.##");
 
-    public static MessageEmbed getTopXlrResult(String game, List<XlrPlayerStatEntity> xlrPlayerStatEntityList, List<ClientEntity> clientEntities){
+    public static MessageEmbed getTopXlrResult(String game, List<XlrPlayerStatEntity> xlrPlayerStatEntityList){
         EmbedBuilder embedBuilder = new EmbedBuilder()
                 .setColor(Color.RED)
                 .setTitle("XLRTop stats for " + game)
-                .addField("Player", getPlayers(clientEntities), true)
+                .addField("Player", getPlayers(xlrPlayerStatEntityList), true)
                 .addField("Skill", getSkills(xlrPlayerStatEntityList), true);
 
         return embedBuilder.build();
     }
 
-    private static String getPlayers(List<ClientEntity> clientEntities){
+    private static String getPlayers(List<XlrPlayerStatEntity> xlrPlayerStatEntities){
         StringBuilder stringBuilder = new StringBuilder();
-        clientEntities.forEach(clientEntity -> {
-            stringBuilder.append(GameUtil.cleanColors(clientEntity.getName()));
+        xlrPlayerStatEntities.forEach(xlrPlayerStatEntity -> {
+            stringBuilder.append(GameUtil.cleanColors(xlrPlayerStatEntity.getClient().getName()));
             stringBuilder.append("\n");
         });
         return stringBuilder.toString();
@@ -81,7 +81,7 @@ public class DiscordUtil {
 
         return new EmbedBuilder()
                 .setColor(Color.BLACK)
-                .setTitle("XLR Stats for client " + xlrPlayerStatEntity.getClientId() + " in " + game.toLowerCase())
+                .setTitle("XLR Stats for " + xlrPlayerStatEntity.getClient().getName() + " in " + game.toLowerCase())
                 .setDescription(stringBuilder.toString()).build();
     }
 

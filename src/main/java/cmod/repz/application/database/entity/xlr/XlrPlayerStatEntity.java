@@ -13,8 +13,6 @@ public class XlrPlayerStatEntity {
     @Id
     @GeneratedValue(strategy= GenerationType.TABLE)
     private int id;
-    @Column(name = "client_id")
-    private int clientId;
     private int kills;
     private int deaths;
     @Column(name = "teamkills")
@@ -32,4 +30,7 @@ public class XlrPlayerStatEntity {
     @Column(name = "losestreak")
     private short loseStreak;
     private int rounds;
+    @OneToOne
+    @JoinColumn(name="client_id")
+    private ClientEntity client;
 }
