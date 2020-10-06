@@ -51,11 +51,8 @@ public class PriodicDiscordXlrStatsModule {
             if(StringUtils.isEmpty(messageId)){
                 Message message = textChannel.sendMessage(messageEmbed).complete();
                 messageId = message.getId();
-                log.info("Added first xlr message");
             }else {
-                log.info("MessageId Value: " + messageId);
                 textChannel.editMessageById(Long.parseLong(messageId), messageEmbed).complete();
-                log.info("Updated xlr message");
             }
         }catch (Exception e){
             log.error("Failed to send message to xlr channel", e);
