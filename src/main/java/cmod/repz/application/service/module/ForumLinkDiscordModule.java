@@ -3,6 +3,7 @@ package cmod.repz.application.service.module;
 import cmod.repz.application.annotation.DiscordListenerComponent;
 import cmod.repz.application.model.ConfigModel;
 import cmod.repz.application.service.listener.DiscordCommandListener;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,6 +19,6 @@ public class ForumLinkDiscordModule implements DiscordCommandListener {
 
     @Override
     public void onCommand(GuildMessageReceivedEvent event, String[] args) {
-        event.getAuthor().openPrivateChannel().flatMap(privateChannel -> privateChannel.sendMessage(text)).queue();
+        event.getAuthor().openPrivateChannel().flatMap(privateChannel -> privateChannel.sendMessage(new EmbedBuilder().setDescription(text).build())).queue();
     }
 }
