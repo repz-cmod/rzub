@@ -55,7 +55,7 @@ public class PriodicDiscordXlrStatsModule {
                 textChannel.editMessageById(Long.parseLong(messageId), messageEmbed).complete();
             }
         }catch (Exception e){
-            log.error("Failed to send message to xlr channel", e);
+            log.error("Failed to send message to xlr channel. Might be ignorable if doesn't happen again.", e);
         }
     }
 
