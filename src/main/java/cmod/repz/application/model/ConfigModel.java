@@ -30,5 +30,7 @@ public class ConfigModel {
     @Setter
     public static class Discord {
         private String token;
+        private Map<String, String> messages;
+        private Map<String, String> channels;
     }
 }
