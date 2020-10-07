@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.Compression;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -46,6 +47,7 @@ public class ApplicationConfig {
         builder.setCompression(Compression.NONE);
         builder.setActivity(Activity.watching("Repz Servers"));
         builder.addEventListeners(discordListener);
+        builder.enableIntents(GatewayIntent.GUILD_MEMBERS);
         return builder.build();
     }
 }

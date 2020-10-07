@@ -32,5 +32,6 @@ public class ConfigModel {
         private String token;
         private Map<String, String> messages;
         private Map<String, String> channels;
+        private String welcome;
     }
 }
