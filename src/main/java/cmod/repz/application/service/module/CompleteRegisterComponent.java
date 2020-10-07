@@ -56,7 +56,7 @@ public class CompleteRegisterComponent {
         if(discordRegisterDto.getGame().toUpperCase().equals("IW4") && discordUserEntity.getIw4adminMw2ClientId() == null){
             discordUserEntity.setIw4adminMw2ClientId(discordRegisterDto.getClientId());
             discordUserEntity.setMw2Name(GameUtil.cleanColors(discordRegisterDto.getPlayerName()));
-            String guid = getGUID(discordRegisterDto.getClientId(), discordRegisterDto.getPlayerName());
+            String guid = getGUID(discordRegisterDto.getClientId());
             discordUserEntity.setMw2Guid(guid);
             ClientEntity clientEntity = xlrMw2ClientRepository.findByGuidLike(guid);
             if(clientEntity != null){
@@ -68,7 +68,7 @@ public class CompleteRegisterComponent {
         if(discordRegisterDto.getGame().toUpperCase().equals("T6") && discordUserEntity.getIw4adminBo2ClientId() == null){
             discordUserEntity.setIw4adminBo2ClientId(discordRegisterDto.getClientId());
             discordUserEntity.setBo2Name(GameUtil.cleanColors(discordRegisterDto.getPlayerName()));
-            String guid = getGUID(discordRegisterDto.getClientId(), discordRegisterDto.getPlayerName());
+            String guid = getGUID(discordRegisterDto.getClientId());
             guid = String.valueOf(Integer.parseInt(guid,16));
             discordUserEntity.setBo2Guid(guid);
             ClientEntity clientEntity = xlrBo2ClientRepository.findByGuid(guid);
@@ -110,10 +110,11 @@ public class CompleteRegisterComponent {
         return message.replace("$game", discordRegisterDto.getGame()).replace("$playerName", discordRegisterDto.getPlayerName());
     }
 
-    private String getGUID(String clientId, String name) {
-        for (Iw4adminApiModel.BasicClient client : iw4AdminApi.findClient(name).getClients()) {
-            if(client.getClientId() == Integer.parseInt(clientId))
-                return client.getXuid();
+    private String getGUID(String clientId) {
+        String name = iw4AdminApi.getClientStats(clientId).get(0).getName(); //first extract client name
+        for (Iw4adminApiModel.BasicClient client : iw4AdminApi.findClient(name).getClients()) { //then loop over clients with such name
+            if(client.getClientId() == Integer.parseInt(clientId)) //choose client with matching client id
+                return client.getXuid(); //return his xuid
         }
 
         throw new RuntimeException("Failed to get guid");
