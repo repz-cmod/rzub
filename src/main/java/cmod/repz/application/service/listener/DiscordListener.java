@@ -1,8 +1,10 @@
 package cmod.repz.application.service.listener;
 
+import cmod.repz.application.config.DiscordStateHolder;
 import cmod.repz.application.database.repository.repz.DiscordListenerRepository;
 import cmod.repz.application.database.repository.repz.GuildRepository;
 import cmod.repz.application.model.event.DiscordMemberJoinEVent;
+import cmod.repz.application.model.event.DiscordReadyEvent;
 import cmod.repz.application.service.DiscordUserCache;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
@@ -34,6 +36,8 @@ public class DiscordListener extends ListenerAdapter {
     @Override
     public void onGuildReady(@Nonnull GuildReadyEvent event) {
         guildRepository.setGuild(event.getGuild());
+        DiscordStateHolder.setReady(true);
+        applicationEventPublisher.publishEvent(new DiscordReadyEvent(this, event.getGuild()));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package cmod.repz.application.service.module;
 
+import cmod.repz.application.config.DiscordStateHolder;
 import cmod.repz.application.model.ConfigModel;
 import cmod.repz.application.model.event.XlrTopEvent;
 import cmod.repz.application.util.DiscordUtil;
@@ -39,6 +40,8 @@ public class XlrStatsDiscordUpdaterModule implements ApplicationListener<XlrTopE
 
     @Override
     public void onApplicationEvent(@NotNull XlrTopEvent xlrTopEvent) {
+        if(!DiscordStateHolder.isReady())
+            return;
         try {
             TextChannel textChannel = jda.getTextChannelById(channelId);
             MessageEmbed messageEmbed = getXlrTopStatsMessageEmbed(xlrTopEvent);

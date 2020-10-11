@@ -23,6 +23,8 @@ public class ClientEntity {
     private String pbid;
     @Column
     private String name;
+    @Column
+    private String greeting;
 
     @Override
     public String toString() {

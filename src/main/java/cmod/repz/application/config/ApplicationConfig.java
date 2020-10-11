@@ -14,12 +14,15 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import javax.security.auth.login.LoginException;
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.ThreadPoolExecutor;
 
 @Configuration
 @EnableScheduling
@@ -31,6 +34,20 @@ public class ApplicationConfig {
     public ApplicationConfig(DiscordListener discordListener) {
         this.discordListener = discordListener;
     }
+
+    @Bean("messageRemoveTaskScheduler")
+    public synchronized TaskScheduler messageRemoveTaskScheduler() {
+        ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
+        taskScheduler.setPoolSize(3);
+        taskScheduler.setAwaitTerminationSeconds(50);
+        taskScheduler.setBeanName("notificationAsyncTask");
+        taskScheduler.setDaemon(false);
+        taskScheduler.setRejectedExecutionHandler(new ThreadPoolExecutor.DiscardPolicy());
+        taskScheduler.setWaitForTasksToCompleteOnShutdown(false);
+        taskScheduler.afterPropertiesSet();
+        return taskScheduler;
+    }
+
 
     @Bean
     public ConfigModel configModel() throws IOException {

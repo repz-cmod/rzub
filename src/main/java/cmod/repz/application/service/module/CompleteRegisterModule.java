@@ -11,6 +11,7 @@ import cmod.repz.application.model.dto.AbstractResultDto;
 import cmod.repz.application.model.dto.DiscordRegisterDto;
 import cmod.repz.application.model.dto.FailedResultDto;
 import cmod.repz.application.model.dto.SuccessResultDto;
+import cmod.repz.application.model.event.DiscordPlayerRegisterEvent;
 import cmod.repz.application.service.DiscordUserCache;
 import cmod.repz.application.service.api.IW4AdminApi;
 import cmod.repz.application.util.GameUtil;
@@ -18,13 +19,14 @@ import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 
 @Component
 @Slf4j
-public class CompleteRegisterComponent {
+public class CompleteRegisterModule {
     private final JDA jda;
     private final DiscordUserRepository discordUserRepository;
     private final XlrMw2ClientRepository xlrMw2ClientRepository;
@@ -32,9 +34,10 @@ public class CompleteRegisterComponent {
     private final ConfigModel configModel;
     private final IW4AdminApi iw4AdminApi;
     private final DiscordUserCache discordUserCache;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Autowired
-    public CompleteRegisterComponent(JDA jda, DiscordUserRepository discordUserRepository, XlrMw2ClientRepository xlrMw2ClientRepository, XlrBo2ClientRepository xlrBo2ClientRepository, ConfigModel configModel, IW4AdminApi iw4AdminApi, DiscordUserCache discordUserCache) {
+    public CompleteRegisterModule(JDA jda, DiscordUserRepository discordUserRepository, XlrMw2ClientRepository xlrMw2ClientRepository, XlrBo2ClientRepository xlrBo2ClientRepository, ConfigModel configModel, IW4AdminApi iw4AdminApi, DiscordUserCache discordUserCache, ApplicationEventPublisher applicationEventPublisher) {
         this.jda = jda;
         this.discordUserRepository = discordUserRepository;
         this.xlrMw2ClientRepository = xlrMw2ClientRepository;
@@ -42,6 +45,7 @@ public class CompleteRegisterComponent {
         this.configModel = configModel;
         this.iw4AdminApi = iw4AdminApi;
         this.discordUserCache = discordUserCache;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
@@ -84,6 +88,7 @@ public class CompleteRegisterComponent {
             if(changed){
                 discordUserRepository.save(discordUserEntity);
                 success = true;
+                applicationEventPublisher.publishEvent(new DiscordPlayerRegisterEvent(this, discordUserEntity, discordRegisterDto.getGame().toUpperCase().equals("IW4") ? "mw2" : "bo2"));
                 User jdaUser = getJDAUser(discordUserEntity);
                 if(jdaUser != null){
                     jdaUser.openPrivateChannel().flatMap(privateChannel -> privateChannel.sendMessage(getMessage(discordRegisterDto))).queue();

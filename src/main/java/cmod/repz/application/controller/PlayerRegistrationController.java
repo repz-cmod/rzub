@@ -2,7 +2,7 @@ package cmod.repz.application.controller;
 
 import cmod.repz.application.model.dto.AbstractResultDto;
 import cmod.repz.application.model.dto.DiscordRegisterDto;
-import cmod.repz.application.service.module.CompleteRegisterComponent;
+import cmod.repz.application.service.module.CompleteRegisterModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,17 +13,17 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/plugin/v1")
 public class PlayerRegistrationController {
-    private final CompleteRegisterComponent completeRegisterComponent;
+    private final CompleteRegisterModule completeRegisterModule;
 
     @Autowired
-    public PlayerRegistrationController(CompleteRegisterComponent completeRegisterComponent) {
-        this.completeRegisterComponent = completeRegisterComponent;
+    public PlayerRegistrationController(CompleteRegisterModule completeRegisterModule) {
+        this.completeRegisterModule = completeRegisterModule;
     }
 
     @PostMapping("/discord/register")
     public @ResponseBody
     AbstractResultDto finalizeRegistration(@Valid @RequestBody DiscordRegisterDto discordRegisterDto){
-        return completeRegisterComponent.completeRegistration(discordRegisterDto);
+        return completeRegisterModule.completeRegistration(discordRegisterDto);
     }
 
 }
