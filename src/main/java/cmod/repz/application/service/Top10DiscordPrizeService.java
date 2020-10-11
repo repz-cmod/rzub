@@ -80,7 +80,7 @@ public class Top10DiscordPrizeService implements ApplicationListener<DiscordRead
             String topPlayer = configModel.getMessages().get("topPlayer");
             String text = topPlayer.replace("$user", userAsMention);
             Message message = guild.getJDA().getTextChannelById(configModel.getDiscord().getChannels().get("topPlayers")).sendMessage(text).complete();
-            discordDelayedMessageRemoverService.scheduleRemove(message, 1 * 60);
+            discordDelayedMessageRemoverService.scheduleRemove(message, 15 * 60);
         }catch (Exception e){
             log.error("Error while mentioning user", e);
         }
