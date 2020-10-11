@@ -2,6 +2,7 @@ package cmod.repz.application.service.module;
 
 import cmod.repz.application.annotation.DiscordListenerComponent;
 import cmod.repz.application.database.entity.xlr.ClientEntity;
+import cmod.repz.application.database.repository.xlr.bo2.XlrBo2ClientRepository;
 import cmod.repz.application.database.repository.xlr.mw2.XlrMw2ClientRepository;
 import cmod.repz.application.service.listener.DiscordCommandListener;
 import lombok.extern.slf4j.Slf4j;
@@ -21,10 +22,12 @@ import java.util.List;
 @Slf4j
 public class XlrMw2SearchDiscordModule implements DiscordCommandListener {
     private final XlrMw2ClientRepository xlrMw2ClientRepository;
+    private final XlrBo2ClientRepository xlrBo2ClientRepository;
 
     @Autowired
-    public XlrMw2SearchDiscordModule(XlrMw2ClientRepository xlrMw2ClientRepository) {
+    public XlrMw2SearchDiscordModule(XlrMw2ClientRepository xlrMw2ClientRepository, XlrBo2ClientRepository xlrBo2ClientRepository) {
         this.xlrMw2ClientRepository = xlrMw2ClientRepository;
+        this.xlrBo2ClientRepository = xlrBo2ClientRepository;
     }
 
     @Override
@@ -46,6 +49,8 @@ public class XlrMw2SearchDiscordModule implements DiscordCommandListener {
                 List<ClientEntity> clientEntities;
                 if(game.toLowerCase().equals("mw2")){
                     clientEntities = xlrMw2ClientRepository.findAllByNameLike(searchTerm);
+                }else if(game.toLowerCase().equals("bo2")) {
+                    clientEntities = xlrBo2ClientRepository.findAllByNameLike(searchTerm);
                 }else {
                     messageChannel.sendMessage("Supported games at this moment: `mw2`").complete();
                     return;
