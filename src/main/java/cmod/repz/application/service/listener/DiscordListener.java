@@ -1,9 +1,11 @@
 package cmod.repz.application.service.listener;
 
 import cmod.repz.application.database.repository.repz.DiscordListenerRepository;
+import cmod.repz.application.database.repository.repz.GuildRepository;
 import cmod.repz.application.model.event.DiscordMemberJoinEVent;
 import cmod.repz.application.service.DiscordUserCache;
 import lombok.extern.slf4j.Slf4j;
+import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -20,11 +22,18 @@ public class DiscordListener extends ListenerAdapter {
     private final DiscordListenerRepository discordListenerRepository;
     private final DiscordUserCache discordUserCache;
     private final ApplicationEventPublisher applicationEventPublisher;
+    private final GuildRepository guildRepository;
 
-    public DiscordListener(DiscordListenerRepository discordListenerRepository, DiscordUserCache discordUserCache, ApplicationEventPublisher applicationEventPublisher) {
+    public DiscordListener(DiscordListenerRepository discordListenerRepository, DiscordUserCache discordUserCache, ApplicationEventPublisher applicationEventPublisher, GuildRepository guildRepository) {
         this.discordListenerRepository = discordListenerRepository;
         this.discordUserCache = discordUserCache;
         this.applicationEventPublisher = applicationEventPublisher;
+        this.guildRepository = guildRepository;
+    }
+
+    @Override
+    public void onGuildReady(@Nonnull GuildReadyEvent event) {
+        guildRepository.setGuild(event.getGuild());
     }
 
     @Override

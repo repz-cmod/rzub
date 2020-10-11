@@ -23,4 +23,13 @@ public class ClientEntity {
     private String pbid;
     @Column
     private String name;
+
+    @Override
+    public String toString() {
+        return "ClientEntity{" +
+                "id=" + id +
+                ", guid='" + guid + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

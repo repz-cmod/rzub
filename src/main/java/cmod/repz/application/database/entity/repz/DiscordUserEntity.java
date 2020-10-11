@@ -11,7 +11,8 @@ import static cmod.repz.application.config.TableName.DISCORD_USER;
 @Entity
 @Table(name = DISCORD_USER, indexes = {
         @Index(name = DISCORD_USER_ID, columnList = DISCORD_USER_ID, unique = true),
-        @Index(name = "token", columnList = "token", unique = true)
+        @Index(name = "token", columnList = "token", unique = true),
+        @Index(name = "b3_id", columnList = B3_MW2_CLIENT_ID+","+B3_BO2_CLIENT_ID)
 })
 @Getter
 @Setter

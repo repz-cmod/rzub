@@ -14,6 +14,10 @@
         "messages": {
             "xlrtopstats": "763024160045269003"
         },
+        "roles": {
+            "topMw2Player": "764754983354499082",
+            "topBo2Player": "764755165831626812"
+        },
         "welcome": "First and foremost, welcome $user to the RepZ-CMOD Discord!\n\nIn this section we will explain to you how to access our Discord & how our bot works!\n\n``Information and Rules``\nIn order for you to start chatting, you have to read channels [\uD83D\uDCDDinfo]($infoLink) and [\uD83D\uDCDCrules-to-access]($rulesToAccess). If you have completed these steps, you are able to use our Discord as intented.\n**MAKE SURE TO READ THESE CHANNELS CAREFULLY!**\n\n``Bot``\nRepZ serves a custom bot designed exclusively for RepZ. We have some commands to get you around with the bot. (The bot where you got this message from!)\n\n``Commands``\nhelp, xlrstats <game>, xlrl, repz, iwstats, xlrtop, iwl, register.\nWe suggest you to use `!register` to keep track of your game stats.\n\n\n``Last thing``\nWe hope you have a great time in our Discord.\n\nSincerely,\n\nThe RepZ-CMOD team."
     },
     "xlrDatabase": {

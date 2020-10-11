@@ -2,8 +2,10 @@ package cmod.repz.application.database.entity.xlr;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "xlr_playerstats")
@@ -33,4 +35,27 @@ public class XlrPlayerStatEntity {
     @OneToOne
     @JoinColumn(name="client_id")
     private ClientEntity client;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        XlrPlayerStatEntity that = (XlrPlayerStatEntity) o;
+        return getId() == that.getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "XlrPlayerStatEntity{" +
+                "id=" + id +
+                ", ratio=" + ratio +
+                ", skill=" + skill +
+                ", client=" + client +
+                '}';
+    }
 }
