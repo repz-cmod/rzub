@@ -12,6 +12,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class DiscordUtil {
     private static final DecimalFormat df2 = new DecimalFormat("#.##");
@@ -23,12 +24,12 @@ public class DiscordUtil {
                 .setTitle("XLR Top Stats")
                 .setDescription("This message will update xlr stats periodically.\n")
                 .addField("MW2", "Top 10 players from mw2.", false)
-                .addField("Player", getLinkedPlayers(mw2, configModel.getXlrMw2Prefix()), true)
+                .addField("Player", getLinkedPlayers(mw2, configModel.getXlrMw2Prefix(), true), true)
                 .addField("Skill", getSkills(mw2), true)
                 .addField("Ratio", getRatios(mw2), true)
                 .addBlankField(false)
                 .addField("BO2", "Top 10 players from bo2.", false)
-                .addField("Player", getLinkedPlayers(bo2, configModel.getXlrBo2Prefix()), true)
+                .addField("Player", getLinkedPlayers(bo2, configModel.getXlrBo2Prefix(), true), true)
                 .addField("Skill", getSkills(bo2), true)
                 .addField("Ratio", getRatios(bo2), true)
                 .setFooter("Periodic Top XLR Stats | " + dateFormat.format(new Date()))
@@ -73,9 +74,14 @@ public class DiscordUtil {
         return stringBuilder.toString();
     }
 
-    private static String getLinkedPlayers(List<XlrPlayerStatEntity> xlrPlayerStatEntities, String linkPrefix){
+    private static String getLinkedPlayers(List<XlrPlayerStatEntity> xlrPlayerStatEntities, String linkPrefix, boolean number){
         StringBuilder stringBuilder = new StringBuilder();
+        AtomicInteger atomicInteger = new AtomicInteger(0);
         xlrPlayerStatEntities.forEach(xlrPlayerStatEntity -> {
+            if(number){
+                stringBuilder.append(atomicInteger.addAndGet(1));
+                stringBuilder.append(". ");
+            }
             stringBuilder.append("[");
             stringBuilder.append(GameUtil.cleanColors(xlrPlayerStatEntity.getClient().getName()));
             stringBuilder.append("](");
