@@ -7,7 +7,6 @@ import cmod.repz.application.database.repository.repz.GuildRepository;
 import cmod.repz.application.model.ConfigModel;
 import cmod.repz.application.model.event.XlrTopEvent;
 import lombok.extern.slf4j.Slf4j;
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 import org.jetbrains.annotations.NotNull;
@@ -44,12 +43,8 @@ public class XlrTopPlayerDiscordRoleModule implements ApplicationListener<XlrTop
             return;
         }
 
-        log.info("Top mw2: " + xlrTopEvent.getMw2Stats());
-
         List<String> mw2ClientsToAddRole = getClientsToAddRole(xlrTopEvent.getMw2Stats(), previousEvent != null ? previousEvent.getMw2Stats() : new ArrayList<>());
         List<String> mw2ClientsToRemoveRole = getClientsToRemoveRole(xlrTopEvent.getMw2Stats(), previousEvent != null ? previousEvent.getMw2Stats() : new ArrayList<>());
-
-        log.info("Users to add role to: " + mw2ClientsToAddRole);
 
         List<String> bo2ClientsToAddRole = getClientsToAddRole(xlrTopEvent.getBo2Stats(), previousEvent != null ? previousEvent.getBo2Stats() : new ArrayList<>());
         List<String> bo2ClientsToRemoveRole = getClientsToRemoveRole(xlrTopEvent.getBo2Stats(), previousEvent != null ? previousEvent.getBo2Stats() : new ArrayList<>());
