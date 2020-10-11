@@ -8,11 +8,11 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 @DiscordListenerComponent
-public class DiscordBotMentionedModule implements DiscordMessageListener {
+public class BotMentionedDiscordModule implements DiscordMessageListener {
     private final JDA jda;
     private final RepzRandomResponse repzRandomResponse;
 
-    public DiscordBotMentionedModule(JDA jda, RepzRandomResponse repzRandomResponse) {
+    public BotMentionedDiscordModule(JDA jda, RepzRandomResponse repzRandomResponse) {
         this.jda = jda;
         this.repzRandomResponse = repzRandomResponse;
     }

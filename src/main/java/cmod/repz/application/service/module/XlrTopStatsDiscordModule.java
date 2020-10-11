@@ -15,11 +15,11 @@ import java.util.List;
 
 @DiscordListenerComponent(command = "xlrtop", description = "Returns list of top xlr players of a game")
 @Slf4j
-public class XlrTopStats implements DiscordCommandListener {
+public class XlrTopStatsDiscordModule implements DiscordCommandListener {
     private final CacheableXlrTopStats cacheableXlrTopStats;
 
     @Autowired
-    public XlrTopStats(CacheableXlrTopStats cacheableXlrTopStats) {
+    public XlrTopStatsDiscordModule(CacheableXlrTopStats cacheableXlrTopStats) {
         this.cacheableXlrTopStats = cacheableXlrTopStats;
     }
 

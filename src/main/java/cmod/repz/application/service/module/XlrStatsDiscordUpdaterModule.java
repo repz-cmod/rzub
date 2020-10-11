@@ -17,14 +17,14 @@ import org.springframework.util.StringUtils;
 
 @Component
 @Slf4j
-public class DiscordXlrStatsUpdaterModule implements ApplicationListener<XlrTopEvent> {
+public class XlrStatsDiscordUpdaterModule implements ApplicationListener<XlrTopEvent> {
     private final String channelId;
     private final ConfigModel configModel;
     private volatile String messageId;
     private final JDA jda;
 
     @Autowired
-    public DiscordXlrStatsUpdaterModule(ConfigModel configModel, JDA jda) {
+    public XlrStatsDiscordUpdaterModule(ConfigModel configModel, JDA jda) {
         this.configModel = configModel;
         this.channelId = configModel.getDiscord().getChannels().get("xlrstats");
         Assert.notNull(channelId, "ChannelId cant be null");

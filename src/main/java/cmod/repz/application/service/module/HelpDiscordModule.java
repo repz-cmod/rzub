@@ -14,10 +14,10 @@ import java.util.Map;
 
 @DiscordListenerComponent(command = "help", description = "prints list of commands and descriptions")
 @Slf4j
-public class DiscordHelpModule implements DiscordCommandListener {
+public class HelpDiscordModule implements DiscordCommandListener {
     private final CommandDescRepository commandDescRepository;
 
-    public DiscordHelpModule(CommandDescRepository commandDescRepository) {
+    public HelpDiscordModule(CommandDescRepository commandDescRepository) {
         this.commandDescRepository = commandDescRepository;
     }
 
