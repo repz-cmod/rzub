@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class ScheduledServerInfoTrackerService {
+public class PeriodicServerInfoPublisherService {
     private final IW4AdminApi iw4AdminApi;
     private final ApplicationEventPublisher applicationEventPublisher;
 
-    public ScheduledServerInfoTrackerService(IW4AdminApi iw4AdminApi, ApplicationEventPublisher applicationEventPublisher) {
+    public PeriodicServerInfoPublisherService(IW4AdminApi iw4AdminApi, ApplicationEventPublisher applicationEventPublisher) {
         this.iw4AdminApi = iw4AdminApi;
         this.applicationEventPublisher = applicationEventPublisher;
     }
