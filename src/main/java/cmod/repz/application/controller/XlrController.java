@@ -18,4 +18,9 @@ public class XlrController {
     public String getXlrTopPlayers(){
         return xlrTop3PlainTextModule.getTop3PlayersStats();
     }
+
+    @GetMapping("/test/xlr/top/3")
+    public String getTestXlrTopPlayers(){
+        return "6ce149b860635f9f;;;2f076fe3091528eb;;;c4d3b9e7355c7af2";
+    }
 }
