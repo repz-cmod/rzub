@@ -7,16 +7,18 @@ import cmod.repz.application.database.repository.repz.DiscordUserRepository;
 import cmod.repz.application.database.repository.xlr.bo2.XlrBo2StatsRepository;
 import cmod.repz.application.database.repository.xlr.mw2.XlrMw2StatsRepository;
 import cmod.repz.application.model.ConfigModel;
+import cmod.repz.application.service.DiscordDelayedMessageRemoverService;
 import cmod.repz.application.service.listener.DiscordCommandListener;
 import cmod.repz.application.util.DiscordUtil;
 import lombok.extern.slf4j.Slf4j;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.Objects;
 
 /*
- * Gets registered player stats from iw4admin
+ * Gets registered player stats from xlrstats
  */
 @DiscordListenerComponent(command = "xlrstats", description = "returns player xlrstats")
 @Slf4j
@@ -24,12 +26,15 @@ public class XlrStatsDiscordModule implements DiscordCommandListener {
     private final XlrMw2StatsRepository xlrMw2StatsRepository;
     private final XlrBo2StatsRepository xlrBo2StatsRepository;
     private final DiscordUserRepository discordUserRepository;
+    private final DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService;
     private final ConfigModel configModel;
 
-    public XlrStatsDiscordModule(XlrMw2StatsRepository xlrMw2StatsRepository, XlrBo2StatsRepository xlrBo2StatsRepository, DiscordUserRepository discordUserRepository, ConfigModel configModel) {
+
+    public XlrStatsDiscordModule(XlrMw2StatsRepository xlrMw2StatsRepository, XlrBo2StatsRepository xlrBo2StatsRepository, DiscordUserRepository discordUserRepository, DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService, ConfigModel configModel) {
         this.xlrMw2StatsRepository = xlrMw2StatsRepository;
         this.xlrBo2StatsRepository = xlrBo2StatsRepository;
         this.discordUserRepository = discordUserRepository;
+        this.discordDelayedMessageRemoverService = discordDelayedMessageRemoverService;
         this.configModel = configModel;
     }
 
@@ -64,6 +69,7 @@ public class XlrStatsDiscordModule implements DiscordCommandListener {
                         return;
                     }
                     sendXlrPlayerStatMessage(game, clientId, xlrPlayerStatEntity, messageChannel);
+                    discordDelayedMessageRemoverService.scheduleRemove(event.getMessage(), 120);
                 }catch (Exception e){
                     log.error("Failed to lookup client", e);
                     messageChannel.sendMessage("Can't process your message atm! try again later.").complete();
@@ -85,7 +91,8 @@ public class XlrStatsDiscordModule implements DiscordCommandListener {
         }else {
             prefix = configModel.getXlrBo2Prefix();
         }
-        messageChannel.sendMessage(DiscordUtil.getXlrStatResult(game, xlrPlayerStatEntity, prefix + xlrPlayerStatEntity.getId())).complete();
+        Message message = messageChannel.sendMessage(DiscordUtil.getXlrStatResult(game, xlrPlayerStatEntity, prefix + xlrPlayerStatEntity.getId())).complete();
+        discordDelayedMessageRemoverService.scheduleRemove(message, 120);
     }
 
     private String getClientIdByDiscordUser(String userId, String game) throws Exception {
