@@ -13,6 +13,7 @@ import java.util.List;
 @Component
 public class XlrTop3PlainTextModule {
     private final XlrMw2StatsRepository xlrMw2StatsRepository;
+    private final String textToAppend = ";;;";
 
     @Autowired
     public XlrTop3PlainTextModule(XlrMw2StatsRepository xlrMw2StatsRepository) {
@@ -26,7 +27,7 @@ public class XlrTop3PlainTextModule {
         while (iterator.hasNext()){
             stringBuilder.append(iterator.next().getClient().getGuid());
             if(iterator.hasNext())
-                stringBuilder.append("\n");
+                stringBuilder.append(textToAppend);
         }
 
         return stringBuilder.toString();
