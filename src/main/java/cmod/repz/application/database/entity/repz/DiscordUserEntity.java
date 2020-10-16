@@ -45,4 +45,7 @@ public class DiscordUserEntity {
     private String token;
     private Date creationDate;
     private boolean messageSent;
+    @OneToOne
+    @JoinColumn(name="config_id")
+    private DiscordUserConfigEntity config;
 }

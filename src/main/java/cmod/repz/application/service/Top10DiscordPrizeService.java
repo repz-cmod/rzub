@@ -1,6 +1,9 @@
 package cmod.repz.application.service;
 
+import cmod.repz.application.database.entity.repz.DiscordUserConfigEntity;
 import cmod.repz.application.database.entity.repz.DiscordUserEntity;
+import cmod.repz.application.database.repository.repz.DiscordUserConfigRepository;
+import cmod.repz.application.database.repository.repz.DiscordUserRepository;
 import cmod.repz.application.database.repository.repz.GuildRepository;
 import cmod.repz.application.database.repository.xlr.bo2.XlrBo2ClientRepository;
 import cmod.repz.application.model.ConfigModel;
@@ -13,27 +16,33 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import javax.transaction.Transactional;
+
 @Service
 @Slf4j
 public class Top10DiscordPrizeService implements ApplicationListener<DiscordReadyEvent> {
     private final DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService;
     private final XlrBo2ClientRepository xlrBo2ClientRepository;
+    private final DiscordUserConfigRepository discordUserConfigRepository;
+    private final DiscordUserRepository discordUserRepository;
     private final GuildRepository guildRepository;
     private final ConfigModel configModel;
     private Role mw2TopPlayerRole;
     private Role bo2TopPlayerRole;
-    private volatile boolean isReady;
 
-    public Top10DiscordPrizeService(DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService, XlrBo2ClientRepository xlrBo2ClientRepository, GuildRepository guildRepository, ConfigModel configModel) {
+    public Top10DiscordPrizeService(DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService, XlrBo2ClientRepository xlrBo2ClientRepository, DiscordUserConfigRepository discordUserConfigRepository, DiscordUserRepository discordUserRepository, GuildRepository guildRepository, ConfigModel configModel) {
         this.discordDelayedMessageRemoverService = discordDelayedMessageRemoverService;
         this.xlrBo2ClientRepository = xlrBo2ClientRepository;
+        this.discordUserConfigRepository = discordUserConfigRepository;
+        this.discordUserRepository = discordUserRepository;
         this.guildRepository = guildRepository;
         this.configModel = configModel;
     }
 
+    @Transactional
     public void handleTop10Enter(String game, DiscordUserEntity discordUserEntity){
         addRoleToUser(game.equals("mw2") ? mw2TopPlayerRole : bo2TopPlayerRole, discordUserEntity.getUserId());
-        sendWelcomeMessage(discordUserEntity.getUserId());
+        sendWelcomeMessage(discordUserEntity);
         if(!game.equals("mw2"))
             giveBo2Gift(discordUserEntity);
     }
@@ -73,13 +82,28 @@ public class Top10DiscordPrizeService implements ApplicationListener<DiscordRead
         xlrBo2ClientRepository.updateGreeting(Integer.parseInt(discordUserEntity.getB3BO2ClientId()), "");
     }
 
-    private void sendWelcomeMessage(String userId){
+    private void sendWelcomeMessage(DiscordUserEntity discordUserEntity){
+        DiscordUserConfigEntity config = discordUserEntity.getConfig();
+        if (config == null) {
+            config = new DiscordUserConfigEntity();
+            config.setTop10ChannelNotifSent(true);
+            discordUserConfigRepository.save(config);
+            discordUserEntity.setConfig(config);
+            discordUserRepository.save(discordUserEntity);
+        }else if(config.isTop10ChannelNotifSent()){
+            return;
+        }
+
         try {
             Guild guild = guildRepository.getGuild();
-            String userAsMention = "<@"+userId+">";
+            String userAsMention = "<@"+discordUserEntity.getUserId()+">";
             String topPlayer = configModel.getMessages().get("topPlayer");
             String text = topPlayer.replace("$user", userAsMention);
             Message message = guild.getJDA().getTextChannelById(configModel.getDiscord().getChannels().get("topPlayers")).sendMessage(text).complete();
+
+            config.setTop10ChannelNotifSent(true);
+            discordUserConfigRepository.save(config);
+
             discordDelayedMessageRemoverService.scheduleRemove(message, 15 * 60);
         }catch (Exception e){
             log.error("Error while mentioning user", e);
