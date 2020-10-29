@@ -1,5 +1,6 @@
 package cmod.repz.application.util;
 
+import cmod.repz.application.database.entity.repz.IPRangeBlockEntity;
 import cmod.repz.application.database.entity.xlr.XlrPlayerStatEntity;
 import cmod.repz.application.model.ConfigModel;
 import cmod.repz.application.model.IW4AdminStatResult;
@@ -17,6 +18,73 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class DiscordUtil {
     private static final DecimalFormat df2 = new DecimalFormat("#.##");
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss z");
+
+    public static String argumentsAsOne(String[] args){
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String arg : args) {
+            stringBuilder.append(arg);
+        }
+        return stringBuilder.toString();
+    }
+
+    public static MessageEmbed getBlockedIpRange(List<IPRangeBlockEntity> ipRangeBlockEntities, int page, int max){
+        return new EmbedBuilder()
+                .setColor(Color.RED)
+                .setTitle("Blocked IP Range List")
+                .setDescription("This is list of blocked IP Ranges by RepZ Managers. Each page has 10 results.\nPage: `" +page+"`.\nMax results: " + max +"\n")
+                .addField("#", getNumbers(ipRangeBlockEntities), true)
+                .addField("range", getRange(ipRangeBlockEntities), true)
+                .addField("reason", getReasons(ipRangeBlockEntities), true)
+                .build();
+    }
+
+    private static String getRange(List<IPRangeBlockEntity> ipRangeBlockEntities) {
+        StringBuilder stringBuilder = new StringBuilder();
+        ipRangeBlockEntities.forEach(ipRangeBlockEntity -> {
+            stringBuilder.append(ipRangeBlockEntity.getStart());
+            stringBuilder.append("-");
+            stringBuilder.append(ipRangeBlockEntity.getEnd());
+            stringBuilder.append("\n");
+        });
+        return stringBuilder.toString();
+    }
+
+    private static String getReasons(List<IPRangeBlockEntity> ipRangeBlockEntities) {
+        StringBuilder stringBuilder = new StringBuilder();
+        ipRangeBlockEntities.forEach(ipRangeBlockEntity -> {
+            stringBuilder.append(ipRangeBlockEntity.getReason().substring(0, Math.min(8, ipRangeBlockEntity.getReason().length())));
+            stringBuilder.append("\n");
+        });
+        return stringBuilder.toString();
+    }
+
+
+    private static String getEnds(List<IPRangeBlockEntity> ipRangeBlockEntities) {
+        StringBuilder stringBuilder = new StringBuilder();
+        ipRangeBlockEntities.forEach(ipRangeBlockEntity -> {
+            stringBuilder.append(ipRangeBlockEntity.getEnd());
+            stringBuilder.append("\n");
+        });
+        return stringBuilder.toString();
+    }
+
+    private static String getStarts(List<IPRangeBlockEntity> ipRangeBlockEntities) {
+        StringBuilder stringBuilder = new StringBuilder();
+        ipRangeBlockEntities.forEach(ipRangeBlockEntity -> {
+            stringBuilder.append(ipRangeBlockEntity.getStart());
+            stringBuilder.append("\n");
+        });
+        return stringBuilder.toString();
+    }
+
+    private static String getNumbers(List<IPRangeBlockEntity> ipRangeBlockEntities) {
+        StringBuilder stringBuilder = new StringBuilder();
+        ipRangeBlockEntities.forEach(ipRangeBlockEntity -> {
+            stringBuilder.append(ipRangeBlockEntity.getId());
+            stringBuilder.append("\n");
+        });
+        return stringBuilder.toString();
+    }
 
     public static MessageEmbed getTop10XlrResultBothGames(List<XlrPlayerStatEntity> mw2, List<XlrPlayerStatEntity> bo2, ConfigModel configModel){
         return new EmbedBuilder()

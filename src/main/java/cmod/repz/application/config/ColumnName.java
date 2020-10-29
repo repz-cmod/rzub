@@ -19,4 +19,6 @@ public interface ColumnName {
     String IW4ADMIN_BO2_CLIENT_ID = "iw4admin_bo2_client_id";
     String B3_BF3_CLIENT_ID = "b3_bf3_client_id";
     String TOP_10_CHANNEL_NOTIF_SENT = "t10notif";
+    String IPB_START_LONG = "start_long";
+    String IPB_END_LONG = "end_long";
 }

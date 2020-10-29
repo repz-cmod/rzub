@@ -34,7 +34,8 @@ public class DiscordListenerScanner {
                         return;
                     if(bean instanceof DiscordCommandListener){
                         discordListenerRepository.addCommandListener(discordListenerComponent.command(), bean);
-                        commandDescRepository.addCommand(discordListenerComponent.command(), discordListenerComponent.description());
+                        if(!discordListenerComponent.hidden())
+                            commandDescRepository.addCommand(discordListenerComponent.command(), discordListenerComponent.description());
                     }else if(bean instanceof DiscordMessageListener){
                         discordListenerRepository.addMessageListener(bean);
                     }

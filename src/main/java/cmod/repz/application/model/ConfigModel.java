@@ -3,6 +3,7 @@ package cmod.repz.application.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -33,6 +34,7 @@ public class ConfigModel {
         private Map<String, String> messages;
         private Map<String, String> channels;
         private Map<String, String> roles;
+        private List<String> ipb;
         private String welcome;
     }
 }
