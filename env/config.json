@@ -35,6 +35,11 @@
             "url": "jdbc:mysql://localhost:3306/xlr_bo2",
             "username": "repz",
             "password": "Cm0dr3pz?"
+        },
+        "bf3": {
+            "url": "jdbc:mysql://localhost:3306/xlr_bo2",
+            "username": "repz",
+            "password": "Cm0dr3pz?"
         }
     },
     "links": {
@@ -49,5 +54,6 @@
         "topPlayer": "Congrats $user, you are now one of RepZ Top 10 Players. Checked pinned message for your prize."
     },
     "xlrMw2Prefix": "https://www.repz.pw/xlrstatsmw2/54/player_stats/view/",
-    "xlrBo2Prefix": "https://www.repz.pw/xlrstatsbo2/54/player_stats/view/"
+    "xlrBo2Prefix": "https://www.repz.pw/xlrstatsbo2/54/player_stats/view/",
+    "xlrBf3Prefix": "https://www.repz.pw/xlrstatsbf3/54/player_stats/view/"
 }

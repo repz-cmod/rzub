@@ -35,7 +35,7 @@ public class XlrStatsDiscordUpdaterModule implements ApplicationListener<XlrTopE
     }
 
     private MessageEmbed getXlrTopStatsMessageEmbed(XlrTopEvent xlrTopEvent) {
-        return DiscordUtil.getTop10XlrResultBothGames(xlrTopEvent.getMw2Stats(), xlrTopEvent.getBo2Stats(), configModel);
+        return DiscordUtil.getTop10XlrResultBothGames(xlrTopEvent.getMw2Stats(), xlrTopEvent.getBo2Stats(), xlrTopEvent.getBf3stats(), configModel);
     }
 
     @Override

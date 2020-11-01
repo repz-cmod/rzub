@@ -86,7 +86,7 @@ public class DiscordUtil {
         return stringBuilder.toString();
     }
 
-    public static MessageEmbed getTop10XlrResultBothGames(List<XlrPlayerStatEntity> mw2, List<XlrPlayerStatEntity> bo2, ConfigModel configModel){
+    public static MessageEmbed getTop10XlrResultBothGames(List<XlrPlayerStatEntity> mw2, List<XlrPlayerStatEntity> bo2, List<XlrPlayerStatEntity> bf3, ConfigModel configModel){
         return new EmbedBuilder()
                 .setColor(Color.RED)
                 .setTitle("XLR Top Stats")
@@ -100,6 +100,11 @@ public class DiscordUtil {
                 .addField("Player", getLinkedPlayers(bo2, configModel.getXlrBo2Prefix(), true), true)
                 .addField("Skill", getSkills(bo2), true)
                 .addField("Ratio", getRatios(bo2), true)
+                .addBlankField(false)
+                .addField("BF#", "Top 10 players from bf3.", false)
+                .addField("Player", getLinkedPlayers(bf3, configModel.getXlrBf3Prefix(), true), true)
+                .addField("Skill", getSkills(bf3), true)
+                .addField("Ratio", getRatios(bf3), true)
                 .setFooter("Periodic Top XLR Stats | " + dateFormat.format(new Date()))
                 .build();
     }
