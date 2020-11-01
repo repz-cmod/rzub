@@ -101,7 +101,7 @@ public class DiscordUtil {
                 .addField("Skill", getSkills(bo2), true)
                 .addField("Ratio", getRatios(bo2), true)
                 .addBlankField(false)
-                .addField("BF#", "Top 10 players from bf3.", false)
+                .addField("BF3", "Top 10 players from bf3.", false)
                 .addField("Player", getLinkedPlayers(bf3, configModel.getXlrBf3Prefix(), true), true)
                 .addField("Skill", getSkills(bf3), true)
                 .addField("Ratio", getRatios(bf3), true)
