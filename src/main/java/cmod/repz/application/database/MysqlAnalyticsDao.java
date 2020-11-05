@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Service
@@ -25,16 +26,16 @@ public class MysqlAnalyticsDao implements AnalyticsDao {
     private final Set<Long> persistedServerIds;
 
     @Autowired
-    public MysqlAnalyticsDao(PlayerTrackerRepository playerTrackerRepository, ServerTrackerRepository serverTrackerRepository, ServerRepository serverRepository, Set<Long> persistedServerIds) {
+    public MysqlAnalyticsDao(PlayerTrackerRepository playerTrackerRepository, ServerTrackerRepository serverTrackerRepository, ServerRepository serverRepository) {
         this.playerTrackerRepository = playerTrackerRepository;
         this.serverTrackerRepository = serverTrackerRepository;
         this.serverRepository = serverRepository;
-        this.persistedServerIds = persistedServerIds;
+        this.persistedServerIds = new HashSet<>();
     }
 
     @Override
     @Transactional
-    public void playerJoined(String serverId, String clientId, String clientName, String trackerId) {
+    public void playerJoined(Long serverId, Integer clientId, Long trackerId) {
         playerTrackerRepository.deleteAllByClientIdAndJoinDateIsNull(clientId);
         playerTrackerRepository.deleteAllByClientIdAndLeaveDateIsNull(clientId);
 
@@ -42,15 +43,18 @@ public class MysqlAnalyticsDao implements AnalyticsDao {
                 .serverId(serverId)
                 .clientId(clientId)
                 .trackerId(trackerId)
-                .playerName(clientName)
                 .joinDate(new Date())
                 .build());
     }
 
     @Override
     @Transactional
-    public void playerLeft(String serverId, String clientId, String trackerId) {
-        playerTrackerRepository.updateLeftDate(clientId, trackerId, serverId, new Date());
+    public void playerLeft(Long serverId, Integer clientId, Long trackerId) {
+        PlayerTrackEntity playerTrackEntity = playerTrackerRepository.findByClientIdAndTrackerIdAndServerId(clientId, trackerId, serverId);
+        if(playerTrackEntity != null){
+            int spentTime = (int) ((new Date().getTime() - playerTrackEntity.getJoinDate().getTime()) / 1000);
+            playerTrackerRepository.updateLeftDate(clientId, trackerId, serverId, new Date(), spentTime);
+        }
     }
 
     @Override
@@ -75,7 +79,7 @@ public class MysqlAnalyticsDao implements AnalyticsDao {
                     .game(server.getGame())
                     .name(GameUtil.cleanColors(server.getName()))
                     .port(server.getPort())
-                    .serverId(String.valueOf(server.getId()))
+                    .serverId(server.getId())
                     .build());
 
         }catch (DuplicateKeyException ignored){}

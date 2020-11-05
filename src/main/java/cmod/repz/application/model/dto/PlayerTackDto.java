@@ -11,12 +11,14 @@ import javax.validation.constraints.NotNull;
 public class PlayerTackDto {
     @NotNull
     @NotEmpty
-    private String clientId;
-    private String name;
+    private Integer clientId;
     @NotNull
     @NotEmpty
-    private String trackerId;
+    private String ip;
     @NotNull
     @NotEmpty
-    private String serverId;
+    private Long trackerId;
+    @NotNull
+    @NotEmpty
+    private Long serverId;
 }

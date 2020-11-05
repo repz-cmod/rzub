@@ -3,7 +3,7 @@ package cmod.repz.application.database;
 import cmod.repz.application.model.Iw4adminApiModel;
 
 public interface AnalyticsDao {
-    void playerJoined(String serverId, String clientId, String clientName, String trackerId);
-    void playerLeft(String serverId, String clientId, String trackerId);
+    void playerJoined(Long serverId, Integer clientId, Long trackerId);
+    void playerLeft(Long serverId, Integer clientId, Long trackerId);
     void trackServer(Iw4adminApiModel.Server server);
 }

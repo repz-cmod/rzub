@@ -22,7 +22,7 @@ public class ServerEntity {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long id;
     @Column(name = ColumnName.SERVER_ID, nullable = false)
-    private String serverId;
+    private long serverId;
     @Column(name = ColumnName.SERVER_NAME, nullable = false)
     private String name;
     @Column

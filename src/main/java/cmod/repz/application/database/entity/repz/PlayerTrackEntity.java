@@ -25,15 +25,14 @@ public class PlayerTrackEntity {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long id;
     @Column(name = ColumnName.SERVER_ID, nullable = false)
-    private String serverId;
+    private Long serverId;
     @Column(name = ColumnName.CLIENT_ID, nullable = false)
-    private String clientId;
-    @Column(name = ColumnName.PLAYER_NAME)
-    private String playerName;
+    private Integer clientId;
     @Column(name = ColumnName.JOIN_DATE)
     private Date joinDate;
     @Column(name = ColumnName.LEAVE_DATE)
     private Date leaveDate;
     @Column(name = TRACKER_ID)
-    private String trackerId;
+    private Long trackerId;
+    private int spentTime;
 }
