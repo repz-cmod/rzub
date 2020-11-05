@@ -2,7 +2,6 @@ package cmod.repz.application.database.entity.xlr;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Objects;

@@ -1,6 +1,5 @@
 package cmod.repz.application.database.entity.repz;
 
-import cmod.repz.application.config.ColumnName;
 import cmod.repz.application.config.TableName;
 import lombok.*;
 
