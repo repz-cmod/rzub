@@ -95,7 +95,7 @@ var plugin = {
             var client = new System.Net.Http.HttpClient();
             client.DefaultRequestHeaders.Add("User-Agent", "iw4admin plugin");
             var content = new System.Net.Http.StringContent(JSON.stringify(data), System.Text.Encoding.UTF8, "application/json");
-            var result = client.PostAsync(blockCheckUrl, content).Result;
+            var result = client.PostAsync(url, content).Result;
             var co = result.Content;
             var parsedJSON = JSON.parse(co.ReadAsStringAsync().Result);
             co.Dispose();
