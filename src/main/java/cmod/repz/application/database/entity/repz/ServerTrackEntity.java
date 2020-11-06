@@ -23,7 +23,7 @@ public class ServerTrackEntity {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long id;
     @Column(name = ColumnName.SERVER_ID, nullable = false)
-    private String serverId;
+    private Long serverId;
     @Column
     private Date date;
     @Column(name = ColumnName.PLAYER_COUNT)

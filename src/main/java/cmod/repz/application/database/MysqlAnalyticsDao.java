@@ -63,7 +63,7 @@ public class MysqlAnalyticsDao implements AnalyticsDao {
         serverTrackerRepository.save(ServerTrackEntity.builder()
                 .date(new Date())
                 .playerCount(server.getCurrentPlayers())
-                .serverId(String.valueOf(server.getId()))
+                .serverId(server.getId())
                 .mapName(server.getMap().getName())
                 .maxPlayerCount(server.getMaxPlayers())
                 .percentage(MathUtil.percent(server.getCurrentPlayers(), server.getMaxPlayers()))
