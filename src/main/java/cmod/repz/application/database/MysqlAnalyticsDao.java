@@ -9,6 +9,7 @@ import cmod.repz.application.database.repository.repz.ServerTrackerRepository;
 import cmod.repz.application.model.Iw4adminApiModel;
 import cmod.repz.application.util.GameUtil;
 import cmod.repz.application.util.MathUtil;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
@@ -82,7 +83,7 @@ public class MysqlAnalyticsDao implements AnalyticsDao {
                     .serverId(server.getId())
                     .build());
 
-        }catch (DuplicateKeyException ignored){}
+        }catch (DuplicateKeyException | ConstraintViolationException ignored){}
         persistedServerIds.add(server.getId());
     }
 }

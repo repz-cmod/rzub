@@ -4,6 +4,7 @@ import cmod.repz.application.database.entity.repz.IPRangeBlockEntity;
 import cmod.repz.application.database.repository.repz.IPRangeBlockRepository;
 import cmod.repz.application.util.MathUtil;
 import com.google.common.net.InetAddresses;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.PageRequest;
@@ -36,7 +37,7 @@ public class IPRangeBlockManagerService {
     public void add(IPRangeBlockEntity ipRangeBlockEntity){
         try {
             ipRangeBlockRepository.save(ipRangeBlockEntity);
-        }catch (DuplicateKeyException ignored){}
+        }catch (DuplicateKeyException | ConstraintViolationException ignored){}
     }
 
     public void remove(int id){
