@@ -40,7 +40,7 @@ var plugin = {
 
     //gets server id
     serverId: function(server){
-        return server.IP+""+server.Port;
+        return server.IP.replaceAll(".", "")+""+server.Port;
     },
 
     getRandomArbitrary: function(min, max) {

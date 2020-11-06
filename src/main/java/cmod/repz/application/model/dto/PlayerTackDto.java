@@ -20,5 +20,9 @@ public class PlayerTackDto {
     private Long trackerId;
     @NotNull
     @NotEmpty
-    private Long serverId;
+    private String serverId;
+
+    public Long getServerIdAsLong(){
+        return Long.parseLong(this.serverId.replace(":", "").replaceAll(".", ""));
+    }
 }

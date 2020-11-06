@@ -24,7 +24,7 @@ public class PlayerTrackController {
     @PostMapping("/client/join")
     public @ResponseBody
     TrackResponseDto playerJoin(@RequestBody @Valid PlayerTackDto playerTackDto){
-        analyticsDao.playerJoined(playerTackDto.getServerId(), playerTackDto.getClientId(), playerTackDto.getTrackerId());
+        analyticsDao.playerJoined(playerTackDto.getServerIdAsLong(), playerTackDto.getClientId(), playerTackDto.getTrackerId());
         boolean shouldBlock = ipRangeBlockManagerService.shouldBlock(playerTackDto.getIp());
         return new TrackResponseDto(shouldBlock);
     }
@@ -32,7 +32,7 @@ public class PlayerTrackController {
     @PostMapping("/client/leave")
     public @ResponseBody
     TrackResponseDto playerLeft(@RequestBody @Valid PlayerTackDto playerTackDto){
-        analyticsDao.playerLeft(playerTackDto.getServerId(), playerTackDto.getClientId(), playerTackDto.getTrackerId());
+        analyticsDao.playerLeft(playerTackDto.getServerIdAsLong(), playerTackDto.getClientId(), playerTackDto.getTrackerId());
         return new TrackResponseDto(false);
     }
 
