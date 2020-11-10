@@ -8,9 +8,8 @@ import cmod.repz.application.service.listener.DiscordCommandListener;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import javax.transaction.Transactional;
 import java.util.Date;
@@ -50,7 +49,7 @@ public class UserRegistrationDiscordModule implements DiscordCommandListener {
                         discordUserEntity.setToken(token);
                         discordUserRepository.save(discordUserEntity);
                         saved = true;
-                    }catch (DuplicateKeyException | ConstraintViolationException e){}
+                    }catch (DataIntegrityViolationException e){}
                 }
 
                 sendMessage(event, token);

@@ -10,19 +10,16 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class PlayerTackDto {
     @NotNull
-    @NotEmpty
     private Integer clientId;
     @NotNull
-    @NotEmpty
     private String ip;
     @NotNull
-    @NotEmpty
     private Long trackerId;
     @NotNull
     @NotEmpty
     private String serverId;
 
     public Long getServerIdAsLong(){
-        return Long.parseLong(this.serverId.replace(":", "").replaceAll(".", ""));
+        return Long.parseLong(getServerId());
     }
 }

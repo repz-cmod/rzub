@@ -19,7 +19,7 @@ public class PeriodicServerInfoPublisherService {
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
-    @Scheduled(fixedRate = 30000)
+    @Scheduled(fixedRate = 60000)
     @Async
     public void runTask(){
         log.debug("Running server tracking task");

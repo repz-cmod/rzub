@@ -9,14 +9,14 @@ import cmod.repz.application.database.repository.repz.ServerTrackerRepository;
 import cmod.repz.application.model.Iw4adminApiModel;
 import cmod.repz.application.util.GameUtil;
 import cmod.repz.application.util.MathUtil;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -32,6 +32,10 @@ public class MysqlAnalyticsDao implements AnalyticsDao {
         this.serverTrackerRepository = serverTrackerRepository;
         this.serverRepository = serverRepository;
         this.persistedServerIds = new HashSet<>();
+        List<ServerEntity> serverEntities = serverRepository.findAll();
+        serverEntities.forEach(serverEntity -> {
+            persistedServerIds.add(serverEntity.getServerId());
+        });
     }
 
     @Override
@@ -59,7 +63,6 @@ public class MysqlAnalyticsDao implements AnalyticsDao {
     }
 
     @Override
-    @Transactional
     public void trackServer(Iw4adminApiModel.Server server) {
         serverTrackerRepository.save(ServerTrackEntity.builder()
                 .date(new Date())
@@ -69,21 +72,25 @@ public class MysqlAnalyticsDao implements AnalyticsDao {
                 .maxPlayerCount(server.getMaxPlayers())
                 .percentage(MathUtil.percent(server.getCurrentPlayers(), server.getMaxPlayers()))
                 .build());
-        addServer(server);
+        if(persistedServerIds.contains(server.getId()))
+            return;
+        try {
+            addServer(server);
+            persistedServerIds.add(server.getId());
+        }catch (Exception ignored){}
     }
 
     private synchronized void addServer(Iw4adminApiModel.Server server){
-        if(persistedServerIds.contains(server.getId()))
-            return;
         try{
-            serverRepository.save(ServerEntity.builder()
-                    .game(server.getGame())
-                    .name(GameUtil.cleanColors(server.getName()))
-                    .port(server.getPort())
-                    .serverId(server.getId())
-                    .build());
+            if (serverRepository.existsByServerId(server.getId())) {
+                serverRepository.save(ServerEntity.builder()
+                        .game(server.getGame())
+                        .name(GameUtil.cleanColors(server.getName()))
+                        .port(server.getPort())
+                        .serverId(server.getId())
+                        .build());
+            }
 
-        }catch (DuplicateKeyException | ConstraintViolationException ignored){}
-        persistedServerIds.add(server.getId());
+        }catch (DataIntegrityViolationException ignored){}
     }
 }
