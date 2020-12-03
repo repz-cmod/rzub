@@ -11,7 +11,7 @@
         "channels": {
             "xlrstats": "763009066104520726",
             "topPlayers": "763009066104520726",
-            "access-grant": "783971164166946816"
+            "access-grant": ""
         },
         "messages": {
             "xlrtopstats": "763024160045269003"
@@ -21,16 +21,16 @@
             "topBo2Player": "764755165831626812",
             "management": "703343825489362985",
             "jmanagement": "756954611008405604",
-            "rzmember": "783970808930238485"
+            "rzmember": "717504633416843304"
         },
         "ipb": [
             "696960728095129640",
             "357516684040339458"
         ],
-        "welcome": "First and foremost, welcome $user to the RepZ-CMOD Discord!\n\nIn this section we will explain to you how to access our Discord & how our bot works!\n\n``Information and Rules``\nIn order for you to start chatting, you have to read channels [\uD83D\uDCDDinfo]($infoLink) and [\uD83D\uDCDCrules-to-access]($rulesToAccess). If you have completed these steps, you are able to use our Discord as intented.\n**MAKE SURE TO READ THESE CHANNELS CAREFULLY!**\n\n``Bot``\nRepZ serves a custom bot designed exclusively for RepZ. We have some commands to get you around with the bot. (The bot where you got this message from!)\n\n``Commands``\nhelp, xlrstats <game>, xlrl, repz, iwstats, xlrtop, iwl, register.\nWe suggest you to use `!register` to keep track of your game stats.\n\n\n``Last thing``\nWe hope you have a great time in our Discord.\n\nSincerely,\n\nThe RepZ-CMOD team.",
         "custom": {
             "accept-rules-message": "LikeZ is the best guy i've ever seen. In the future i want to be as cool as LikeZ"
-        }
+        },
+        "welcome": "First and foremost, welcome $user to the RepZ-CMOD Discord!\n\nIn this section we will explain to you how to access our Discord & how our bot works!\n\n``Information and Rules``\nIn order for you to start chatting, you have to read channels [\uD83D\uDCDDinfo]($infoLink) and [\uD83D\uDCDCrules-to-access]($rulesToAccess). If you have completed these steps, you are able to use our Discord as intented.\n**MAKE SURE TO READ THESE CHANNELS CAREFULLY!**\n\n``Bot``\nRepZ serves a custom bot designed exclusively for RepZ. We have some commands to get you around with the bot. (The bot where you got this message from!)\n\n``Commands``\nhelp, xlrstats <game>, xlrl, repz, iwstats, xlrtop, iwl, register.\nWe suggest you to use `!register` to keep track of your game stats.\n\n\n``Last thing``\nWe hope you have a great time in our Discord.\n\nSincerely,\n\nThe RepZ-CMOD team."
     },
     "xlrDatabase": {
         "mw2": {

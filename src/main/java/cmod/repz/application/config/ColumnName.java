@@ -21,4 +21,5 @@ public interface ColumnName {
     String TOP_10_CHANNEL_NOTIF_SENT = "t10notif";
     String IPB_START_LONG = "start_long";
     String IPB_END_LONG = "end_long";
+    String RGB_BLOCK_HASH = "block_hash";
 }

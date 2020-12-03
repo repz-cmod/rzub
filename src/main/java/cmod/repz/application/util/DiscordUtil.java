@@ -1,6 +1,8 @@
 package cmod.repz.application.util;
 
+import cmod.repz.application.database.entity.repz.BasicIPBanInfo;
 import cmod.repz.application.database.entity.repz.IPRangeBlockEntity;
+import cmod.repz.application.database.entity.repz.IPRegionBanEntity;
 import cmod.repz.application.database.entity.xlr.XlrPlayerStatEntity;
 import cmod.repz.application.model.ConfigModel;
 import cmod.repz.application.model.IW4AdminStatResult;
@@ -38,6 +40,17 @@ public class DiscordUtil {
                 .build();
     }
 
+    public static MessageEmbed getBlockedIpRegion(List<IPRegionBanEntity> ipRangeBlockEntities, int page, int max){
+        return new EmbedBuilder()
+                .setColor(Color.RED)
+                .setTitle("Blocked IP Region List")
+                .setDescription("This is list of users blocked by ip region. Each page has 10 results.\nPage: `" +page+"`.\nMax results: " + max +"\n")
+                .addField("#", getNumbers(ipRangeBlockEntities), true)
+                .addField("reason", getReasons(ipRangeBlockEntities), true)
+                .addField("username", getUsernames(ipRangeBlockEntities), true)
+                .build();
+    }
+
     private static String getRange(List<IPRangeBlockEntity> ipRangeBlockEntities) {
         StringBuilder stringBuilder = new StringBuilder();
         ipRangeBlockEntities.forEach(ipRangeBlockEntity -> {
@@ -49,10 +62,19 @@ public class DiscordUtil {
         return stringBuilder.toString();
     }
 
-    private static String getReasons(List<IPRangeBlockEntity> ipRangeBlockEntities) {
+    private static String getReasons(List<? extends BasicIPBanInfo> ipRangeBlockEntities) {
         StringBuilder stringBuilder = new StringBuilder();
         ipRangeBlockEntities.forEach(ipRangeBlockEntity -> {
             stringBuilder.append(ipRangeBlockEntity.getReason().substring(0, Math.min(8, ipRangeBlockEntity.getReason().length())));
+            stringBuilder.append("\n");
+        });
+        return stringBuilder.toString();
+    }
+
+    private static String getUsernames(List<? extends BasicIPBanInfo> ipRangeBlockEntities) {
+        StringBuilder stringBuilder = new StringBuilder();
+        ipRangeBlockEntities.forEach(ipRangeBlockEntity -> {
+            stringBuilder.append(ipRangeBlockEntity.getUsername().substring(0, Math.min(8, ipRangeBlockEntity.getUsername().length())));
             stringBuilder.append("\n");
         });
         return stringBuilder.toString();
@@ -77,7 +99,7 @@ public class DiscordUtil {
         return stringBuilder.toString();
     }
 
-    private static String getNumbers(List<IPRangeBlockEntity> ipRangeBlockEntities) {
+    private static String getNumbers(List<? extends BasicIPBanInfo> ipRangeBlockEntities) {
         StringBuilder stringBuilder = new StringBuilder();
         ipRangeBlockEntities.forEach(ipRangeBlockEntity -> {
             stringBuilder.append(ipRangeBlockEntity.getId());

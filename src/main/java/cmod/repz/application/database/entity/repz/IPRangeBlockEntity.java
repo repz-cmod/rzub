@@ -20,7 +20,7 @@ import static cmod.repz.application.config.ColumnName.IPB_START_LONG;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class IPRangeBlockEntity {
+public class IPRangeBlockEntity  implements BasicIPBanInfo{
     @Id
     @GeneratedValue(strategy= GenerationType.TABLE)
     private Integer id;
