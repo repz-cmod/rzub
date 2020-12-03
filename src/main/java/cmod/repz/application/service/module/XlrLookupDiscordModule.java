@@ -75,7 +75,7 @@ public class XlrLookupDiscordModule implements DiscordCommandListener {
     private String getClientsListAsString(List<ClientEntity> clientEntities){
         StringBuilder stringBuilder = new StringBuilder();
         clientEntities.forEach(clientEntity -> {
-            stringBuilder.append(clientEntity.getName() + " ("+ clientEntity.getId() + ")\n");
+            stringBuilder.append(clientEntity.getName()).append(" (").append(clientEntity.getId()).append(")\n");
         });
         return stringBuilder.toString();
     }
