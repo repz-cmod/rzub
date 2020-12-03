@@ -51,11 +51,11 @@ public class XlrStatsDiscordModule implements DiscordCommandListener {
             if(args.length < 1){
                 discordDelayedMessageRemoverService.scheduleRemove(messageChannel.sendMessage("Please provide clientId and game. Like: \n`!xlrstats <game> <clientId>` for none-registered users. \n`!xlrstats <game>` for registered users. \nSupported values for game: `mw2`, `bo2`.").complete(), 60);
             }else {
-                String game = args[0].toLowerCase();
+                String game = fixGame(args[0].toLowerCase());
                 String clientId = null;
                 if(args.length == 2){
                     clientId = args[1];
-                    if(!isNumeric(clientId) && clientId.startsWith("@")){
+                    if(!isNumeric(clientId)){
                         if (event.getMessage().getMentionedMembers().size() > 0) {
                             try {
                                 clientId = getClientIdByDiscordUser(Objects.requireNonNull(event.getMessage().getMentionedMembers().get(0)).getUser().getId(), game);
@@ -76,14 +76,11 @@ public class XlrStatsDiscordModule implements DiscordCommandListener {
 
                 try {
                     XlrPlayerStatEntity xlrPlayerStatEntity;
-                    if(game.equals("mw2") || game.equals("iw4x")){
-                        game = "IW4X";
+                    if(game.equals("mw2")){
                         xlrPlayerStatEntity = xlrMw2StatsRepository.findByClientId(Integer.parseInt(clientId));
-                    } else if(game.equals("bo2") || game.equals("t6")){
-                        game = "Plutonium T6";
+                    } else if(game.equals("bo2")){
                         xlrPlayerStatEntity = xlrBo2StatsRepository.findByClientId(Integer.parseInt(clientId));
-                    } else if(game.equals("bf3") || game.equals("zlo")){
-                        game = "BattleField 3";
+                    } else if(game.equals("bf3")){
                         xlrPlayerStatEntity = xlrBf3StatsRepository.findByClientId(Integer.parseInt(clientId));
                     } else {
                         messageChannel.sendMessage("Supported games at this moment: `mw2`, `t6`, and `bf3` (you cant register for `bf3`)").complete();
@@ -100,6 +97,17 @@ public class XlrStatsDiscordModule implements DiscordCommandListener {
         }
     }
 
+    private String fixGame(String game) {
+        if(game.equals("mw2") || game.equals("iw4x")){
+            game = "mw2";
+        } else if(game.equals("bo2") || game.equals("t6")){
+            game = "bo2";
+        } else if(game.equals("bf3") || game.equals("zlo")){
+            game = "bf3";
+        }
+        return game;
+    }
+
     private void sendXlrPlayerStatMessage(String game, String clientId, XlrPlayerStatEntity xlrPlayerStatEntity, MessageChannel messageChannel) {
         Message message;
         if(xlrPlayerStatEntity == null){
@@ -108,8 +116,10 @@ public class XlrStatsDiscordModule implements DiscordCommandListener {
             String prefix = null;
             if(game.equals("mw2")){
                 prefix = configModel.getXlrMw2Prefix();
-            }else {
+            }else if(game.equals("bo2")){
                 prefix = configModel.getXlrBo2Prefix();
+            }else {
+                prefix = configModel.getXlrBf3Prefix();
             }
             message = messageChannel.sendMessage(DiscordUtil.getXlrStatResult(game, xlrPlayerStatEntity, prefix + xlrPlayerStatEntity.getId())).complete();
         }
