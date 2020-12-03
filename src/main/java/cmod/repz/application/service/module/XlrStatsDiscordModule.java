@@ -4,6 +4,7 @@ import cmod.repz.application.annotation.DiscordListenerComponent;
 import cmod.repz.application.database.entity.repz.DiscordUserEntity;
 import cmod.repz.application.database.entity.xlr.XlrPlayerStatEntity;
 import cmod.repz.application.database.repository.repz.DiscordUserRepository;
+import cmod.repz.application.database.repository.xlr.bf3.bo2.XlrBf3StatsRepository;
 import cmod.repz.application.database.repository.xlr.bo2.XlrBo2StatsRepository;
 import cmod.repz.application.database.repository.xlr.mw2.XlrMw2StatsRepository;
 import cmod.repz.application.model.ConfigModel;
@@ -13,8 +14,10 @@ import cmod.repz.application.util.DiscordUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
+import java.util.List;
 import java.util.Objects;
 
 /*
@@ -25,14 +28,16 @@ import java.util.Objects;
 public class XlrStatsDiscordModule implements DiscordCommandListener {
     private final XlrMw2StatsRepository xlrMw2StatsRepository;
     private final XlrBo2StatsRepository xlrBo2StatsRepository;
+    private final XlrBf3StatsRepository xlrBf3StatsRepository;
     private final DiscordUserRepository discordUserRepository;
     private final DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService;
     private final ConfigModel configModel;
 
 
-    public XlrStatsDiscordModule(XlrMw2StatsRepository xlrMw2StatsRepository, XlrBo2StatsRepository xlrBo2StatsRepository, DiscordUserRepository discordUserRepository, DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService, ConfigModel configModel) {
+    public XlrStatsDiscordModule(XlrMw2StatsRepository xlrMw2StatsRepository, XlrBo2StatsRepository xlrBo2StatsRepository, XlrBf3StatsRepository xlrBf3StatsRepository, DiscordUserRepository discordUserRepository, DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService, ConfigModel configModel) {
         this.xlrMw2StatsRepository = xlrMw2StatsRepository;
         this.xlrBo2StatsRepository = xlrBo2StatsRepository;
+        this.xlrBf3StatsRepository = xlrBf3StatsRepository;
         this.discordUserRepository = discordUserRepository;
         this.discordDelayedMessageRemoverService = discordDelayedMessageRemoverService;
         this.configModel = configModel;
@@ -41,35 +46,50 @@ public class XlrStatsDiscordModule implements DiscordCommandListener {
     @Override
     public void onCommand(GuildMessageReceivedEvent event, String[] args) {
         try {
+            discordDelayedMessageRemoverService.scheduleRemove(event.getMessage(), 120);
             MessageChannel messageChannel = event.getMessage().getChannel();
             if(args.length < 1){
-                messageChannel.sendMessage("Please provide clientId and game. Like: `!xlrstats <game> <clientId>` for none-registered users and `!xlrstats <game>` for registered users").complete();
+                discordDelayedMessageRemoverService.scheduleRemove(messageChannel.sendMessage("Please provide clientId and game. Like: \n`!xlrstats <game> <clientId>` for none-registered users. \n`!xlrstats <game>` for registered users. \nSupported values for game: `mw2`, `bo2`.").complete(), 60);
             }else {
                 String game = args[0].toLowerCase();
                 String clientId = null;
                 if(args.length == 2){
                     clientId = args[1];
+                    if(!isNumeric(clientId) && clientId.startsWith("@")){
+                        if (event.getMessage().getMentionedMembers().size() > 0) {
+                            try {
+                                clientId = getClientIdByDiscordUser(Objects.requireNonNull(event.getMessage().getMentionedMembers().get(0)).getUser().getId(), game);
+                            }catch (Exception e){
+                                discordDelayedMessageRemoverService.scheduleRemove(messageChannel.sendMessage("Cant find the mentioned user in DB!").complete(), 60);
+                                return;
+                            }
+                        }
+                    }
                 }else {
                     try {
                         clientId = getClientIdByDiscordUser(Objects.requireNonNull(event.getMember()).getUser().getId(), game);
                     }catch (Exception e){
-                        messageChannel.sendMessage("Either your user is not registered or you haven't registered in this game").complete();
+                        discordDelayedMessageRemoverService.scheduleRemove(messageChannel.sendMessage("You should first try to `!register`").complete(), 60);
                         return;
                     }
                 }
 
                 try {
                     XlrPlayerStatEntity xlrPlayerStatEntity;
-                    if(game.equals("mw2")){
+                    if(game.equals("mw2") || game.equals("iw4x")){
+                        game = "IW4X";
                         xlrPlayerStatEntity = xlrMw2StatsRepository.findByClientId(Integer.parseInt(clientId));
-                    } else if(game.equals("bo2")){
+                    } else if(game.equals("bo2") || game.equals("t6")){
+                        game = "Plutonium T6";
                         xlrPlayerStatEntity = xlrBo2StatsRepository.findByClientId(Integer.parseInt(clientId));
+                    } else if(game.equals("bf3") || game.equals("zlo")){
+                        game = "BattleField 3";
+                        xlrPlayerStatEntity = xlrBf3StatsRepository.findByClientId(Integer.parseInt(clientId));
                     } else {
-                        messageChannel.sendMessage("Supported games at this moment: `mw2`").complete();
+                        messageChannel.sendMessage("Supported games at this moment: `mw2`, `t6`, and `bf3` (you cant register for `bf3`)").complete();
                         return;
                     }
                     sendXlrPlayerStatMessage(game, clientId, xlrPlayerStatEntity, messageChannel);
-                    discordDelayedMessageRemoverService.scheduleRemove(event.getMessage(), 120);
                 }catch (Exception e){
                     log.error("Failed to lookup client", e);
                     messageChannel.sendMessage("Can't process your message atm! try again later.").complete();
@@ -94,6 +114,18 @@ public class XlrStatsDiscordModule implements DiscordCommandListener {
             message = messageChannel.sendMessage(DiscordUtil.getXlrStatResult(game, xlrPlayerStatEntity, prefix + xlrPlayerStatEntity.getId())).complete();
         }
         discordDelayedMessageRemoverService.scheduleRemove(message, 120);
+    }
+
+    public static boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            double d = Double.parseDouble(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
     }
 
     private String getClientIdByDiscordUser(String userId, String game) throws Exception {

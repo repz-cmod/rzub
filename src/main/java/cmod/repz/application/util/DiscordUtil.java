@@ -86,7 +86,7 @@ public class DiscordUtil {
         return stringBuilder.toString();
     }
 
-    public static MessageEmbed getTop10XlrResultBothGames(List<XlrPlayerStatEntity> mw2, List<XlrPlayerStatEntity> bo2, List<XlrPlayerStatEntity> bf3, ConfigModel configModel){
+    public static MessageEmbed getTop10XlrResultAllGames(List<XlrPlayerStatEntity> mw2, List<XlrPlayerStatEntity> bo2, List<XlrPlayerStatEntity> bf3, ConfigModel configModel){
         return new EmbedBuilder()
                 .setColor(Color.RED)
                 .setTitle("XLR Top Stats")
