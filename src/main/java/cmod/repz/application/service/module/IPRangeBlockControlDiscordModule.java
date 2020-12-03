@@ -11,6 +11,7 @@ import cmod.repz.application.util.MathUtil;
 import com.google.common.net.InetAddresses;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.Arrays;
@@ -32,10 +33,10 @@ public class IPRangeBlockControlDiscordModule implements DiscordCommandListener 
     @Override
     public void onCommand(GuildMessageReceivedEvent event, String[] args) {
         discordDelayedMessageRemoverService.scheduleRemove(event.getMessage(), 30);
+        String command = null;
         if(args.length < 1){
             discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("Invalid arguments. Try `!ipb help`. This command is only available for admins").complete(), 30);
-        }else if(hasAccess(event.getMember())){
-            String command = args[0];
+        }else if(hasAccess(event.getMember(), (command = args[0]))){
             switch (command) {
                 case "add":
                     if(args.length > 4){
@@ -103,7 +104,15 @@ public class IPRangeBlockControlDiscordModule implements DiscordCommandListener 
         }
     }
 
-    private boolean hasAccess(Member member) {
+    private boolean hasAccess(Member member, String command) {
+        if(command.equals("list") || command.equals("test")){
+            String management = configModel.getDiscord().getRoles().get("management");
+            String jmanagement = configModel.getDiscord().getRoles().get("jmanagement");
+            for (Role role : member.getRoles()) {
+                if(role.getId().equals(management) || role.getId().equals(jmanagement))
+                    return true;
+            }
+        }
         return configModel.getDiscord().getIpb().contains(member.getId());
     }
 }
