@@ -81,17 +81,18 @@ public class XlrStatsDiscordModule implements DiscordCommandListener {
     }
 
     private void sendXlrPlayerStatMessage(String game, String clientId, XlrPlayerStatEntity xlrPlayerStatEntity, MessageChannel messageChannel) {
+        Message message;
         if(xlrPlayerStatEntity == null){
-            messageChannel.sendMessage("No stat found for client "+ clientId + " in xlr").complete();
-            return;
-        }
-        String prefix = null;
-        if(game.equals("mw2")){
-            prefix = configModel.getXlrMw2Prefix();
+            message = messageChannel.sendMessage("No stat found for client "+ clientId + " in xlr").complete();
         }else {
-            prefix = configModel.getXlrBo2Prefix();
+            String prefix = null;
+            if(game.equals("mw2")){
+                prefix = configModel.getXlrMw2Prefix();
+            }else {
+                prefix = configModel.getXlrBo2Prefix();
+            }
+            message = messageChannel.sendMessage(DiscordUtil.getXlrStatResult(game, xlrPlayerStatEntity, prefix + xlrPlayerStatEntity.getId())).complete();
         }
-        Message message = messageChannel.sendMessage(DiscordUtil.getXlrStatResult(game, xlrPlayerStatEntity, prefix + xlrPlayerStatEntity.getId())).complete();
         discordDelayedMessageRemoverService.scheduleRemove(message, 120);
     }
 
