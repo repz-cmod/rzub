@@ -35,6 +35,7 @@ public class ConfigModel {
         private Map<String, String> messages;
         private Map<String, String> channels;
         private Map<String, String> roles;
+        private Map<String, String> custom;
         private List<String> ipb;
         private String welcome;
     }
