@@ -37,6 +37,7 @@ public class WhitelistDiscordModule implements DiscordCommandListener {
         if(args.length < 1){
             discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("Invalid arguments. Try `!whitelist help`.").complete(), 30);
         }else if(hasAccess(event.getMember())){
+            command = args[0];
             switch (command) {
                 case "add":
                     if(args.length > 1){

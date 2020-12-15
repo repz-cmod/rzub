@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 
@@ -46,6 +47,7 @@ public class IPRegionBlockManagerService {
     }
 
     @Scheduled(fixedRate = 60000)
+    @Transactional
     public void deleteExpired(){
         ipRegionBanRepository.deleteAllByExpirationBefore(new Date());
     }

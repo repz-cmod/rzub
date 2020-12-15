@@ -4,12 +4,11 @@ import cmod.repz.application.config.ColumnName;
 import lombok.*;
 
 import javax.persistence.*;
-
 import java.util.Date;
 
-import static cmod.repz.application.config.TableName.PLAYER_TRACK_TABLE;
+import static cmod.repz.application.config.TableName.WHITE_LIST_TABLE;
 
-@Table(name = PLAYER_TRACK_TABLE, indexes = {
+@Table(name = WHITE_LIST_TABLE, indexes = {
         @Index(name = ColumnName.CLIENT_ID, columnList = ColumnName.CLIENT_ID, unique = true)
 })
 @Entity
