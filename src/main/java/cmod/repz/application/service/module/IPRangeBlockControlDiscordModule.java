@@ -15,6 +15,7 @@ import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -44,6 +45,10 @@ public class IPRangeBlockControlDiscordModule implements DiscordCommandListener 
                             Integer duration = Integer.parseInt(args[3]);
                             String reason = DiscordUtil.argumentsAsOne(Arrays.copyOfRange(args, 4, args.length));
                             Date date = new Date();
+                            Calendar c = Calendar.getInstance();
+                            c.setTime(date);
+                            c.add(Calendar.DAY_OF_MONTH, duration);
+                            Date expiration = c.getTime();
                             ipRangeBlockManagerService.add(IPRangeBlockEntity.builder()
                                     .startLong(MathUtil.ipToLong(InetAddresses.forString(args[1])))
                                     .endLong(MathUtil.ipToLong(InetAddresses.forString(args[2])))
@@ -51,7 +56,7 @@ public class IPRangeBlockControlDiscordModule implements DiscordCommandListener 
                                     .end(args[2])
                                     .reason(reason)
                                     .creationDate(date)
-                                    .expiration(new Date(date.getTime() + (duration * 24 * 60 * 60 * 1000)))
+                                    .expiration(expiration)
                                     .username(event.getMember().getEffectiveName())
                                     .build());
                             discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("Added ip address range to blocking range for "+duration+" days.").complete(), 30);

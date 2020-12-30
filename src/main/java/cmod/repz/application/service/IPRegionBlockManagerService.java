@@ -4,6 +4,7 @@ import cmod.repz.application.database.entity.repz.IPRegionBanEntity;
 import cmod.repz.application.database.repository.repz.IPRegionBanRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
@@ -11,10 +12,12 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 @Service
+@Slf4j
 public class IPRegionBlockManagerService {
     private final IPRegionBanRepository ipRegionBanRepository;
     private final IPApiService ipApiService;
@@ -30,7 +33,11 @@ public class IPRegionBlockManagerService {
         IPApiService.IpInfo info = ipApiService.getInfo(ip);
         String data = objectMapper.writeValueAsString(info);
         Date date = new Date();
-        Date expiration = new Date(date.getTime() + (duration * 24 * 60 * 60 * 1000));
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.DAY_OF_MONTH, duration);
+        Date expiration = c.getTime();
+        log.info("expiration: " + expiration);
         add(IPRegionBanEntity.builder()
                 .blockHash(info.hashCode())
                 .expiration(expiration)
@@ -49,13 +56,16 @@ public class IPRegionBlockManagerService {
     @Scheduled(fixedRate = 60000)
     @Transactional
     public void deleteExpired(){
+        log.debug("Running ipb2 clean task");
         ipRegionBanRepository.deleteAllByExpirationBefore(new Date());
     }
 
     public void add(IPRegionBanEntity ipRegionBanEntity){
         try {
             ipRegionBanRepository.save(ipRegionBanEntity);
-        }catch (DataIntegrityViolationException ignored){}
+        }catch (Exception e){
+            log.error("Failed to insert new ip range ban");
+        }
     }
 
     public void remove(int id){
