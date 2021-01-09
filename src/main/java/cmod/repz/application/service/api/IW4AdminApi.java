@@ -46,6 +46,7 @@ public class IW4AdminApi {
             } catch (JsonProcessingException e) {
                 return false;
             }
+            return true;
         }
         return false;
     }
