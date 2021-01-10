@@ -1,5 +1,6 @@
 package cmod.repz.application.model;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -41,11 +42,14 @@ public class Iw4adminApiModel {
     @Getter
     @Setter
     @ToString
+    @Builder
     public static class Player {
         private String name;
         private String score;
         private int ping;
         private int connectionTime;
+        private String level;
+        private int clientNumber;
     }
 
     @Getter

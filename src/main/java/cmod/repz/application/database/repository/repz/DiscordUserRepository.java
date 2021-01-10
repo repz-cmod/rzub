@@ -10,4 +10,6 @@ public interface DiscordUserRepository extends JpaRepository<DiscordUserEntity, 
     DiscordUserEntity findByToken(String token);
     List<DiscordUserEntity> findAllByB3MW2ClientIdIn(List<String> clientIds);
     List<DiscordUserEntity> findAllByB3BO2ClientIdIn(List<String> clientIds);
+    DiscordUserEntity findByIw4adminBo2ClientId(String clientId);
+    DiscordUserEntity findByIw4adminMw2ClientId(String clientId);
 }

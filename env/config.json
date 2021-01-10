@@ -55,6 +55,7 @@
         "rulesToAccessChannel": "https://discordapp.com/channels/521338205555916825/716203709033349124/717500435232981033"
     },
     "messages": {
+        "donatorSlotKickReason": "Sorry, your slot is reserved.",
         "registration": "Thanks for registering to RepZ through discord. Your private token is `$token`. To complete your registration, connect to any RepZ server in mw2/bo2 and enter this command: `!discord $token`",
         "registrationComplete": "You have successfully registered yourself to our discord. Game: `$game`, Player Name `$playerName`",
         "greetingPrize": "A Top 10 player has joined server! Everyone, get your asses ready!",

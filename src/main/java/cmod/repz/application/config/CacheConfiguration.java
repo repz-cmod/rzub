@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 @EnableCaching
@@ -29,5 +30,17 @@ public class CacheConfiguration {
         return cacheManager;
     }
 
+    @Bean("donatorTicketCacheManager")
+    @Primary
+    public CacheManager donatorTicketCacheManager() {
+        ConcurrentMapCacheManager cacheManager = new ConcurrentMapCacheManager() {
+            @Override
+            protected Cache createConcurrentMapCache(final String name) {
+                return new ConcurrentMapCache(name, CacheBuilder.newBuilder().expireAfterWrite(1, TimeUnit.HOURS).maximumSize(100).build().asMap(), false);
+            }
+        };
+        cacheManager.setCacheNames(Collections.singletonList("TICKET"));
+        return cacheManager;
+    }
 
 }
