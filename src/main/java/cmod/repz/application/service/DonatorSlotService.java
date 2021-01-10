@@ -1,7 +1,6 @@
 package cmod.repz.application.service;
 
 import cmod.repz.application.database.repository.repz.CookieRepository;
-import cmod.repz.application.database.repository.repz.DiscordUserRepository;
 import cmod.repz.application.model.ConfigModel;
 import cmod.repz.application.model.Iw4adminApiModel;
 import cmod.repz.application.service.api.IW4AdminApi;
@@ -20,7 +19,6 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class DonatorSlotService {
-    private final DiscordUserRepository discordUserRepository;
     private final IW4AdminApi iw4AdminApi;
     private final CookieRepository cookieRepository;
     private final ConfigModel configModel;
