@@ -3,6 +3,7 @@ package cmod.repz.application.util;
 import cmod.repz.application.database.entity.repz.BasicIPBanInfo;
 import cmod.repz.application.database.entity.repz.IPRangeBlockEntity;
 import cmod.repz.application.database.entity.repz.IPRegionBanEntity;
+import cmod.repz.application.database.entity.repz.ServerEntity;
 import cmod.repz.application.database.entity.xlr.XlrPlayerStatEntity;
 import cmod.repz.application.model.ConfigModel;
 import cmod.repz.application.model.IW4AdminStatResult;
@@ -40,6 +41,16 @@ public class DiscordUtil {
                 .build();
     }
 
+    public static MessageEmbed getServersList(List<ServerEntity> serverEntities){
+        return new EmbedBuilder()
+                .setColor(Color.RED)
+                .setTitle("Servers List")
+                .addField("game", getGames(serverEntities), true)
+                .addField("name", getNames(serverEntities), true)
+                .addField("serverId", getIds(serverEntities), true)
+                .build();
+    }
+
     public static MessageEmbed getBlockedIpRegion(List<IPRegionBanEntity> ipRangeBlockEntities, int page, int max){
         return new EmbedBuilder()
                 .setColor(Color.RED)
@@ -49,6 +60,35 @@ public class DiscordUtil {
                 .addField("reason", getReasons(ipRangeBlockEntities), true)
                 .addField("username", getUsernames(ipRangeBlockEntities), true)
                 .build();
+    }
+
+
+    public static String getGames(List<ServerEntity> serverEntities){
+        StringBuilder stringBuilder = new StringBuilder();
+        serverEntities.forEach(serverEntity -> {
+            stringBuilder.append(serverEntity.getGame());
+            stringBuilder.append("\n");
+        });
+        return stringBuilder.toString();
+    }
+
+
+    public static String getNames(List<ServerEntity> serverEntities){
+        StringBuilder stringBuilder = new StringBuilder();
+        serverEntities.forEach(serverEntity -> {
+            stringBuilder.append(GameUtil.cleanColors(serverEntity.getName().replace(" |  www.cmod.pw", "")).replace("RepZ ", ""));
+            stringBuilder.append("\n");
+        });
+        return stringBuilder.toString();
+    }
+
+    public static String getIds(List<ServerEntity> serverEntities){
+        StringBuilder stringBuilder = new StringBuilder();
+        serverEntities.forEach(serverEntity -> {
+            stringBuilder.append(serverEntity.getId());
+            stringBuilder.append("\n");
+        });
+        return stringBuilder.toString();
     }
 
     private static String getRange(List<IPRangeBlockEntity> ipRangeBlockEntities) {
