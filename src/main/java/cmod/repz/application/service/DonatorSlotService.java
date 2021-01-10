@@ -39,7 +39,7 @@ public class DonatorSlotService {
         if(kick(serverId, playerToKick))
             updateTicket(donatorDiscordUserId);
         else return Result.error("Something went wrong, Please try again later");
-        return Result.success();
+        return Result.success(chosenServer.getName());
     }
 
     private boolean kick(String serverId, Iw4adminApiModel.Player playerToKick) {
@@ -77,8 +77,9 @@ public class DonatorSlotService {
         private String serverName;
         private String kickedPlayerName;
 
-        public static Result success(){
+        public static Result success(String serverName){
             return Result.builder()
+                    .serverName(serverName)
                     .success(true)
                     .build();
         }
