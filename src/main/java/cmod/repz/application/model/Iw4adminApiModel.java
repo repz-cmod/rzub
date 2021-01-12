@@ -1,9 +1,6 @@
 package cmod.repz.application.model;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.List;
 
@@ -43,6 +40,8 @@ public class Iw4adminApiModel {
     @Setter
     @ToString
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Player {
         private String name;
         private String score;

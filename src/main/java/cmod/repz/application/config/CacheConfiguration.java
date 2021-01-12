@@ -31,7 +31,6 @@ public class CacheConfiguration {
     }
 
     @Bean("donatorTicketCacheManager")
-    @Primary
     public CacheManager donatorTicketCacheManager() {
         ConcurrentMapCacheManager cacheManager = new ConcurrentMapCacheManager() {
             @Override
