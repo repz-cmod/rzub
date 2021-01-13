@@ -28,7 +28,7 @@ public class Iw4adminLoginDiscordModule implements DiscordCommandListener {
             discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("Valid command would be: `!iwlogin <clientId> <password>`. First do a `!rt` in game.").complete(), 30);
             return;
         }
-        if(hasAccess(Objects.requireNonNull(event.getMember()))){
+        if(!hasAccess(Objects.requireNonNull(event.getMember()))){
             return;
         }
         if (iw4AdminApi.logIn(args[0], args[1], cookieRepository)) {

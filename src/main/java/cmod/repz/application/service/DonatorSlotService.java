@@ -31,7 +31,7 @@ public class DonatorSlotService {
         }
         if(chosenServer.getMaxPlayers() != chosenServer.getCurrentPlayers())
             return Result.error("There is already a slot available in that server");
-        if(!hasTickets(donatorDiscordUserId))
+        if(hasTickets(donatorDiscordUserId))
             return Result.error("You got no tickets left. Try again later");
 
         chosenServer.getPlayers().sort(Comparator.comparing(Iw4adminApiModel.Player::getConnectionTime));

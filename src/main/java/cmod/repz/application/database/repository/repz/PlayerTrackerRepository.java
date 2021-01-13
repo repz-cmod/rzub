@@ -13,5 +13,5 @@ public interface PlayerTrackerRepository extends JpaRepository<PlayerTrackEntity
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("update #{#entityName} pt set pt.leaveDate = :leaveDate, pt.spentTime = :spentTime where pt.clientId = :clientId AND pt.trackerId = :trackerId AND pt.serverId = :serverId")
     void updateLeftDate(Integer clientId, Long trackerId, Long serverId, Date leaveDate, int spentTime);
-    PlayerTrackEntity findByClientIdAndTrackerIdAndServerId(Integer clientId, Long trackerId, Long serverId);
+    PlayerTrackEntity findTop1ByClientIdAndTrackerIdAndServerIdOrderByIdDesc(Integer clientId, Long trackerId, Long serverId);
 }

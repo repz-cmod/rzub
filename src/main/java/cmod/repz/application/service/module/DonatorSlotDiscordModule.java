@@ -5,6 +5,7 @@ import cmod.repz.application.model.ConfigModel;
 import cmod.repz.application.service.DiscordDelayedMessageRemoverService;
 import cmod.repz.application.service.DonatorSlotService;
 import cmod.repz.application.service.listener.DiscordCommandListener;
+import cmod.repz.application.util.GameUtil;
 import lombok.AllArgsConstructor;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -35,7 +36,7 @@ public class DonatorSlotDiscordModule implements DiscordCommandListener {
 
         DonatorSlotService.Result result = donatorSlotService.emptySlot(event.getMember().getId(), args[0]);
         if (result.isSuccess()) {
-            discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("A slot is not empty in \""+result.getServerName()+"\"").complete(), 30);
+            discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("A slot is now empty in \""+ GameUtil.cleanColors(result.getServerName()) +"\"").complete(), 30);
         }else {
             discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("Failed. Reason: `"+result.getError()+"`").complete(), 30);
         }

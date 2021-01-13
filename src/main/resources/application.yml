@@ -3,7 +3,6 @@ logging:
     name: repz.log
   level:
     ROOT: info
-
 repz:
   bot:
     responses:
@@ -15,3 +14,4 @@ repz:
       - "I'm only loyal to my creator mr **SepZ** and my current owner, mr **Ta$y**! but I would care about what you say if you use valid commands from `!help`."
       - "Yes, hello?"
       - "Try `!help`. Thanks."
+debug: true

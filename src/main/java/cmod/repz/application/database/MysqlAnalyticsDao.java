@@ -55,7 +55,7 @@ public class MysqlAnalyticsDao implements AnalyticsDao {
     @Override
     @Transactional
     public void playerLeft(Long serverId, Integer clientId, Long trackerId) {
-        PlayerTrackEntity playerTrackEntity = playerTrackerRepository.findByClientIdAndTrackerIdAndServerId(clientId, trackerId, serverId);
+        PlayerTrackEntity playerTrackEntity = playerTrackerRepository.findTop1ByClientIdAndTrackerIdAndServerIdOrderByIdDesc(clientId, trackerId, serverId);
         if(playerTrackEntity != null){
             int spentTime = (int) ((new Date().getTime() - playerTrackEntity.getJoinDate().getTime()) / 1000);
             playerTrackerRepository.updateLeftDate(clientId, trackerId, serverId, new Date(), spentTime);

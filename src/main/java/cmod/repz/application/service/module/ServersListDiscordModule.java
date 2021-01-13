@@ -24,6 +24,7 @@ public class ServersListDiscordModule implements DiscordCommandListener {
 
     @Override
     public void onCommand(GuildMessageReceivedEvent event, String[] args) {
+        discordDelayedMessageRemoverService.scheduleRemove(event.getMessage(), 20);
         MessageEmbed serversList = DiscordUtil.getServersList(serverRepository.findAll());
         discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage(serversList).complete(), 30);
     }

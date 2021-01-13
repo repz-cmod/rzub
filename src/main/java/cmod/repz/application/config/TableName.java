@@ -7,6 +7,7 @@ public interface TableName {
     String IP_RANGE_BLOCK = "ip_range_block";
     String REGION_BLOCK = "region_block";
     String DISCORD_USER = "discord_users";
+    String IW_COOKIE = "iw_cookie";
     String DISCORD_USER_CONFIG = "discord_users_config";
     String SERVER_TABLE = "servers";
 }

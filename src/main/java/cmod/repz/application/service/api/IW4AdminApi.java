@@ -12,12 +12,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.*;
+import org.springframework.http.client.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpRequest;
 
 @Component
 @Slf4j
@@ -31,35 +40,46 @@ public class IW4AdminApi {
     public IW4AdminApi(ConfigModel configModel, ObjectMapper objectMapper) {
         this.configModel = configModel;
         this.objectMapper = objectMapper;
-        this.restTemplate = new RestTemplate();
+        this.restTemplate = new RestTemplate(new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
+        List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
+        interceptors.add(new LoggingRequestInterceptor());
+        restTemplate.setInterceptors(interceptors);
     }
 
     public boolean logIn(String cid, String passwd, CookieRepository cookieRepository){
-        String addr = getIw4adminUrl() + "/Account/LoginAsync?clientId"+cid+"&password="+passwd;
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity(addr, String.class);
-        List<String> cookie = getCookie(responseEntity);
-        if(cookie != null){
-            try {
-                cookieRepository.save(CookieEntity.builder()
-                        .cookie(objectMapper.writeValueAsString(cookie.toArray(new String[0])))
-                        .build());
-            } catch (JsonProcessingException e) {
-                return false;
+        String addr = getIw4adminUrl() + "/Account/LoginAsync?clientId="+cid+"&password="+passwd;
+        try {
+            ResponseEntity<String> responseEntity = restTemplate.getForEntity(addr, String.class);
+            List<String> cookie = getCookie(responseEntity);
+            if(cookie != null){
+                try {
+                    String s = objectMapper.writeValueAsString(cookie.toArray(new String[0]));
+                    System.out.println(s);
+                    cookieRepository.save(CookieEntity.builder()
+                            .cookie(s)
+                            .build());
+                } catch (JsonProcessingException e) {
+                    log.error("Error while parsing json", e);
+                    return false;
+                }
+                return true;
             }
-            return true;
+        }catch (Exception e){
+            log.error("Failed to send req", e);
         }
+
         return false;
     }
 
     private List<String> getCookie(ResponseEntity<String> responseEntity) {
-        List<String> cookie = responseEntity.getHeaders().get("Cookie");
+        List<String> cookie = responseEntity.getHeaders().get("Set-Cookie");
         if(cookie == null)
             cookie = responseEntity.getHeaders().get("cookie");
         return cookie;
     }
 
     public boolean sendCommand(String serverId, String command, CookieRepository cookieRepository){
-        String addr = getIw4adminUrl() + "/Console/ExecuteAsync?server"+serverId+"&command="+command;
+        String addr = getIw4adminUrl() + "/Console/ExecuteAsync?serverId={serverId}&command={command}";
         HttpHeaders headers = getBasicHeaders();
         try {
             headers.put("cookie", getCookie(cookieRepository));
@@ -68,11 +88,9 @@ public class IW4AdminApi {
         }
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
         try {
-            ResponseEntity<String> responseEntity = restTemplate.exchange(addr, HttpMethod.GET, entity, String.class);
-            if(responseEntity.getStatusCode().equals(HttpStatus.OK)){
-                return true;
-            }
-            return false;
+            ResponseEntity<String> responseEntity = restTemplate.exchange(addr, HttpMethod.GET, entity, String.class, serverId, command);
+            System.out.println(responseEntity.getBody());
+            return responseEntity.getStatusCode().equals(HttpStatus.OK);
         }catch (Exception e){
             log.error("Failed to send request", e);
             return false;
@@ -130,5 +148,47 @@ public class IW4AdminApi {
         }
         cachedIw4adminUrl = iw4adminUrl;
         return iw4adminUrl;
+    }
+
+
+
+    public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
+
+        final Logger log = LoggerFactory.getLogger(LoggingRequestInterceptor.class);
+
+        @Override
+        public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
+            traceRequest(request, body);
+            ClientHttpResponse response = execution.execute(request, body);
+            traceResponse(response);
+            return response;
+        }
+
+        private void traceRequest(HttpRequest request, byte[] body) throws IOException {
+            log.debug("===========================request begin================================================");
+            log.debug("URI         : {}", request.getURI());
+            log.debug("Method      : {}", request.getMethod());
+            log.debug("Headers     : {}", request.getHeaders() );
+            log.debug("Request body: {}", new String(body, "UTF-8"));
+            log.debug("==========================request end================================================");
+        }
+
+        private void traceResponse(ClientHttpResponse response) throws IOException {
+            StringBuilder inputStringBuilder = new StringBuilder();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(response.getBody(), "UTF-8"));
+            String line = bufferedReader.readLine();
+            while (line != null) {
+                inputStringBuilder.append(line);
+                inputStringBuilder.append('\n');
+                line = bufferedReader.readLine();
+            }
+            log.debug("============================response begin==========================================");
+            log.debug("Status code  : {}", response.getStatusCode());
+            log.debug("Status text  : {}", response.getStatusText());
+            log.debug("Headers      : {}", response.getHeaders());
+            log.debug("Response body: {}", inputStringBuilder.toString());
+            log.debug("=======================response end=================================================");
+        }
+
     }
 }

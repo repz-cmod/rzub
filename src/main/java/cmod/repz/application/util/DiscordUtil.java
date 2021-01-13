@@ -85,7 +85,7 @@ public class DiscordUtil {
     public static String getIds(List<ServerEntity> serverEntities){
         StringBuilder stringBuilder = new StringBuilder();
         serverEntities.forEach(serverEntity -> {
-            stringBuilder.append(serverEntity.getId());
+            stringBuilder.append(serverEntity.getServerId());
             stringBuilder.append("\n");
         });
         return stringBuilder.toString();
