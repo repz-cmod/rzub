@@ -12,11 +12,7 @@ public class ConfigModel {
     private String iw4adminUrl;
     private Database database;
     private Discord discord;
-    private Map<String, Database> xlrDatabase;
     private Map<String, String> messages;
-    private String xlrMw2Prefix;
-    private String xlrBo2Prefix;
-    private String xlrBf3Prefix;
     private Map<String, String> links;
 
     @Getter

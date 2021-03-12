@@ -1,10 +1,7 @@
 package cmod.repz.application.service.module;
 
 import cmod.repz.application.database.entity.repz.DiscordUserEntity;
-import cmod.repz.application.database.entity.xlr.ClientEntity;
 import cmod.repz.application.database.repository.repz.DiscordUserRepository;
-import cmod.repz.application.database.repository.xlr.bo2.XlrBo2ClientRepository;
-import cmod.repz.application.database.repository.xlr.mw2.XlrMw2ClientRepository;
 import cmod.repz.application.model.ConfigModel;
 import cmod.repz.application.model.Iw4adminApiModel;
 import cmod.repz.application.model.dto.AbstractResultDto;
@@ -29,19 +26,15 @@ import javax.transaction.Transactional;
 public class CompleteRegisterModule {
     private final JDA jda;
     private final DiscordUserRepository discordUserRepository;
-    private final XlrMw2ClientRepository xlrMw2ClientRepository;
-    private final XlrBo2ClientRepository xlrBo2ClientRepository;
     private final ConfigModel configModel;
     private final IW4AdminApi iw4AdminApi;
     private final DiscordUserCache discordUserCache;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @Autowired
-    public CompleteRegisterModule(JDA jda, DiscordUserRepository discordUserRepository, XlrMw2ClientRepository xlrMw2ClientRepository, XlrBo2ClientRepository xlrBo2ClientRepository, ConfigModel configModel, IW4AdminApi iw4AdminApi, DiscordUserCache discordUserCache, ApplicationEventPublisher applicationEventPublisher) {
+    public CompleteRegisterModule(JDA jda, DiscordUserRepository discordUserRepository, ConfigModel configModel, IW4AdminApi iw4AdminApi, DiscordUserCache discordUserCache, ApplicationEventPublisher applicationEventPublisher) {
         this.jda = jda;
         this.discordUserRepository = discordUserRepository;
-        this.xlrMw2ClientRepository = xlrMw2ClientRepository;
-        this.xlrBo2ClientRepository = xlrBo2ClientRepository;
         this.configModel = configModel;
         this.iw4AdminApi = iw4AdminApi;
         this.discordUserCache = discordUserCache;
@@ -62,10 +55,6 @@ public class CompleteRegisterModule {
             discordUserEntity.setMw2Name(GameUtil.cleanColors(discordRegisterDto.getPlayerName()));
             String guid = getGUID(discordRegisterDto.getClientId());
             discordUserEntity.setMw2Guid(guid);
-            ClientEntity clientEntity = xlrMw2ClientRepository.findByGuidLike(guid);
-            if(clientEntity != null){
-                discordUserEntity.setB3MW2ClientId(String.valueOf(clientEntity.getId()));
-            }
             changed = true;
         }
 
@@ -75,10 +64,6 @@ public class CompleteRegisterModule {
             String guid = getGUID(discordRegisterDto.getClientId());
             guid = String.valueOf(Integer.parseInt(guid,16));
             discordUserEntity.setBo2Guid(guid);
-            ClientEntity clientEntity = xlrBo2ClientRepository.findByGuid(guid);
-            if(clientEntity != null){
-                discordUserEntity.setB3BO2ClientId(String.valueOf(clientEntity.getId()));
-            }
             changed = true;
         }
 
