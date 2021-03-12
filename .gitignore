@@ -1,3 +1,5 @@
 /target/
 /env/repz.jar
 /env/repz.log
+/env/*.log.*
+source.zip
