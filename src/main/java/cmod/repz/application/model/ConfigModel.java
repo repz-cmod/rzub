@@ -21,7 +21,7 @@ public class ConfigModel {
         private String url;
         private String username;
         private String password;
-        private String dialect = "";
+        private String dialect = "com.mysql.jdbc.Driver";
         private String hbm2ddl = "none";
     }
 
