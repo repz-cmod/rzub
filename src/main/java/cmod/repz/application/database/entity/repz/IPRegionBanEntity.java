@@ -4,7 +4,6 @@ import cmod.repz.application.config.TableName;
 import lombok.*;
 
 import javax.persistence.*;
-
 import java.util.Date;
 
 import static cmod.repz.application.config.ColumnName.RGB_BLOCK_HASH;

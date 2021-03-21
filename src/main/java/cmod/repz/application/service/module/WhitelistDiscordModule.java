@@ -1,22 +1,16 @@
 package cmod.repz.application.service.module;
 
 import cmod.repz.application.annotation.DiscordListenerComponent;
-import cmod.repz.application.database.entity.repz.IPRangeBlockEntity;
 import cmod.repz.application.database.entity.repz.WhitelistEntity;
 import cmod.repz.application.database.repository.repz.WhitelistRepository;
 import cmod.repz.application.model.ConfigModel;
 import cmod.repz.application.service.DiscordDelayedMessageRemoverService;
 import cmod.repz.application.service.listener.DiscordCommandListener;
-import cmod.repz.application.util.DiscordUtil;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 
 import java.util.Date;
-import java.util.List;
 
 @DiscordListenerComponent(command = "whitelist", description = "Not available", hidden = true)
 public class WhitelistDiscordModule implements DiscordCommandListener {

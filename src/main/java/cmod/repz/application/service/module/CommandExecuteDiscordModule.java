@@ -1,23 +1,17 @@
 package cmod.repz.application.service.module;
 
 import cmod.repz.application.annotation.DiscordListenerComponent;
-import cmod.repz.application.database.entity.repz.IPRegionBanEntity;
 import cmod.repz.application.database.repository.repz.CookieRepository;
 import cmod.repz.application.model.ConfigModel;
 import cmod.repz.application.service.DiscordDelayedMessageRemoverService;
-import cmod.repz.application.service.IPRegionBlockManagerService;
 import cmod.repz.application.service.api.IW4AdminApi;
 import cmod.repz.application.service.listener.DiscordCommandListener;
-import cmod.repz.application.util.DiscordUtil;
-import com.google.common.net.InetAddresses;
 import lombok.SneakyThrows;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.Arrays;
-import java.util.List;
 
 @DiscordListenerComponent(command = "iwexec", description = "Executes command in iw4madmin", hidden = true)
 public class CommandExecuteDiscordModule implements DiscordCommandListener {
