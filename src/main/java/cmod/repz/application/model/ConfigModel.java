@@ -25,6 +25,7 @@ public class ConfigModel {
         private String username;
         private String password;
         private String driver = "com.mysql.jdbc.Driver";
+        private String dialect = "org.hibernate.dialect.MySQL5InnoDBDialect";
         private String hbm2ddl = "none";
     }
 

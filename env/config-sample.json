@@ -9,7 +9,8 @@
         "username": "username",
         "password": "password",
         "hbm2ddl": "update",
-        "driver": "org.mariadb.jdbc.Driver"
+        "driver": "org.mariadb.jdbc.Driver",
+        "dialect": "org.hibernate.dialect.MariaDB103Dialect"
     },
     "discord": {
         "token": "",

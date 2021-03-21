@@ -48,7 +48,7 @@ public class RepzAppDBConfiguration {
         em.setJpaVendorAdapter(vendorAdapter);
         HashMap<String, Object> properties = new HashMap<>();
         properties.put("hibernate.hbm2ddl.auto", configModel.getDatabase().getHbm2ddl());
-        properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
+        properties.put("hibernate.dialect", configModel.getDatabase().getDialect());
         em.setJpaPropertyMap(properties);
 
         return em;
