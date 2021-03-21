@@ -3,3 +3,4 @@
 /env/repz.log
 /env/*.log.*
 source.zip
+/env/config.json

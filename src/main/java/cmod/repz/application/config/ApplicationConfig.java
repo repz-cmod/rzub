@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.Compression;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -50,9 +51,9 @@ public class ApplicationConfig {
 
 
     @Bean
-    public ConfigModel configModel() throws IOException {
+    public ConfigModel configModel(@Value("${repz.conf.file}") String configFileAddress) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(new File("./config.json"), ConfigModel.class);
+        return objectMapper.readValue(new File(configFileAddress), ConfigModel.class);
     }
 
     @Bean

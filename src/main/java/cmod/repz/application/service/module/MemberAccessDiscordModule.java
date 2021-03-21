@@ -24,8 +24,8 @@ public class MemberAccessDiscordModule implements DiscordMessageListener {
         if (event.getChannel().getId().equals(configModel.getDiscord().getChannels().get("access-grant"))) {
             discordDelayedMessageRemoverService.scheduleRemove(event.getMessage(), 2); //todo: 60 -> 10
             if(event.getMessage().getContentRaw().toLowerCase().equals(configModel.getDiscord().getCustom().get("accept-rules-message").toLowerCase())){
-                Role rzmember = event.getJDA().getRoleById(configModel.getDiscord().getRoles().get("rzmember"));
-                event.getGuild().addRoleToMember(Objects.requireNonNull(event.getMember()), Objects.requireNonNull(rzmember)).complete();
+                Role base_member_role = event.getJDA().getRoleById(configModel.getDiscord().getRoles().get("base_member_role"));
+                event.getGuild().addRoleToMember(Objects.requireNonNull(event.getMember()), Objects.requireNonNull(base_member_role)).complete();
             }
         }
     }

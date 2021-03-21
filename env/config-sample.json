@@ -1,0 +1,43 @@
+{
+    "iw4adminUrl": "http://localhost:8080/",
+    "database": {
+        "url": "jdbc:mysql://localhost:3306/repz_analytics",
+        "username": "username",
+        "password": "password",
+        "hbm2ddl": "update",
+        "dialect": "org.mariadb.jdbc.Driver"
+    },
+    "discord": {
+        "token": "",
+        "channels": {
+            "access-grant": ""
+        },
+        "messages": {
+            "xlrtopstats": "763024160045269003"
+        },
+        "roles": {
+            "management": "000000000000000000",
+            "jmanagement": "000000000000000000",
+            "base_member_role": "000000000000000000",
+            "donator": "000000000000000000"
+        },
+        "ipb": [
+            "000000000000000000",
+            "000000000000000000"
+        ],
+        "custom": {
+            "accept-rules-message": "Sample message that user has to type in order to grant access"
+        },
+        "welcome": "Welcome message here"
+    },
+    "links": {
+        "forum": "https://your.website.com/forum/",
+        "infoChannel": "https://discordapp.com/channels/0000/0000/00000",
+        "rulesToAccessChannel": "https://discordapp.com/channels/0000/0000/00000"
+    },
+    "messages": {
+        "donatorSlotKickReason": "Reserved Slot",
+        "registration": "Thanks for registering to RepZ through discord. Your private token is `$token`. To complete your registration, connect to any game server in mw2/bo2 and enter this command: `!discord $token`",
+        "registrationComplete": "You have successfully registered yourself to our discord. Game: `$game`, Player Name `$playerName`"
+    }
+}
