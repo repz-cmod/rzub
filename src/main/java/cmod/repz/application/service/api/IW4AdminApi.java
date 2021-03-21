@@ -7,6 +7,8 @@ import cmod.repz.application.model.Iw4adminApiModel;
 import cmod.repz.application.util.OffsetLimitPageable;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -35,6 +37,7 @@ public class IW4AdminApi {
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
     private volatile String cachedIw4adminUrl;
+    private final String execAddress = getIw4adminUrl() + "/Console/ExecuteAsync?serverId={serverId}&command={command}";
 
     @Autowired
     public IW4AdminApi(ConfigModel configModel, ObjectMapper objectMapper) {
@@ -78,24 +81,27 @@ public class IW4AdminApi {
         return cookie;
     }
 
-    public boolean sendCommand(String serverId, String command, CookieRepository cookieRepository){
-        String addr = getIw4adminUrl() + "/Console/ExecuteAsync?serverId={serverId}&command={command}";
+    public CommandResponse execute(String serverId, String command, CookieRepository cookieRepository){
         HttpHeaders headers = getBasicHeaders();
         try {
             headers.put("cookie", getCookie(cookieRepository));
         } catch (Exception e) {
-            return false;
+            return new CommandResponse(false, -1, "");
         }
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
+
+        ResponseEntity<String> responseEntity = null;
         try {
-            ResponseEntity<String> responseEntity = restTemplate.exchange(addr, HttpMethod.GET, entity, String.class, serverId, command);
-            System.out.println(responseEntity.getBody());
-            return responseEntity.getStatusCode().equals(HttpStatus.OK);
+            responseEntity = restTemplate.exchange(execAddress, HttpMethod.GET, entity, String.class, serverId, command);
+            return new CommandResponse(true, responseEntity.getStatusCodeValue(), responseEntity.getBody());
         }catch (Exception e){
             log.error("Failed to send request", e);
-            return false;
+            return new CommandResponse(false, responseEntity != null ? responseEntity.getStatusCodeValue() : -1, responseEntity != null ? responseEntity.getBody() : "");
         }
+    }
 
+    public boolean sendCommand(String serverId, String command, CookieRepository cookieRepository){
+        return this.execute(serverId, command, cookieRepository).isSuccess();
     }
 
     private HttpHeaders getBasicHeaders() {
@@ -150,6 +156,13 @@ public class IW4AdminApi {
         return iw4adminUrl;
     }
 
+    @Getter
+    @AllArgsConstructor
+    public static class CommandResponse {
+        private final boolean success;
+        private final int status;
+        private final String body;
+    }
 
 
     public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
