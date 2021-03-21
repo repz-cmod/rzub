@@ -9,7 +9,6 @@ import java.util.Date;
 public class RepzApplication {
 
 	public static void main(String[] args) {
-		System.out.println(new Date());
 		SpringApplication.run(RepzApplication.class, args);
 	}
 
