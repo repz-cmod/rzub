@@ -10,9 +10,9 @@
     </parent>
     <groupId>cmod.repz</groupId>
     <artifactId>application</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>Repz Application</name>
-    <description>Repz analytics and commands application</description>
+    <version>1.0.0-RELEASE</version>
+    <name>RepZ Application</name>
+    <description>RepZ analytics and discord commands application</description>
     <packaging>jar</packaging>
     <properties>
         <java.version>1.8</java.version>
