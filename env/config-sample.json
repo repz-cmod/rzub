@@ -1,6 +1,6 @@
 {
     "module": {
-        "tracker": true,
+        "analytics": true,
         "welcome": true
     },
     "iw4adminUrl": "http://localhost:8080/",

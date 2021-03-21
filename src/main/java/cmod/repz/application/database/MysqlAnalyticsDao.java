@@ -6,6 +6,7 @@ import cmod.repz.application.database.entity.repz.ServerTrackEntity;
 import cmod.repz.application.database.repository.repz.PlayerTrackerRepository;
 import cmod.repz.application.database.repository.repz.ServerRepository;
 import cmod.repz.application.database.repository.repz.ServerTrackerRepository;
+import cmod.repz.application.model.ConfigModel;
 import cmod.repz.application.model.Iw4adminApiModel;
 import cmod.repz.application.util.GameUtil;
 import cmod.repz.application.util.MathUtil;
@@ -25,12 +26,14 @@ public class MysqlAnalyticsDao implements AnalyticsDao {
     private final ServerTrackerRepository serverTrackerRepository;
     private final ServerRepository serverRepository;
     private final Set<Long> persistedServerIds;
+    private final boolean enabled;
 
     @Autowired
-    public MysqlAnalyticsDao(PlayerTrackerRepository playerTrackerRepository, ServerTrackerRepository serverTrackerRepository, ServerRepository serverRepository) {
+    public MysqlAnalyticsDao(PlayerTrackerRepository playerTrackerRepository, ServerTrackerRepository serverTrackerRepository, ServerRepository serverRepository, ConfigModel configModel) {
         this.playerTrackerRepository = playerTrackerRepository;
         this.serverTrackerRepository = serverTrackerRepository;
         this.serverRepository = serverRepository;
+        this.enabled = configModel.getModules().isAnalytics();
         this.persistedServerIds = new HashSet<>();
         List<ServerEntity> serverEntities = serverRepository.findAll();
         serverEntities.forEach(serverEntity -> {
@@ -41,6 +44,8 @@ public class MysqlAnalyticsDao implements AnalyticsDao {
     @Override
     @Transactional
     public void playerJoined(Long serverId, Integer clientId, Long trackerId) {
+        if (!enabled)
+            return;
         playerTrackerRepository.deleteAllByClientIdAndJoinDateIsNull(clientId);
         playerTrackerRepository.deleteAllByClientIdAndLeaveDateIsNull(clientId);
 
@@ -55,6 +60,8 @@ public class MysqlAnalyticsDao implements AnalyticsDao {
     @Override
     @Transactional
     public void playerLeft(Long serverId, Integer clientId, Long trackerId) {
+        if (!enabled)
+            return;
         PlayerTrackEntity playerTrackEntity = playerTrackerRepository.findTop1ByClientIdAndTrackerIdAndServerIdOrderByIdDesc(clientId, trackerId, serverId);
         if(playerTrackEntity != null){
             int spentTime = (int) ((new Date().getTime() - playerTrackEntity.getJoinDate().getTime()) / 1000);
@@ -64,14 +71,16 @@ public class MysqlAnalyticsDao implements AnalyticsDao {
 
     @Override
     public void trackServer(Iw4adminApiModel.Server server) {
-        serverTrackerRepository.save(ServerTrackEntity.builder()
-                .date(new Date())
-                .playerCount(server.getCurrentPlayers())
-                .serverId(server.getId())
-                .mapName(server.getMap().getName())
-                .maxPlayerCount(server.getMaxPlayers())
-                .percentage(MathUtil.percent(server.getCurrentPlayers(), server.getMaxPlayers()))
-                .build());
+        if (enabled){
+            serverTrackerRepository.save(ServerTrackEntity.builder()
+                    .date(new Date())
+                    .playerCount(server.getCurrentPlayers())
+                    .serverId(server.getId())
+                    .mapName(server.getMap().getName())
+                    .maxPlayerCount(server.getMaxPlayers())
+                    .percentage(MathUtil.percent(server.getCurrentPlayers(), server.getMaxPlayers()))
+                    .build());
+        }
         if(persistedServerIds.contains(server.getId()))
             return;
         try {

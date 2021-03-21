@@ -22,6 +22,8 @@ public class WelcomeDiscordModule implements ApplicationListener<DiscordMemberJo
 
     @Override
     public void onApplicationEvent(DiscordMemberJoinEVent discordMemberJoinEVent) {
+        if (!configModel.getModules().isWelcome())
+            return;
         String user = discordMemberJoinEVent.getGuildMemberJoinEvent().getUser().getAsMention();
         String welcome = configModel.getDiscord().getWelcome();
         String result = welcome.replace("$user", user).replace("$infoLink", configModel.getLinks().get("infoChannel")).replace("$rulesToAccess", configModel.getLinks().get("rulesToAccessChannel"));

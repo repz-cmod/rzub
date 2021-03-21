@@ -33,7 +33,7 @@ public class ConfigModel {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Modules {
-        private boolean tracker = true;
+        private boolean analytics = true;
         private boolean welcome = true;
     }
 
