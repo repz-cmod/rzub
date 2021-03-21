@@ -31,7 +31,7 @@ public class RepzAppDBConfiguration {
                 .username(configModel.getDatabase().getUsername())
                 .password(configModel.getDatabase().getPassword())
                 .url(configModel.getDatabase().getUrl())
-                .driverClassName(configModel.getDatabase().getDialect())
+                .driverClassName(configModel.getDatabase().getDriver())
                 .build();
     }
 
