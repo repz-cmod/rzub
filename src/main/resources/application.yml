@@ -16,4 +16,4 @@ repz:
       - "I'm only loyal to my creator mr **sep#8562** and my current owner! but I would care about what you say if you use valid commands from `!help`."
       - "Yes, hello?"
       - "Try `!help`. Thanks."
-debug: true
+debug: false
