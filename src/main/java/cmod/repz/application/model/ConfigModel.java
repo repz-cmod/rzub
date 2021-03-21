@@ -1,6 +1,8 @@
 package cmod.repz.application.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
@@ -14,6 +16,7 @@ public class ConfigModel {
     private Discord discord;
     private Map<String, String> messages;
     private Map<String, String> links;
+    private Modules modules = new Modules(true, true);
 
     @Getter
     @Setter
@@ -23,6 +26,15 @@ public class ConfigModel {
         private String password;
         private String dialect = "com.mysql.jdbc.Driver";
         private String hbm2ddl = "none";
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Modules {
+        private boolean tracker = true;
+        private boolean welcome = true;
     }
 
     @Getter
