@@ -52,10 +52,8 @@ public class ApplicationConfig {
 
     @Bean
     public ConfigModel configModel(@Value("${repz.conf.file}") String configFileAddress) throws IOException {
-        System.out.println("---> " + configFileAddress);
         ObjectMapper objectMapper = new ObjectMapper();
         ConfigModel configModel = objectMapper.readValue(new File(configFileAddress), ConfigModel.class);
-        System.out.println("===>" + configModel);
         return configModel;
     }
 

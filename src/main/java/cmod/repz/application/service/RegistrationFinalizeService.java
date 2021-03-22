@@ -1,4 +1,4 @@
-package cmod.repz.application.service.module;
+package cmod.repz.application.service;
 
 import cmod.repz.application.database.entity.repz.DiscordUserEntity;
 import cmod.repz.application.database.repository.repz.DiscordUserRepository;
@@ -9,7 +9,6 @@ import cmod.repz.application.model.dto.DiscordRegisterDto;
 import cmod.repz.application.model.dto.FailedResultDto;
 import cmod.repz.application.model.dto.SuccessResultDto;
 import cmod.repz.application.model.event.DiscordPlayerRegisterEvent;
-import cmod.repz.application.service.DiscordUserCache;
 import cmod.repz.application.service.api.IW4AdminApi;
 import cmod.repz.application.util.GameUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -17,13 +16,13 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
-@Component
+@Service
 @Slf4j
-public class CompleteRegisterModule {
+public class RegistrationFinalizeService {
     private final JDA jda;
     private final DiscordUserRepository discordUserRepository;
     private final ConfigModel configModel;
@@ -32,7 +31,7 @@ public class CompleteRegisterModule {
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @Autowired
-    public CompleteRegisterModule(JDA jda, DiscordUserRepository discordUserRepository, ConfigModel configModel, IW4AdminApi iw4AdminApi, DiscordUserCache discordUserCache, ApplicationEventPublisher applicationEventPublisher) {
+    public RegistrationFinalizeService(JDA jda, DiscordUserRepository discordUserRepository, ConfigModel configModel, IW4AdminApi iw4AdminApi, DiscordUserCache discordUserCache, ApplicationEventPublisher applicationEventPublisher) {
         this.jda = jda;
         this.discordUserRepository = discordUserRepository;
         this.configModel = configModel;

@@ -1,15 +1,15 @@
-package cmod.repz.application.service.module;
+package cmod.repz.application.service;
 
 import cmod.repz.application.database.AnalyticsDao;
 import cmod.repz.application.model.event.ServerStatusEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
-public class ServerInformationPersistModule implements ApplicationListener<ServerStatusEvent> {
+@Service
+public class ServerInformationPersistService implements ApplicationListener<ServerStatusEvent> {
     private final AnalyticsDao analyticsDao;
 
-    public ServerInformationPersistModule(AnalyticsDao analyticsDao) {
+    public ServerInformationPersistService(AnalyticsDao analyticsDao) {
         this.analyticsDao = analyticsDao;
     }
 

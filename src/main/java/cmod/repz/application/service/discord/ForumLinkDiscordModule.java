@@ -1,4 +1,4 @@
-package cmod.repz.application.service.module;
+package cmod.repz.application.service.discord;
 
 import cmod.repz.application.annotation.DiscordListenerComponent;
 import cmod.repz.application.model.ConfigModel;

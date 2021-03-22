@@ -57,7 +57,6 @@ public class IW4AdminApi {
             if(cookie != null){
                 try {
                     String s = objectMapper.writeValueAsString(cookie.toArray(new String[0]));
-                    System.out.println(s);
                     cookieRepository.save(CookieEntity.builder()
                             .cookie(s)
                             .build());
