@@ -13,11 +13,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.*;
 import org.springframework.http.client.*;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.BufferedReader;
@@ -28,23 +29,24 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-@Component
+@Service
 @Slf4j
 public class IW4AdminApi {
     private final ConfigModel configModel;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
     private volatile String cachedIw4adminUrl;
-    private final String execAddress = getIw4adminUrl() + "/Console/ExecuteAsync?serverId={serverId}&command={command}";
+    private final String execAddress;
 
     @Autowired
-    public IW4AdminApi(ConfigModel configModel, ObjectMapper objectMapper) {
+    public IW4AdminApi(@Lazy ConfigModel configModel, ObjectMapper objectMapper) {
         this.configModel = configModel;
         this.objectMapper = objectMapper;
         this.restTemplate = new RestTemplate(new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
         List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
         interceptors.add(new LoggingRequestInterceptor());
         restTemplate.setInterceptors(interceptors);
+        execAddress = getIw4adminUrl() + "/Console/ExecuteAsync?serverId={serverId}&command={command}";
     }
 
     public boolean logIn(String cid, String passwd, CookieRepository cookieRepository){
@@ -146,7 +148,7 @@ public class IW4AdminApi {
     private String getIw4adminUrl() {
         if(cachedIw4adminUrl != null)
             return cachedIw4adminUrl;
-        String iw4adminUrl = new String(configModel.getIw4adminUrl());
+        String iw4adminUrl = new String(this.configModel.getIw4madminUrl());
         if(iw4adminUrl.endsWith("/")){
             iw4adminUrl = iw4adminUrl.substring(0, iw4adminUrl.length() - 1);
         }

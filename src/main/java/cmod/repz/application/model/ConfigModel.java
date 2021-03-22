@@ -1,17 +1,15 @@
 package cmod.repz.application.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 import java.util.Map;
 
 @Getter
 @Setter
+@ToString
 public class ConfigModel {
-    private String iw4adminUrl;
+    private String iw4madminUrl;
     private Database database;
     private Discord discord;
     private Map<String, String> messages;
