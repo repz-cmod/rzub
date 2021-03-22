@@ -27,16 +27,16 @@ public class RegistrationFinalizeService {
     private final DiscordUserRepository discordUserRepository;
     private final ConfigModel configModel;
     private final IW4AdminApi iw4AdminApi;
-    private final DiscordUserCache discordUserCache;
+    private final DiscordUserCacheService discordUserCacheService;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @Autowired
-    public RegistrationFinalizeService(JDA jda, DiscordUserRepository discordUserRepository, ConfigModel configModel, IW4AdminApi iw4AdminApi, DiscordUserCache discordUserCache, ApplicationEventPublisher applicationEventPublisher) {
+    public RegistrationFinalizeService(JDA jda, DiscordUserRepository discordUserRepository, ConfigModel configModel, IW4AdminApi iw4AdminApi, DiscordUserCacheService discordUserCacheService, ApplicationEventPublisher applicationEventPublisher) {
         this.jda = jda;
         this.discordUserRepository = discordUserRepository;
         this.configModel = configModel;
         this.iw4AdminApi = iw4AdminApi;
-        this.discordUserCache = discordUserCache;
+        this.discordUserCacheService = discordUserCacheService;
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
@@ -89,7 +89,7 @@ public class RegistrationFinalizeService {
     private User getJDAUser(DiscordUserEntity discordUserEntity) {
         User jdaUser = jda.getUserById(discordUserEntity.getUserId());
         if(jdaUser == null){
-            jdaUser = discordUserCache.getUserAndRemove(Long.parseLong(discordUserEntity.getUserId()));
+            jdaUser = discordUserCacheService.getUserAndRemove(Long.parseLong(discordUserEntity.getUserId()));
         }
         return jdaUser;
     }

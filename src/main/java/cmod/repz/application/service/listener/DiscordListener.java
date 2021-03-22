@@ -5,7 +5,7 @@ import cmod.repz.application.database.repository.repz.DiscordListenerRepository;
 import cmod.repz.application.database.repository.repz.GuildRepository;
 import cmod.repz.application.model.event.DiscordMemberJoinEVent;
 import cmod.repz.application.model.event.DiscordReadyEvent;
-import cmod.repz.application.service.DiscordUserCache;
+import cmod.repz.application.service.DiscordUserCacheService;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
@@ -22,13 +22,13 @@ import java.util.Arrays;
 @Slf4j
 public class DiscordListener extends ListenerAdapter {
     private final DiscordListenerRepository discordListenerRepository;
-    private final DiscordUserCache discordUserCache;
+    private final DiscordUserCacheService discordUserCacheService;
     private final ApplicationEventPublisher applicationEventPublisher;
     private final GuildRepository guildRepository;
 
-    public DiscordListener(DiscordListenerRepository discordListenerRepository, DiscordUserCache discordUserCache, ApplicationEventPublisher applicationEventPublisher, GuildRepository guildRepository) {
+    public DiscordListener(DiscordListenerRepository discordListenerRepository, DiscordUserCacheService discordUserCacheService, ApplicationEventPublisher applicationEventPublisher, GuildRepository guildRepository) {
         this.discordListenerRepository = discordListenerRepository;
-        this.discordUserCache = discordUserCache;
+        this.discordUserCacheService = discordUserCacheService;
         this.applicationEventPublisher = applicationEventPublisher;
         this.guildRepository = guildRepository;
     }
@@ -43,7 +43,7 @@ public class DiscordListener extends ListenerAdapter {
     @Override
     public void onGuildMemberJoin(@Nonnull GuildMemberJoinEvent event) {
         log.info("User joined: "+ event.getUser().getName());
-        discordUserCache.addToCache(event.getUser());
+        discordUserCacheService.addToCache(event.getUser());
         applicationEventPublisher.publishEvent(new DiscordMemberJoinEVent(this, event));
     }
 
@@ -58,7 +58,7 @@ public class DiscordListener extends ListenerAdapter {
             return;
         }
 
-        discordUserCache.addToCache(event.getAuthor());
+        discordUserCacheService.addToCache(event.getAuthor());
 
         if(messageContent.startsWith("!")){
             String substring = messageContent.substring(1);

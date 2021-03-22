@@ -14,11 +14,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 @Slf4j
-public class CacheableIw4adminStatsLookup {
+public class CachedIW4MAdminStatsLookupService {
     private final IW4AdminApi iw4AdminApi;
 
     @Autowired
-    public CacheableIw4adminStatsLookup(IW4AdminApi iw4AdminApi) {
+    public CachedIW4MAdminStatsLookupService(IW4AdminApi iw4AdminApi) {
         this.iw4AdminApi = iw4AdminApi;
     }
 

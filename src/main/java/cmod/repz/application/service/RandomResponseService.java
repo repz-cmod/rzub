@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.Random;
 
 @Component
-public class RepzRandomResponse {
+public class RandomResponseService {
     private final RepzBotProperties repzBotProperties;
 
-    public RepzRandomResponse(RepzBotProperties repzBotProperties) {
+    public RandomResponseService(RepzBotProperties repzBotProperties) {
         this.repzBotProperties = repzBotProperties;
     }
 

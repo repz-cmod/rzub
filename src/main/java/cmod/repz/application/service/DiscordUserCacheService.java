@@ -8,10 +8,10 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
 
 @Service
-public class DiscordUserCache {
+public class DiscordUserCacheService {
     private ConcurrentMap<Object, Object> cache;
 
-    public DiscordUserCache() {
+    public DiscordUserCacheService() {
         cache = CacheBuilder.newBuilder()
                 .maximumSize(50)
                 .expireAfterWrite(5, TimeUnit.MINUTES)

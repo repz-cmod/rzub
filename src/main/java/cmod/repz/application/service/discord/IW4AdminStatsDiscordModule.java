@@ -4,7 +4,7 @@ import cmod.repz.application.annotation.DiscordListenerComponent;
 import cmod.repz.application.database.entity.repz.DiscordUserEntity;
 import cmod.repz.application.database.repository.repz.DiscordUserRepository;
 import cmod.repz.application.model.IW4AdminStatResult;
-import cmod.repz.application.service.CacheableIw4adminStatsLookup;
+import cmod.repz.application.service.CachedIW4MAdminStatsLookupService;
 import cmod.repz.application.service.listener.DiscordCommandListener;
 import cmod.repz.application.util.DiscordUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -19,11 +19,11 @@ import java.util.Objects;
 @DiscordListenerComponent(command = "iwstats", description = "returns player stats in iw4admin")
 @Slf4j
 public class IW4AdminStatsDiscordModule implements DiscordCommandListener {
-    private final CacheableIw4adminStatsLookup cacheableIw4adminStatsLookup;
+    private final CachedIW4MAdminStatsLookupService cachedIW4MAdminStatsLookupService;
     private final DiscordUserRepository discordUserRepository;
 
-    public IW4AdminStatsDiscordModule(CacheableIw4adminStatsLookup cacheableIw4adminStatsLookup, DiscordUserRepository discordUserRepository) {
-        this.cacheableIw4adminStatsLookup = cacheableIw4adminStatsLookup;
+    public IW4AdminStatsDiscordModule(CachedIW4MAdminStatsLookupService cachedIW4MAdminStatsLookupService, DiscordUserRepository discordUserRepository) {
+        this.cachedIW4MAdminStatsLookupService = cachedIW4MAdminStatsLookupService;
         this.discordUserRepository = discordUserRepository;
     }
 
@@ -56,7 +56,7 @@ public class IW4AdminStatsDiscordModule implements DiscordCommandListener {
     }
 
     public void sendStats(MessageChannel messageChannel, String clientId) throws Exception {
-        IW4AdminStatResult iw4adminStats = cacheableIw4adminStatsLookup.getIW4adminStats(clientId);
+        IW4AdminStatResult iw4adminStats = cachedIW4MAdminStatsLookupService.getIW4adminStats(clientId);
         messageChannel.sendMessage(DiscordUtil.getEmbedFromIW4AdminStatResult(iw4adminStats, "IW4Admin stats results for client *" + iw4adminStats.getClientId() + "*")).complete();
     }
 
