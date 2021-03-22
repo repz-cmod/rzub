@@ -116,3 +116,14 @@ Here is a list of available discord commands:
 | !servers 	 | Returns lists of server to be used to fill <ServerId> in other commands                |                    	            |
 | !register  | Sends user instrcution to map their discord to the game.                            	  |                    	            |
 | !whitelist | Adds an IW4MAdmin client id to whitelist for ipb and ipb2                              |  `!whitelist help` to see full  |
+  
+## Modules (switchable features)
+
+### analytics
+By this version I encourage everyone to set this module to `false` in their configuration file. In future releases there will be a web panel for RZUB that provides analytics data of servers. If you leave the value to `true` this data will be collected but will never be used.
+
+### welcome
+By having this module enabled, new members will get direct message from your BOT. The message data is configurable through `config.json`
+
+### access grant
+This module does not require switch to be on or off. If you set up the channel ID for "access grant" feature, it will work. What does it do? It makes users to type in certain message in order to give them a certain role and allow them to access the discord.
