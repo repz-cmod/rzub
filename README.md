@@ -92,3 +92,9 @@ You can replace `9000` with any port of your choice. If your config.json file is
 ## Plugins
 
 In order to have full support of all BOT features and create discord-iw4madmin mappings, you need to add javascript plugins under [plugins](https://github.com/repz-cmod/rzub/tree/main/plugins) to your IW4MAdmin Plugins directory. Make sure to first replace bot URL in those plugin files with valid ip and port of the running bot.
+
+## Post Run Configuration
+
+If you want to be able to make **execute commands through discord** or **enable the donator slot reserve** you first have to create a new account (guid) for a game (lets say iw4x) and then give this account moderator/administrator access in IW4MAdmin.
+
+Then go to the game and type `!rt`. It will give you an ID and a token. As server owner (`management` role ID) come to discord and enter `!iwlogin <clientId> <password>` (without <>). Your bot is now logged into IW4MAdmin and is ready to execute automatic or manual commands from discord.
