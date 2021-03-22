@@ -17,9 +17,6 @@
         "channels": {
             "access-grant": ""
         },
-        "messages": {
-            "xlrtopstats": "763024160045269003"
-        },
         "roles": {
             "management": "000000000000000000",
             "jmanagement": "000000000000000000",
