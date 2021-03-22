@@ -89,3 +89,6 @@ java -jar repz.jar --server.port=9000
 
 You can replace `9000` with any port of your choice. If your config.json file is not in same location you can pass the location like: `--repz.conf.file=/path/to/config.json`
 
+## Plugins
+
+In order to have full support of all BOT features and create discord-iw4madmin mappings, you need to add javascript plugins under [plugins](https://github.com/repz-cmod/rzub/tree/main/plugins) to your IW4MAdmin Plugins directory. Make sure to first replace bot URL in those plugin files with valid ip and port of the running bot.
