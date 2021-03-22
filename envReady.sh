@@ -1,9 +1,9 @@
 #!/bin/sh
 
 mvn clean package -DskipTests
-rm env/repz.jar
-cp target/repz.jar ./env
+rm env/rzub.jar
+cp target/rzub.jar ./env
 cd env
-./repz.jar --server.port=8083
+./rzub.jar --server.port=8083
 cd ..
 
