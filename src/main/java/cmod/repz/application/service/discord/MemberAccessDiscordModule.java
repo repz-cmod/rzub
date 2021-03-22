@@ -22,7 +22,7 @@ public class MemberAccessDiscordModule implements DiscordMessageListener {
     @Override
     public void onMessage(GuildMessageReceivedEvent event) {
         if (event.getChannel().getId().equals(configModel.getDiscord().getChannels().get("access-grant"))) {
-            discordDelayedMessageRemoverService.scheduleRemove(event.getMessage(), 2); //todo: 60 -> 10
+            discordDelayedMessageRemoverService.scheduleRemove(event.getMessage(), 5);
             if(event.getMessage().getContentRaw().toLowerCase().equals(configModel.getDiscord().getCustom().get("accept-rules-message").toLowerCase())){
                 Role base_member_role = event.getJDA().getRoleById(configModel.getDiscord().getRoles().get("base_member_role"));
                 event.getGuild().addRoleToMember(Objects.requireNonNull(event.getMember()), Objects.requireNonNull(base_member_role)).complete();
