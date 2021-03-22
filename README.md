@@ -35,3 +35,20 @@ Discord and IW4MAdmin features (admin):
 - Block a certain ISP and City (smarter than previous one) to prevent evasions
 - Add players to whitelist to avoid IP-Range block
 - Execute iw4madmin commands through discord
+
+## How to run
+
+Requirements:
+
+- Java 8+ installed on your system
+- Apache maven **(only if you want to build from scratch)**
+
+To build from scratch, clone the repository and run this command in project root:
+
+```
+maven clean package -DskipTests
+```
+You now have `rzub.jar` in the `target` folder.
+
+Instead of builting the app by yourself, you can find released JARs in [releases](https://github.com/repz-cmod/rzub/releases) section.
+
