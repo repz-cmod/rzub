@@ -11,8 +11,21 @@
     <groupId>cmod.repz</groupId>
     <artifactId>application</artifactId>
     <version>1.0.0-RELEASE</version>
-    <name>RepZ Application</name>
+    <name>RepZ Ultimate Bot Application</name>
     <description>RepZ analytics and discord commands application</description>
+    <developers>
+        <developer>
+            <id>sep#8562</id>
+            <name>Sepehr Gh</name>
+            <organization>RepZ</organization>
+            <organizationUrl>https://github.com/repz-cmod/</organizationUrl>
+            <timezone>Asia/Tehran</timezone>
+            <roles>
+                <role>management</role>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
     <packaging>jar</packaging>
     <properties>
         <java.version>1.8</java.version>
@@ -117,6 +130,6 @@
                 </executions>
             </plugin>
         </plugins>
-        <finalName>repz</finalName>
+        <finalName>rzub</finalName>
     </build>
 </project>
