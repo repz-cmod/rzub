@@ -10,21 +10,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.*;
-import org.springframework.http.client.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.BufferingClientHttpRequestFactory;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -43,9 +41,6 @@ public class IW4AdminApi {
         this.configModel = configModel;
         this.objectMapper = objectMapper;
         this.restTemplate = new RestTemplate(new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
-        List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
-        interceptors.add(new LoggingRequestInterceptor());
-        restTemplate.setInterceptors(interceptors);
         execAddress = getIw4adminUrl() + "/Console/ExecuteAsync?serverId={serverId}&command={command}";
     }
 
@@ -163,44 +158,4 @@ public class IW4AdminApi {
         private final String body;
     }
 
-
-    public class LoggingRequestInterceptor implements ClientHttpRequestInterceptor {
-
-        final Logger log = LoggerFactory.getLogger(LoggingRequestInterceptor.class);
-
-        @Override
-        public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
-            traceRequest(request, body);
-            ClientHttpResponse response = execution.execute(request, body);
-            traceResponse(response);
-            return response;
-        }
-
-        private void traceRequest(HttpRequest request, byte[] body) throws IOException {
-            log.debug("===========================request begin================================================");
-            log.debug("URI         : {}", request.getURI());
-            log.debug("Method      : {}", request.getMethod());
-            log.debug("Headers     : {}", request.getHeaders() );
-            log.debug("Request body: {}", new String(body, "UTF-8"));
-            log.debug("==========================request end================================================");
-        }
-
-        private void traceResponse(ClientHttpResponse response) throws IOException {
-            StringBuilder inputStringBuilder = new StringBuilder();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(response.getBody(), "UTF-8"));
-            String line = bufferedReader.readLine();
-            while (line != null) {
-                inputStringBuilder.append(line);
-                inputStringBuilder.append('\n');
-                line = bufferedReader.readLine();
-            }
-            log.debug("============================response begin==========================================");
-            log.debug("Status code  : {}", response.getStatusCode());
-            log.debug("Status text  : {}", response.getStatusText());
-            log.debug("Headers      : {}", response.getHeaders());
-            log.debug("Response body: {}", inputStringBuilder.toString());
-            log.debug("=======================response end=================================================");
-        }
-
-    }
 }
