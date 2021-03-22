@@ -98,3 +98,21 @@ In order to have full support of all BOT features and create discord-iw4madmin m
 If you want to be able to make **execute commands through discord** or **enable the donator slot reserve** you first have to create a new account (guid) for a game (lets say iw4x) and then give this account moderator/administrator access in IW4MAdmin.
 
 Then go to the game and type `!rt`. It will give you an ID and a token. As server owner (`management` role ID) come to discord and enter `!iwlogin <clientId> <password>` (without <>). Your bot is now logged into IW4MAdmin and is ready to execute automatic or manual commands from discord.
+
+## Commands
+
+Here is a list of available discord commands:
+
+| Command 	 | Description                                                                          	| Example            	            |
+|----------	 |--------------------------------------------------------------------------------------	|-------------------------------	|
+| !clean  	 | Cleans 20 messages from last message in a channel till it reaches certain message id 	| `!clean <MessageId>` 	          |
+| !iwexec  	 | Executes commands into iw4madmin for a certain server                                	| `!iwexec <ServerId> <Command>` 	|
+| !join   	 | For donators to use to make a spot on server and join a full server                    | `!join <ServerId>`              |
+| !forum  	 | Sends back the forum link from the config file                                      	  | `!forum`                   	    |
+| !ipb       | Blocks a range of IP Addresses.                                                        | `!ipb help` to see full         |
+| !ipb2      | Blockes based on IP of same city and ISP of provided example                           | `!ipb2 help` to see full        |
+| !iwl       | Looks up in IW4MAdmin for a player                                                     |                    	            |
+| !iwstats   | Returns player stats in IW4MAdmin                                                      |  `!iwstats <ClientId>`          |
+| !servers 	 | Returns lists of server to be used to fill <ServerId> in other commands                |                    	            |
+| !register  | Sends user instrcution to map their discord to the game.                            	  |                    	            |
+| !whitelist | Adds an IW4MAdmin client id to whitelist for ipb and ipb2                              |  `!whitelist help` to see full  |
