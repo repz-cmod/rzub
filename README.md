@@ -8,7 +8,7 @@
                                              
 ```
 
-RepZ Ultimate Bot is a bot created exlusive for RepZ, but its also configurable enough to be used in any game project supporting IW4MAdmin. The bot focuses on mainly 2 things. First, commands that help us retrieve some information from the server. Second, commands that help us control the server.
+RepZ Ultimate Bot is a bot created exclusive for RepZ, but its also configurable enough to be used in any game project supporting IW4MAdmin. The bot focuses on mainly 2 things. First, commands that help us retrieve some information from the server. Second, commands that help us control the server.
 
 ## Features
 
