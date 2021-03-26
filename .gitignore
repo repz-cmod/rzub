@@ -1,6 +1,7 @@
 /target/
 /env/rzub.jar
 /env/repz.log
+/env/rzub.log
 /env/*.log.*
 source.zip
-/env/config.json
+/env/settings.json

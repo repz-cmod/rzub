@@ -1,11 +1,11 @@
 logging:
   file:
-    name: repz.log
+    name: rzub.log
   level:
     ROOT: info
-repz:
+rzub:
   conf:
-    file: './config.json'
+    settings: './settings.json'
   bot:
     responses:
       - "I'm not your google assistance, so please use valid commands to talk to me. try `!help` to see them."
