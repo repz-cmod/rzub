@@ -1,5 +1,5 @@
 {
-    "module": {
+    "modules": {
         "analytics": false,
         "welcome": false
     },
