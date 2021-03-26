@@ -7,7 +7,7 @@ import com.github.rzub.database.repository.PlayerTrackerRepository;
 import com.github.rzub.database.repository.ServerRepository;
 import com.github.rzub.database.repository.ServerTrackerRepository;
 import com.github.rzub.model.ConfigModel;
-import com.github.rzub.model.Iw4adminApiModel;
+import com.github.rzub.model.Iw4madminApiModel;
 import com.github.rzub.util.GameUtil;
 import com.github.rzub.util.MathUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +70,7 @@ public class MysqlAnalyticsDao implements AnalyticsDao {
     }
 
     @Override
-    public void trackServer(Iw4adminApiModel.Server server) {
+    public void trackServer(Iw4madminApiModel.Server server) {
         if (enabled){
             serverTrackerRepository.save(ServerTrackEntity.builder()
                     .date(new Date())
@@ -89,7 +89,7 @@ public class MysqlAnalyticsDao implements AnalyticsDao {
         }catch (Exception ignored){}
     }
 
-    private synchronized void addServer(Iw4adminApiModel.Server server){
+    private synchronized void addServer(Iw4madminApiModel.Server server){
         try{
             if (serverRepository.existsByServerId(server.getId())) {
                 serverRepository.save(ServerEntity.builder()

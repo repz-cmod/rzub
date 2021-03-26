@@ -12,11 +12,11 @@ public interface ColumnName {
     String TRACKER_ID = "tracker_id";
     String MAP_NAME = "map_name";
     String DISCORD_USER_ID = "d_user_id";
-    String IW4ADMIN_CLIENT_ID = "iwa_client_id";
+    String IW4MADMIN_CLIENT_ID = "iwa_client_id";
     String B3_MW2_CLIENT_ID = "b3_mw2_client_id";
-    String IW4ADMIN_MW2_CLIENT_ID = "iw4admin_mw2_client_id";
+    String IW4MADMIN_MW2_CLIENT_ID = "iw4madmin_mw2_client_id";
     String B3_BO2_CLIENT_ID = "b3_bo2_client_id";
-    String IW4ADMIN_BO2_CLIENT_ID = "iw4admin_bo2_client_id";
+    String IW4MADMIN_BO2_CLIENT_ID = "iw4madmin_bo2_client_id";
     String B3_BF3_CLIENT_ID = "b3_bf3_client_id";
     String TOP_10_CHANNEL_NOTIF_SENT = "t10notif";
     String IPB_START_LONG = "start_long";

@@ -9,7 +9,7 @@ const discordConfig = {
     title: "**Player was banned by Tracker Service**",
     footer: {"text": "Tracker Plugin | v1.0 | By RepZ Sep"}, //footer, change it to your server information if you want
     colorValue: 7506394,
-    iw4adminUrlPrefix: ''
+    iw4madminUrlPrefix: ''
 };
 
 //plugin code here, do not make any changes unless you know what you are doing
@@ -54,7 +54,7 @@ var plugin = {
         let cleanHostname = this.cleanColors(server.Hostname);
         var embed = {
             "title": discordConfig.title,
-            "description": "Player **" + origin.CleanedName + "** (["+origin.ClientId+"]("+discordConfig.iw4adminUrlPrefix + origin.ClientId+")) has tried to evade ban.\n" +
+            "description": "Player **" + origin.CleanedName + "** (["+origin.ClientId+"]("+discordConfig.iw4madminUrlPrefix + origin.ClientId+")) has tried to evade ban.\n" +
             "**Reason**: `"+ banMessage+"`\n"+
             "**Server**: "+ cleanHostname+"\n"+
             "**Client IP**: "+origin.IPAddressString+"\n",
@@ -68,7 +68,7 @@ var plugin = {
 
         try {
             var client = new System.Net.Http.HttpClient();
-            client.DefaultRequestHeaders.Add("User-Agent", "iw4admin plugin");
+            client.DefaultRequestHeaders.Add("User-Agent", "iw4madmin plugin");
             var content = new System.Net.Http.StringContent(JSON.stringify(webhookData), System.Text.Encoding.UTF8, "application/json");
             var result = client.PostAsync(discordConfig.webhookUrl, content).Result;
             result.Dispose();
@@ -93,7 +93,7 @@ var plugin = {
             var url = trackerBaseUrl + (gameEvent.Type === 4 ? "join" : "leave");
 
             var client = new System.Net.Http.HttpClient();
-            client.DefaultRequestHeaders.Add("User-Agent", "iw4admin plugin");
+            client.DefaultRequestHeaders.Add("User-Agent", "iw4madmin plugin");
             var content = new System.Net.Http.StringContent(JSON.stringify(data), System.Text.Encoding.UTF8, "application/json");
             var result = client.PostAsync(url, content).Result;
             var co = result.Content;

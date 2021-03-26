@@ -154,27 +154,27 @@ public class DiscordUtil {
         return embedBuilder.build();
     }
 
-    private static String getRanks(IW4AdminStatResult iw4adminStats) {
+    private static String getRanks(IW4AdminStatResult iw4madminStats) {
         StringBuilder stringBuilder = new StringBuilder();
-        iw4adminStats.getRankings().forEach(mapRanking -> {
+        iw4madminStats.getRankings().forEach(mapRanking -> {
             stringBuilder.append(mapRanking.getRank());
             stringBuilder.append("\n");
         });
         return stringBuilder.toString();
     }
 
-    private static String getGames(IW4AdminStatResult iw4adminStats) {
+    private static String getGames(IW4AdminStatResult iw4madminStats) {
         StringBuilder stringBuilder = new StringBuilder();
-        iw4adminStats.getRankings().forEach(mapRanking -> {
+        iw4madminStats.getRankings().forEach(mapRanking -> {
             stringBuilder.append(mapRanking.getGame());
             stringBuilder.append("\n");
         });
         return stringBuilder.toString();
     }
 
-    private static String getServers(IW4AdminStatResult iw4adminStats) {
+    private static String getServers(IW4AdminStatResult iw4madminStats) {
         StringBuilder stringBuilder = new StringBuilder();
-        iw4adminStats.getRankings().forEach(mapRanking -> {
+        iw4madminStats.getRankings().forEach(mapRanking -> {
             stringBuilder.append(GameUtil.cleanColors(mapRanking.getMap()));
             stringBuilder.append("\n");
         });

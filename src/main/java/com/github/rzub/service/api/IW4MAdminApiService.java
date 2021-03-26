@@ -3,7 +3,7 @@ package com.github.rzub.service.api;
 import com.github.rzub.database.entity.CookieEntity;
 import com.github.rzub.database.repository.CookieRepository;
 import com.github.rzub.model.ConfigModel;
-import com.github.rzub.model.Iw4adminApiModel;
+import com.github.rzub.model.Iw4madminApiModel;
 import com.github.rzub.util.OffsetLimitPageable;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,23 +29,23 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class IW4AdminApi {
+public class IW4MAdminApiService {
     private final ConfigModel configModel;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
-    private volatile String cachedIw4adminUrl;
+    private volatile String cachedIw4madminUrl;
     private final String execAddress;
 
     @Autowired
-    public IW4AdminApi(@Lazy ConfigModel configModel, ObjectMapper objectMapper) {
+    public IW4MAdminApiService(@Lazy ConfigModel configModel, ObjectMapper objectMapper) {
         this.configModel = configModel;
         this.objectMapper = objectMapper;
         this.restTemplate = new RestTemplate(new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
-        execAddress = getIw4adminUrl() + "/Console/ExecuteAsync?serverId={serverId}&command={command}";
+        execAddress = getIw4madminUrl() + "/Console/ExecuteAsync?serverId={serverId}&command={command}";
     }
 
     public boolean logIn(String cid, String passwd, CookieRepository cookieRepository){
-        String addr = getIw4adminUrl() + "/Account/LoginAsync?clientId="+cid+"&password="+passwd;
+        String addr = getIw4madminUrl() + "/Account/LoginAsync?clientId="+cid+"&password="+passwd;
         try {
             ResponseEntity<String> responseEntity = restTemplate.getForEntity(addr, String.class);
             List<String> cookie = getCookie(responseEntity);
@@ -120,34 +120,34 @@ public class IW4AdminApi {
         throw new Exception("No cookie found");
     }
 
-    public List<Iw4adminApiModel.Server> getServerList(){
-        String iw4adminUrl = getIw4adminUrl();
-        ResponseEntity<List<Iw4adminApiModel.Server>> responseEntity = restTemplate.exchange(iw4adminUrl + "/api/status",
-                HttpMethod.GET, null, new ParameterizedTypeReference<List<Iw4adminApiModel.Server>>() {
+    public List<Iw4madminApiModel.Server> getServerList(){
+        String iw4madminUrl = getIw4madminUrl();
+        ResponseEntity<List<Iw4madminApiModel.Server>> responseEntity = restTemplate.exchange(iw4madminUrl + "/api/status",
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<Iw4madminApiModel.Server>>() {
                 });
         return responseEntity.getBody();
     }
 
-    public Iw4adminApiModel.FindApiResult findClient(String query){
-        return restTemplate.getForEntity(getIw4adminUrl() + "/api/client/find?name="+query, Iw4adminApiModel.FindApiResult.class).getBody();
+    public Iw4madminApiModel.FindApiResult findClient(String query){
+        return restTemplate.getForEntity(getIw4madminUrl() + "/api/client/find?name="+query, Iw4madminApiModel.FindApiResult.class).getBody();
     }
 
-    public List<Iw4adminApiModel.Stat> getClientStats(String clientId){
-        ResponseEntity<List<Iw4adminApiModel.Stat>> responseEntity = restTemplate.exchange(getIw4adminUrl() + "/api/stats/"+clientId,
-                HttpMethod.GET, null, new ParameterizedTypeReference<List<Iw4adminApiModel.Stat>>() {
+    public List<Iw4madminApiModel.Stat> getClientStats(String clientId){
+        ResponseEntity<List<Iw4madminApiModel.Stat>> responseEntity = restTemplate.exchange(getIw4madminUrl() + "/api/stats/"+clientId,
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<Iw4madminApiModel.Stat>>() {
                 });
         return responseEntity.getBody();
     }
 
-    private String getIw4adminUrl() {
-        if(cachedIw4adminUrl != null)
-            return cachedIw4adminUrl;
-        String iw4adminUrl = new String(this.configModel.getIw4madminUrl());
-        if(iw4adminUrl.endsWith("/")){
-            iw4adminUrl = iw4adminUrl.substring(0, iw4adminUrl.length() - 1);
+    private String getIw4madminUrl() {
+        if(cachedIw4madminUrl != null)
+            return cachedIw4madminUrl;
+        String iw4madminUrl = new String(this.configModel.getIw4madminUrl());
+        if(iw4madminUrl.endsWith("/")){
+            iw4madminUrl = iw4madminUrl.substring(0, iw4madminUrl.length() - 1);
         }
-        cachedIw4adminUrl = iw4adminUrl;
-        return iw4adminUrl;
+        cachedIw4madminUrl = iw4madminUrl;
+        return iw4madminUrl;
     }
 
     @Getter

@@ -1,4 +1,4 @@
-package com.github.rzub.service;
+package com.github.rzub.service.api;
 
 import lombok.*;
 import org.springframework.stereotype.Service;

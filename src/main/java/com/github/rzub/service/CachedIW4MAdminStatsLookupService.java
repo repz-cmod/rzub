@@ -1,8 +1,8 @@
 package com.github.rzub.service;
 
 import com.github.rzub.model.IW4AdminStatResult;
-import com.github.rzub.model.Iw4adminApiModel;
-import com.github.rzub.service.api.IW4AdminApi;
+import com.github.rzub.model.Iw4madminApiModel;
+import com.github.rzub.service.api.IW4MAdminApiService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -15,22 +15,22 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Component
 @Slf4j
 public class CachedIW4MAdminStatsLookupService {
-    private final IW4AdminApi iw4AdminApi;
+    private final IW4MAdminApiService iw4MAdminApiService;
 
     @Autowired
-    public CachedIW4MAdminStatsLookupService(IW4AdminApi iw4AdminApi) {
-        this.iw4AdminApi = iw4AdminApi;
+    public CachedIW4MAdminStatsLookupService(IW4MAdminApiService iw4MAdminApiService) {
+        this.iw4MAdminApiService = iw4MAdminApiService;
     }
 
-    @Cacheable(cacheNames = "iw4adminStats", key = "#clientId", unless="#result == null")
+    @Cacheable(cacheNames = "iw4madminStats", key = "#clientId", unless="#result == null")
     public IW4AdminStatResult getIW4adminStats(String clientId) throws Exception {
-        log.info("Looking up iw4admin stats for "+ clientId);
+        log.info("Looking up iw4madmin stats for "+ clientId);
 
         List<IW4AdminStatResult.MapRanking> mapRankings = new ArrayList<>();
 
         AtomicInteger atomicDeaths = new AtomicInteger();
         AtomicInteger atomicKills = new AtomicInteger();
-        List<Iw4adminApiModel.Stat> clientStats = iw4AdminApi.getClientStats(clientId);
+        List<Iw4madminApiModel.Stat> clientStats = iw4MAdminApiService.getClientStats(clientId);
         clientStats.forEach(stat -> {
             atomicDeaths.addAndGet(stat.getDeaths());
             atomicKills.addAndGet(stat.getKills());

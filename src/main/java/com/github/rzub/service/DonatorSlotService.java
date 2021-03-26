@@ -2,8 +2,8 @@ package com.github.rzub.service;
 
 import com.github.rzub.database.repository.CookieRepository;
 import com.github.rzub.model.ConfigModel;
-import com.github.rzub.model.Iw4adminApiModel;
-import com.github.rzub.service.api.IW4AdminApi;
+import com.github.rzub.model.Iw4madminApiModel;
+import com.github.rzub.service.api.IW4MAdminApiService;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,13 +19,13 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class DonatorSlotService {
-    private final IW4AdminApi iw4AdminApi;
+    private final IW4MAdminApiService iw4MAdminApiService;
     private final CookieRepository cookieRepository;
     private final ConfigModel configModel;
     private final CacheManager donatorTicketCacheManager;
 
     public Result emptySlot(String donatorDiscordUserId, String serverId){
-        Iw4adminApiModel.Server chosenServer = iw4AdminApi.getServerList().stream().filter(server -> String.valueOf(server.getId()).equals(serverId)).collect(Collectors.toList()).get(0);
+        Iw4madminApiModel.Server chosenServer = iw4MAdminApiService.getServerList().stream().filter(server -> String.valueOf(server.getId()).equals(serverId)).collect(Collectors.toList()).get(0);
         if(chosenServer == null){
             return Result.error("Could not find a server with provided ID");
         }
@@ -34,17 +34,17 @@ public class DonatorSlotService {
         if(hasTickets(donatorDiscordUserId))
             return Result.error("You got no tickets left. Try again later");
 
-        chosenServer.getPlayers().sort(Comparator.comparing(Iw4adminApiModel.Player::getConnectionTime));
-        Iw4adminApiModel.Player playerToKick = getNoneAdminPlayer(chosenServer.getPlayers());
+        chosenServer.getPlayers().sort(Comparator.comparing(Iw4madminApiModel.Player::getConnectionTime));
+        Iw4madminApiModel.Player playerToKick = getNoneAdminPlayer(chosenServer.getPlayers());
         if(kick(serverId, playerToKick))
             updateTicket(donatorDiscordUserId);
         else return Result.error("Something went wrong, Please try again later");
         return Result.success(chosenServer.getName());
     }
 
-    private boolean kick(String serverId, Iw4adminApiModel.Player playerToKick) {
+    private boolean kick(String serverId, Iw4madminApiModel.Player playerToKick) {
         String cmd = "!kick " + playerToKick.getClientNumber() + " " + configModel.getMessages().get("donatorSlotKickReason");
-        return iw4AdminApi.sendCommand(serverId, cmd, cookieRepository);
+        return iw4MAdminApiService.sendCommand(serverId, cmd, cookieRepository);
     }
 
     private void updateTicket(String donatorDiscordUserId) {
@@ -55,15 +55,15 @@ public class DonatorSlotService {
         return Objects.requireNonNull(donatorTicketCacheManager.getCache("TICKET")).get(donatorDiscordUserId) != null;
     }
 
-    private Iw4adminApiModel.Player getNoneAdminPlayer(List<Iw4adminApiModel.Player> players) {
-        for (Iw4adminApiModel.Player player : players) {
+    private Iw4madminApiModel.Player getNoneAdminPlayer(List<Iw4madminApiModel.Player> players) {
+        for (Iw4madminApiModel.Player player : players) {
             if(!isAdmin(player))
                 return player;
         }
-        return Iw4adminApiModel.Player.builder().clientNumber(1000).build();
+        return Iw4madminApiModel.Player.builder().clientNumber(1000).build();
     }
 
-    private boolean isAdmin(Iw4adminApiModel.Player player) {
+    private boolean isAdmin(Iw4madminApiModel.Player player) {
         return !player.getLevel().equals("User");
     }
 

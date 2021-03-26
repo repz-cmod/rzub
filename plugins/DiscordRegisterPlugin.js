@@ -30,7 +30,7 @@ var plugin = {
 
         try {
             var client = new System.Net.Http.HttpClient();
-            client.DefaultRequestHeaders.Add("User-Agent", "iw4admin plugin");
+            client.DefaultRequestHeaders.Add("User-Agent", "iw4madmin plugin");
             var content = new System.Net.Http.StringContent(JSON.stringify(data), System.Text.Encoding.UTF8, "application/json");
             var result = client.PostAsync(registrationUrl, content).Result;
             var co = result.Content;

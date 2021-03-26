@@ -14,9 +14,9 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import java.util.Objects;
 
 /*
- * Gets player stats for each game from iw4admin
+ * Gets player stats for each game from iw4madmin
  */
-@DiscordListenerComponent(command = "iwstats", description = "returns player stats in iw4admin")
+@DiscordListenerComponent(command = "iwstats", description = "returns player stats in iw4madmin")
 @Slf4j
 public class IW4AdminStatsDiscordModule implements DiscordCommandListener {
     private final CachedIW4MAdminStatsLookupService cachedIW4MAdminStatsLookupService;
@@ -38,15 +38,15 @@ public class IW4AdminStatsDiscordModule implements DiscordCommandListener {
                 DiscordUserEntity discordUserEntity = discordUserRepository.findByUserId(Objects.requireNonNull(event.getMember()).getUser().getId());
                 if(discordUserEntity != null){
                     //send mw2 stats
-                    if (discordUserEntity.getIw4adminMw2ClientId() != null) {
-                        sendStats(messageChannel, discordUserEntity.getIw4adminMw2ClientId());
+                    if (discordUserEntity.getIw4madminMw2ClientId() != null) {
+                        sendStats(messageChannel, discordUserEntity.getIw4madminMw2ClientId());
                     }
 
-                    if (discordUserEntity.getIw4adminBo2ClientId() != null) {
-                        sendStats(messageChannel, discordUserEntity.getIw4adminBo2ClientId());
+                    if (discordUserEntity.getIw4madminBo2ClientId() != null) {
+                        sendStats(messageChannel, discordUserEntity.getIw4madminBo2ClientId());
                     }
                 }else {
-                    messageChannel.sendMessage("Please provide clientId of iw4admin `!iwstats <clientId>` or register using `!register` command").complete();
+                    messageChannel.sendMessage("Please provide clientId of iw4madmin `!iwstats <clientId>` or register using `!register` command").complete();
                 }
 
             }
@@ -56,8 +56,8 @@ public class IW4AdminStatsDiscordModule implements DiscordCommandListener {
     }
 
     public void sendStats(MessageChannel messageChannel, String clientId) throws Exception {
-        IW4AdminStatResult iw4adminStats = cachedIW4MAdminStatsLookupService.getIW4adminStats(clientId);
-        messageChannel.sendMessage(DiscordUtil.getEmbedFromIW4AdminStatResult(iw4adminStats, "IW4Admin stats results for client *" + iw4adminStats.getClientId() + "*")).complete();
+        IW4AdminStatResult iw4madminStats = cachedIW4MAdminStatsLookupService.getIW4adminStats(clientId);
+        messageChannel.sendMessage(DiscordUtil.getEmbedFromIW4AdminStatResult(iw4madminStats, "IW4Admin stats results for client *" + iw4madminStats.getClientId() + "*")).complete();
     }
 
 }

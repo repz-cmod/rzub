@@ -4,7 +4,7 @@ import lombok.*;
 
 import java.util.List;
 
-public class Iw4adminApiModel {
+public class Iw4madminApiModel {
 
     @Getter
     @Setter

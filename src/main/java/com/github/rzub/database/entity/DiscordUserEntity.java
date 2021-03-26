@@ -29,10 +29,10 @@ public class DiscordUserEntity {
     private String nickname;
     private String username;
 
-    @Column(name = IW4ADMIN_MW2_CLIENT_ID)
-    private String iw4adminMw2ClientId;
-    @Column(name = IW4ADMIN_BO2_CLIENT_ID)
-    private String iw4adminBo2ClientId;
+    @Column(name = IW4MADMIN_MW2_CLIENT_ID)
+    private String iw4madminMw2ClientId;
+    @Column(name = IW4MADMIN_BO2_CLIENT_ID)
+    private String iw4madminBo2ClientId;
     @Column(name = B3_MW2_CLIENT_ID)
     private String b3MW2ClientId;
     @Column(name = B3_BO2_CLIENT_ID)
