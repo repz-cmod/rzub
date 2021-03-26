@@ -25,7 +25,7 @@ public class DonatorSlotDiscordModule implements DiscordCommandListener {
         discordDelayedMessageRemoverService.scheduleRemove(event.getMessage(), 20);
 
         if(!hasAccess(Objects.requireNonNull(event.getMember()))){
-            discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("This command is only accessible to donators. Donate to RepZ to unlock this.").complete(), 30);
+            discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("This command is only accessible to donators.").complete(), 30);
             return;
         }
 

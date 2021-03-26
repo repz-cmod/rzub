@@ -64,7 +64,7 @@ public class ApplicationConfig {
         builder.disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE);
         builder.setBulkDeleteSplittingEnabled(false);
         builder.setCompression(Compression.NONE);
-        builder.setActivity(Activity.watching("Repz Servers"));
+        builder.setActivity(Activity.watching("IW4MAdmin Servers"));
         builder.addEventListeners(discordListener);
         builder.enableIntents(GatewayIntent.GUILD_MEMBERS);
         return builder.build();

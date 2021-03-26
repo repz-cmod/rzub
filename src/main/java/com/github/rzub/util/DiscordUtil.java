@@ -29,7 +29,7 @@ public class DiscordUtil {
         return new EmbedBuilder()
                 .setColor(Color.RED)
                 .setTitle("Blocked IP Range List")
-                .setDescription("This is list of blocked IP Ranges by RepZ Managers. Each page has 10 results.\nPage: `" +page+"`.\nMax results: " + max +"\n")
+                .setDescription("This is list of blocked IP Ranges. Each page has 10 results.\nPage: `" +page+"`.\nMax results: " + max +"\n")
                 .addField("#", getNumbers(ipRangeBlockEntities), true)
                 .addField("range", getRange(ipRangeBlockEntities), true)
                 .addField("reason", getReasons(ipRangeBlockEntities), true)
@@ -67,7 +67,7 @@ public class DiscordUtil {
         return stringBuilder.toString();
     }
 
-
+    // todo: read "RepZ" and link from settings
     public static String getNames(List<ServerEntity> serverEntities){
         StringBuilder stringBuilder = new StringBuilder();
         serverEntities.forEach(serverEntity -> {

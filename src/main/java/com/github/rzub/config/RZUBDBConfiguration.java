@@ -21,7 +21,7 @@ import java.util.HashMap;
         basePackages = "com.github.rzub.database.repository",
         entityManagerFactoryRef = "rzubEntityManager",
         transactionManagerRef = "rzubTransactionManager")
-public class RepzAppDBConfiguration {
+public class RZUBDBConfiguration {
     @Bean("rzubDataSource")
     @Primary
     @DependsOn("configModel")

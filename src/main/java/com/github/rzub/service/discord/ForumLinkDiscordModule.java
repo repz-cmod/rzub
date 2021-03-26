@@ -13,7 +13,7 @@ public class ForumLinkDiscordModule implements DiscordCommandListener {
 
     @Autowired
     public ForumLinkDiscordModule(ConfigModel configModel) {
-        text = "Visit [RepZ Forum]("+configModel.getLinks().get("forum")+").";
+        text = "Visit [Forum]("+configModel.getLinks().get("forum")+").";
     }
 
 
