@@ -1,5 +1,6 @@
 package com.github.rzub.config;
 
+import com.github.rzub.model.CommandAccessModel;
 import com.github.rzub.model.SettingsModel;
 import com.github.rzub.model.RZUBBotProperties;
 import com.github.rzub.service.listener.DiscordListener;
@@ -49,6 +50,11 @@ public class ApplicationConfig {
         return taskScheduler;
     }
 
+    @Bean
+    public CommandAccessModel commandAccessModel(@Value("${rzub.conf.access}") String configFileAddress) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(new File(configFileAddress), CommandAccessModel.class);
+    }
 
     @Bean
     public SettingsModel settingsModel(@Value("${rzub.conf.settings}") String configFileAddress) throws IOException {

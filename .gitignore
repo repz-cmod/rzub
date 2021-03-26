@@ -5,3 +5,4 @@
 /env/*.log.*
 source.zip
 /env/settings.json
+/env/access.json
