@@ -1,7 +1,7 @@
 {
     "module": {
-        "analytics": true,
-        "welcome": true
+        "analytics": false,
+        "welcome": false
     },
     "iw4madminUrl": "http://localhost:8080/",
     "database": {
