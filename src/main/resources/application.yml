@@ -1,3 +1,4 @@
+
 logging:
   file:
     name: rzub.log
@@ -17,3 +18,6 @@ rzub:
       - "Yes, hello?"
       - "Try `!help`. Thanks."
 debug: false
+spring:
+  jpa:
+    open-in-view: false
