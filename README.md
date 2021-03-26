@@ -54,28 +54,32 @@ Instead of builting the app by yourself, you can find released JARs (in `rzub.zi
 
 
 ### Configuration:
-In order to run the project, you need your `rzub.jar` file and `config.json` file to be in same folder. You can get a sample of the config file from [env directory](https://github.com/repz-cmod/rzub/tree/main/env). Rename it to `config.json`
+There are two configuration files that you will need in order to be able to run RZUB. These configuration files are available in [env directory](https://github.com/repz-cmod/rzub/tree/main/env).
+Rename them to `settings.json` and `access.json` by removing the `-sample` from their names and edit them.
+You may want to keep these files in same directory as `rzub.jar` or learn how to pass their location to the jar file in **Run** section below.
+
+#### settings.json
+
+Base configuration of the bot
 
 - In modules section you can enable or disable application modules by changing values of `true` or `false`. See #modules-section below to understand more.
 - `iw4madminUrl` should point to your IW4MAdmin url ending with a `/`
 - You need to create a database for this bot.
-  - The fastest way to initialize database for the bot is to set `"hbm2ddl": "create"` in config.json for the first run. This initializes the database for you.
+  - The fastest way to initialize database for the bot is to set `"hbm2ddl": "create"` in settings.json for the first run. This initializes the database for you.
   - Then, for normal runs change it to `"hbm2ddl": "validate"`. (restart is required)
   - If you are updating the bot and you need the database to be updated, probably its best choice to set `"hbm2ddl": "update"`
   - Supporting `driver` values: `org.mariadb.jdbc.Driver` (MariaDB, default) - `com.mysql.jdbc.Driver` (MySQL)
   - Supported `dialect` values: `org.hibernate.dialect.MariaDB103Dialect` (MariaDB, default) - `org.hibernate.dialect.MySQL5InnoDBDialect` (MySQL InnoDB)
 - `discord -> token`: bot token on discord
 - `discord -> channels -> access-grant`: ID of the channel used for "access grant" feature (see modules, this can be disabled, empty value also works)
-- `discord -> rokes`:
-  - `management`: Highest rank in server for very restricted commands
-  - `jmanagement`: Lower rank with more normal administration (usually read only) commands
-  - `base_member_role`: ID of role for normal users (useful for "acess grant" module)
-  - `donator`: ID of role for donators
-- `discord -> ipb`: list of user id's that can perform `!ipb` and `!ipb2` commands
+
+#### access.json
+
+Using this configuration file you can determine which users or roles can access to certain commands using list of their IDs. You can also go crazy and make them public which is not recommended at all!
 
 ### Run
 
-Assuming you have `rzub.jar` and `config.json` in same location:
+Assuming you have `rzub.jar`, `settings.json` and `access.json` in same location:
 
 Linux:
 ```
@@ -87,7 +91,9 @@ Windows:
 java -jar repz.jar --server.port=9000
 ```
 
-You can replace `9000` with any port of your choice. If your config.json file is not in same location you can pass the location like: `--repz.conf.file=/path/to/config.json`
+You can replace `9000` with any port of your choice.
+If your settings.json file is not in same location you can pass the location like: `--rzub.conf.settings=/path/to/settings.json`
+If your access.json file is not in same location you can pass the location like: `--rzub.conf.access=/path/to/access.json`
 
 ## Plugins
 
@@ -123,7 +129,7 @@ Here is a list of available discord commands:
 By this version I encourage everyone to set this module to `false` in their configuration file. In future releases there will be a web panel for RZUB that provides analytics data of servers. If you leave the value to `true` this data will be collected but will never be used.
 
 ### welcome
-By having this module enabled, new members will get direct message from your BOT. The message data is configurable through `config.json`
+By having this module enabled, new members will get direct message from your BOT. The message data is configurable through `settings.json`
 
 ### access grant
 This module does not require switch to be on or off. If you set up the channel ID for "access grant" feature, it will work. What does it do? It makes users to type in certain message in order to give them a certain role and allow them to access the discord.
