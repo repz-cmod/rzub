@@ -4,34 +4,36 @@ import com.github.rzub.annotation.DiscordListenerComponent;
 import com.github.rzub.database.entity.WhitelistEntity;
 import com.github.rzub.database.repository.WhitelistRepository;
 import com.github.rzub.model.SettingsModel;
+import com.github.rzub.service.CommandAccessService;
 import com.github.rzub.service.DiscordDelayedMessageRemoverService;
-import com.github.rzub.service.listener.DiscordCommandListener;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Role;
+import com.github.rzub.service.listener.AbstractAuthorizedCommandListener;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.Date;
 
 @DiscordListenerComponent(command = "whitelist", description = "Not available", hidden = true)
-public class WhitelistDiscordModule implements DiscordCommandListener {
+public class WhitelistDiscordModule extends AbstractAuthorizedCommandListener {
     private final DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService;
     private final WhitelistRepository whitelistRepository;
-    private final SettingsModel settingsModel;
 
-    public WhitelistDiscordModule(DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService, WhitelistRepository whitelistRepository, SettingsModel settingsModel) {
+    public WhitelistDiscordModule(CommandAccessService commandAccessService, DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService, WhitelistRepository whitelistRepository, SettingsModel settingsModel) {
+        super(commandAccessService, discordDelayedMessageRemoverService);
         this.discordDelayedMessageRemoverService = discordDelayedMessageRemoverService;
-        this.settingsModel = settingsModel;
         this.whitelistRepository = whitelistRepository;
     }
 
     @Override
     public void onCommand(GuildMessageReceivedEvent event, String[] args) {
         discordDelayedMessageRemoverService.scheduleRemove(event.getMessage(), 30);
-        String command = null;
+        super.onCommand(event, args);
+    }
+
+    @Override
+    protected void onAuthorizedCommand(GuildMessageReceivedEvent event, String[] args) {
         if(args.length < 1){
             discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("Invalid arguments. Try `!whitelist help`.").complete(), 30);
-        }else if(hasAccess(event.getMember())){
-            command = args[0];
+        }else {
+            String command = args[0];
             switch (command) {
                 case "add":
                     if(args.length > 1){
@@ -70,18 +72,7 @@ public class WhitelistDiscordModule implements DiscordCommandListener {
                     discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage(message).complete(), 20);
                     break;
             }
-        }else {
-            discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("Congrats! You have discovered a hidden command! Now, go away!").complete(), 20);
         }
     }
 
-    private boolean hasAccess(Member member) {
-            String management = settingsModel.getDiscord().getRoles().get("management");
-            String jmanagement = settingsModel.getDiscord().getRoles().get("jmanagement");
-            for (Role role : member.getRoles()) {
-                if(role.getId().equals(management) || role.getId().equals(jmanagement))
-                    return true;
-            }
-        return false;
-    }
 }

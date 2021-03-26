@@ -1,13 +1,12 @@
 package com.github.rzub.config;
 
-import com.github.rzub.model.CommandAccessModel;
-import com.github.rzub.model.SettingsModel;
-import com.github.rzub.model.RZUBBotProperties;
-import com.github.rzub.service.listener.DiscordListener;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.rzub.model.CommandAccessModel;
+import com.github.rzub.model.RZUBBotProperties;
+import com.github.rzub.model.SettingsModel;
+import com.github.rzub.service.listener.DiscordListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.Compression;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
@@ -69,7 +68,6 @@ public class ApplicationConfig {
         builder.disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE);
         builder.setBulkDeleteSplittingEnabled(false);
         builder.setCompression(Compression.NONE);
-        builder.setActivity(Activity.watching("IW4MAdmin Servers"));
         builder.addEventListeners(discordListener);
         builder.enableIntents(GatewayIntent.GUILD_MEMBERS);
         return builder.build();

@@ -2,41 +2,37 @@ package com.github.rzub.service.discord;
 
 import com.github.rzub.annotation.DiscordListenerComponent;
 import com.github.rzub.database.repository.CookieRepository;
-import com.github.rzub.model.SettingsModel;
+import com.github.rzub.service.CommandAccessService;
 import com.github.rzub.service.DiscordDelayedMessageRemoverService;
 import com.github.rzub.service.api.IW4MAdminApiService;
-import com.github.rzub.service.listener.DiscordCommandListener;
-import lombok.SneakyThrows;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Role;
+import com.github.rzub.service.listener.AbstractAuthorizedCommandListener;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.Arrays;
 
 @DiscordListenerComponent(command = "iwexec", description = "Executes command in iw4madmin", hidden = true)
-public class CommandExecuteDiscordModule implements DiscordCommandListener {
+public class CommandExecuteDiscordModule extends AbstractAuthorizedCommandListener {
     private final CookieRepository cookieRepository;
     private final DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService;
     private final IW4MAdminApiService iw4MAdminApiService;
 
-    private final SettingsModel settingsModel;
 
-    public CommandExecuteDiscordModule(DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService, CookieRepository cookieRepository, IW4MAdminApiService iw4MAdminApiService, SettingsModel settingsModel) {
+    public CommandExecuteDiscordModule(CommandAccessService commandAccessService, DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService, CookieRepository cookieRepository, IW4MAdminApiService iw4MAdminApiService) {
+        super(commandAccessService, discordDelayedMessageRemoverService);
         this.cookieRepository = cookieRepository;
         this.iw4MAdminApiService = iw4MAdminApiService;
-        this.settingsModel = settingsModel;
         this.discordDelayedMessageRemoverService = discordDelayedMessageRemoverService;
     }
 
-    @SneakyThrows
     @Override
     public void onCommand(GuildMessageReceivedEvent event, String[] args) {
-        discordDelayedMessageRemoverService.scheduleRemove(event.getMessage(), 30);
+        discordDelayedMessageRemoverService.scheduleRemove(event.getMessage(), 20);
+        super.onCommand(event, args);
+    }
 
-        if (!hasAccess(event.getMember())){
-            discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("You dont have access!").complete(), 30);
-            return;
-        }
+    @Override
+    protected void onAuthorizedCommand(GuildMessageReceivedEvent event, String[] args) {
+        discordDelayedMessageRemoverService.scheduleRemove(event.getMessage(), 30);
 
         if(args.length < 2){
             discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("Invalid arguments. Try `!ipb2 help`. This command is only available for admins").complete(), 30);
@@ -45,6 +41,7 @@ public class CommandExecuteDiscordModule implements DiscordCommandListener {
 
         IW4MAdminApiService.CommandResponse commandResponse = iw4MAdminApiService.execute(args[0], String.join(" ", Arrays.copyOfRange(args, 2, args.length)), cookieRepository);
         discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("Success: `" + commandResponse.isSuccess() +  "` | status: `" + commandResponse.getStatus() + "` | body: `" + getPartialBody(commandResponse.getBody()) + "`").complete(), 30);
+
     }
 
     private String getPartialBody(String body){
@@ -53,14 +50,5 @@ public class CommandExecuteDiscordModule implements DiscordCommandListener {
         else {
             return body.substring(0, 100) + " ...";
         }
-    }
-
-    private boolean hasAccess(Member member) {
-        String management = settingsModel.getDiscord().getRoles().get("management");
-        for (Role role : member.getRoles()) {
-            if(role.getId().equals(management))
-                return true;
-        }
-        return false;
     }
 }

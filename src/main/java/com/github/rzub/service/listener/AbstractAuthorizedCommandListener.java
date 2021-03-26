@@ -16,7 +16,8 @@ public abstract class AbstractAuthorizedCommandListener implements DiscordComman
     @Override
     public void onCommand(GuildMessageReceivedEvent event, String[] args) {
         if (!commandAccessService.hasAccess(getCommandId(), event.getMember())) {
-            discordDelayedMessageRemoverService.scheduleRemove(event.getChannel().sendMessage("You do not have an access to this command").complete(), 20);
+            discordDelayedMessageRemoverService.scheduleRemove(event.getChannel().sendMessage("You do not have access to this command").complete(), 20);
+            return;
         }
         this.onAuthorizedCommand(event, args);
     }

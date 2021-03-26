@@ -30,7 +30,7 @@ public class IW4AdminSearchDiscordModule implements DiscordCommandListener {
     public void onCommand(GuildMessageReceivedEvent event, String[] args) {
         MessageChannel messageChannel = event.getMessage().getChannel();
         if(args.length == 0){
-            Message message = messageChannel.sendMessage("Please provide name to search iw4madmin api").complete();
+            messageChannel.sendMessage("Please provide name to search iw4madmin api").complete();
         }else {
             String searchTerm;
             if(args.length > 1){

@@ -2,41 +2,44 @@ package com.github.rzub.service.discord;
 
 import com.github.rzub.annotation.DiscordListenerComponent;
 import com.github.rzub.database.entity.IPRegionBanEntity;
-import com.github.rzub.model.SettingsModel;
+import com.github.rzub.service.CommandAccessService;
 import com.github.rzub.service.DiscordDelayedMessageRemoverService;
 import com.github.rzub.service.IPRegionBlockManagerService;
-import com.github.rzub.service.listener.DiscordCommandListener;
+import com.github.rzub.service.listener.AbstractAuthorizedCommandListener;
 import com.github.rzub.util.DiscordUtil;
 import com.google.common.net.InetAddresses;
 import lombok.SneakyThrows;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.Arrays;
 import java.util.List;
 
 @DiscordListenerComponent(command = "ipb2", description = "Not available", hidden = true)
-public class IPRegionBlockControlDiscordModule implements DiscordCommandListener {
+public class IPRegionBlockControlDiscordModule extends AbstractAuthorizedCommandListener {
     private final DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService;
     private final IPRegionBlockManagerService ipRegionBlockManagerService;
-    private final SettingsModel settingsModel;
 
-    public IPRegionBlockControlDiscordModule(DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService, IPRegionBlockManagerService ipRegionBlockManagerService, SettingsModel settingsModel) {
+    public IPRegionBlockControlDiscordModule(CommandAccessService commandAccessService, DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService, IPRegionBlockManagerService ipRegionBlockManagerService) {
+        super(commandAccessService, discordDelayedMessageRemoverService);
         this.discordDelayedMessageRemoverService = discordDelayedMessageRemoverService;
         this.ipRegionBlockManagerService = ipRegionBlockManagerService;
-        this.settingsModel = settingsModel;
     }
 
     @SneakyThrows
     @Override
     public void onCommand(GuildMessageReceivedEvent event, String[] args) {
         discordDelayedMessageRemoverService.scheduleRemove(event.getMessage(), 30);
-        String command = null;
+        super.onCommand(event, args);
+    }
+
+    @Override
+    @SneakyThrows
+    protected void onAuthorizedCommand(GuildMessageReceivedEvent event, String[] args) {
         if(args.length < 1){
             discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("Invalid arguments. Try `!ipb2 help`. This command is only available for admins").complete(), 30);
-        }else if(hasAccess(event.getMember(), (command = args[0]))){
+        }else{
+            String command = args[0];
             switch (command) {
                 case "add":
                     if(args.length > 3){
@@ -89,20 +92,6 @@ public class IPRegionBlockControlDiscordModule implements DiscordCommandListener
                     discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage(message).complete(), 20);
                     break;
             }
-        }else {
-            discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("Congrats! You have discovered a hidden command! Now, go away!").complete(), 20);
         }
-    }
-
-    private boolean hasAccess(Member member, String command) {
-        if(command.equals("list") || command.equals("test")){
-            String management = settingsModel.getDiscord().getRoles().get("management");
-            String jmanagement = settingsModel.getDiscord().getRoles().get("jmanagement");
-            for (Role role : member.getRoles()) {
-                if(role.getId().equals(management) || role.getId().equals(jmanagement))
-                    return true;
-            }
-        }
-        return settingsModel.getDiscord().getIpb().contains(member.getId());
     }
 }

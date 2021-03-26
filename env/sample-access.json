@@ -33,24 +33,6 @@
       "id": "join",
       "public": false,
       "roles": ["000", "000"]
-    },{
-      "id": "forum",
-      "public": true
-    },{
-      "id": "iwl",
-      "public": true
-    },
-    {
-      "id": "iwstats",
-      "public": true
-    },
-    {
-      "id": "servers",
-      "public": true
-    },
-    {
-      "id": "register",
-      "public": true
     }
   ]
 }
