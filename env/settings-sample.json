@@ -17,16 +17,6 @@
         "channels": {
             "access-grant": ""
         },
-        "roles": {
-            "management": "000000000000000000",
-            "jmanagement": "000000000000000000",
-            "base_member_role": "000000000000000000",
-            "donator": "000000000000000000"
-        },
-        "ipb": [
-            "000000000000000000",
-            "000000000000000000"
-        ],
         "custom": {
             "accept-rules-message": "Sample message that user has to type in order to grant access"
         },
