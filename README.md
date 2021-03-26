@@ -83,12 +83,13 @@ Assuming you have `rzub.jar`, `settings.json` and `access.json` in same location
 
 Linux:
 ```
-./repz.jar --server.port=9000
+chmod +x rzub.jar
+./rzub.jar --server.port=9000
 ```
 
 Windows:
 ```
-java -jar repz.jar --server.port=9000
+java -jar rzub.jar --server.port=9000
 ```
 
 You can replace `9000` with any port of your choice.
