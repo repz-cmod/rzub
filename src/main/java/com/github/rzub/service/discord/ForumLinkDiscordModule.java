@@ -1,7 +1,7 @@
 package com.github.rzub.service.discord;
 
 import com.github.rzub.annotation.DiscordListenerComponent;
-import com.github.rzub.model.ConfigModel;
+import com.github.rzub.model.SettingsModel;
 import com.github.rzub.service.listener.DiscordCommandListener;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -12,8 +12,8 @@ public class ForumLinkDiscordModule implements DiscordCommandListener {
     private final String text;
 
     @Autowired
-    public ForumLinkDiscordModule(ConfigModel configModel) {
-        text = "Visit [Forum]("+configModel.getLinks().get("forum")+").";
+    public ForumLinkDiscordModule(SettingsModel settingsModel) {
+        text = "Visit [Forum]("+ settingsModel.getLinks().get("forum")+").";
     }
 
 

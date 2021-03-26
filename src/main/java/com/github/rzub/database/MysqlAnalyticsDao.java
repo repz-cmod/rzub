@@ -6,7 +6,7 @@ import com.github.rzub.database.entity.ServerTrackEntity;
 import com.github.rzub.database.repository.PlayerTrackerRepository;
 import com.github.rzub.database.repository.ServerRepository;
 import com.github.rzub.database.repository.ServerTrackerRepository;
-import com.github.rzub.model.ConfigModel;
+import com.github.rzub.model.SettingsModel;
 import com.github.rzub.model.Iw4madminApiModel;
 import com.github.rzub.util.GameUtil;
 import com.github.rzub.util.MathUtil;
@@ -29,11 +29,11 @@ public class MysqlAnalyticsDao implements AnalyticsDao {
     private final boolean enabled;
 
     @Autowired
-    public MysqlAnalyticsDao(PlayerTrackerRepository playerTrackerRepository, ServerTrackerRepository serverTrackerRepository, ServerRepository serverRepository, ConfigModel configModel) {
+    public MysqlAnalyticsDao(PlayerTrackerRepository playerTrackerRepository, ServerTrackerRepository serverTrackerRepository, ServerRepository serverRepository, SettingsModel settingsModel) {
         this.playerTrackerRepository = playerTrackerRepository;
         this.serverTrackerRepository = serverTrackerRepository;
         this.serverRepository = serverRepository;
-        this.enabled = configModel.getModules().isAnalytics();
+        this.enabled = settingsModel.getModules().isAnalytics();
         this.persistedServerIds = new HashSet<>();
         List<ServerEntity> serverEntities = serverRepository.findAll();
         serverEntities.forEach(serverEntity -> {

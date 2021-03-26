@@ -1,6 +1,6 @@
 package com.github.rzub.config;
 
-import com.github.rzub.model.ConfigModel;
+import com.github.rzub.model.SettingsModel;
 import com.github.rzub.model.RZUBBotProperties;
 import com.github.rzub.service.listener.DiscordListener;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,16 +51,15 @@ public class ApplicationConfig {
 
 
     @Bean
-    public ConfigModel configModel(@Value("${rzub.conf.settings}") String configFileAddress) throws IOException {
+    public SettingsModel settingsModel(@Value("${rzub.conf.settings}") String configFileAddress) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        ConfigModel configModel = objectMapper.readValue(new File(configFileAddress), ConfigModel.class);
-        return configModel;
+        return objectMapper.readValue(new File(configFileAddress), SettingsModel.class);
     }
 
     @Bean
-    @DependsOn("configModel")
-    public JDA discord(ConfigModel configModel) throws LoginException {
-        JDABuilder builder = JDABuilder.createDefault(configModel.getDiscord().getToken());
+    @DependsOn("settingsModel")
+    public JDA discord(SettingsModel settingsModel) throws LoginException {
+        JDABuilder builder = JDABuilder.createDefault(settingsModel.getDiscord().getToken());
         builder.disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE);
         builder.setBulkDeleteSplittingEnabled(false);
         builder.setCompression(Compression.NONE);

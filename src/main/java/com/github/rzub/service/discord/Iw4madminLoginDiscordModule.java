@@ -2,7 +2,7 @@ package com.github.rzub.service.discord;
 
 import com.github.rzub.annotation.DiscordListenerComponent;
 import com.github.rzub.database.repository.CookieRepository;
-import com.github.rzub.model.ConfigModel;
+import com.github.rzub.model.SettingsModel;
 import com.github.rzub.service.DiscordDelayedMessageRemoverService;
 import com.github.rzub.service.api.IW4MAdminApiService;
 import com.github.rzub.service.listener.DiscordCommandListener;
@@ -16,7 +16,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @DiscordListenerComponent(command = "iwlogin", description = "Not available", hidden = true)
 public class Iw4madminLoginDiscordModule implements DiscordCommandListener {
-    private final ConfigModel configModel;
+    private final SettingsModel settingsModel;
     private final CookieRepository cookieRepository;
     private final IW4MAdminApiService iw4MAdminApiService;
     private final DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService;
@@ -39,6 +39,6 @@ public class Iw4madminLoginDiscordModule implements DiscordCommandListener {
     }
 
     private boolean hasAccess(Member member){
-        return configModel.getDiscord().getIpb().contains(member.getId());
+        return settingsModel.getDiscord().getIpb().contains(member.getId());
     }
 }

@@ -1,6 +1,6 @@
 package com.github.rzub.service.discord;
 
-import com.github.rzub.model.ConfigModel;
+import com.github.rzub.model.SettingsModel;
 import com.github.rzub.model.event.DiscordMemberJoinEVent;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -13,20 +13,20 @@ import java.awt.*;
 @Component
 @Slf4j
 public class WelcomeDiscordModule implements ApplicationListener<DiscordMemberJoinEVent> {
-    private final ConfigModel configModel;
+    private final SettingsModel settingsModel;
 
     @Autowired
-    public WelcomeDiscordModule(ConfigModel configModel) {
-        this.configModel = configModel;
+    public WelcomeDiscordModule(SettingsModel settingsModel) {
+        this.settingsModel = settingsModel;
     }
 
     @Override
     public void onApplicationEvent(DiscordMemberJoinEVent discordMemberJoinEVent) {
-        if (!configModel.getModules().isWelcome())
+        if (!settingsModel.getModules().isWelcome())
             return;
         String user = discordMemberJoinEVent.getGuildMemberJoinEvent().getUser().getAsMention();
-        String welcome = configModel.getDiscord().getWelcome();
-        String result = welcome.replace("$user", user).replace("$infoLink", configModel.getLinks().get("infoChannel")).replace("$rulesToAccess", configModel.getLinks().get("rulesToAccessChannel"));
+        String welcome = settingsModel.getDiscord().getWelcome();
+        String result = welcome.replace("$user", user).replace("$infoLink", settingsModel.getLinks().get("infoChannel")).replace("$rulesToAccess", settingsModel.getLinks().get("rulesToAccessChannel"));
         try {
             discordMemberJoinEVent.getGuildMemberJoinEvent().getUser().openPrivateChannel().flatMap(privateChannel -> privateChannel.sendMessage(new EmbedBuilder()
                     .setColor(Color.GREEN)

@@ -1,7 +1,7 @@
 package com.github.rzub.service.discord;
 
 import com.github.rzub.annotation.DiscordListenerComponent;
-import com.github.rzub.model.ConfigModel;
+import com.github.rzub.model.SettingsModel;
 import com.github.rzub.service.DiscordDelayedMessageRemoverService;
 import com.github.rzub.service.listener.DiscordCommandListener;
 import net.dv8tion.jda.api.entities.Member;
@@ -16,11 +16,11 @@ import java.util.Objects;
 @DiscordListenerComponent(command = "clean", hidden = true)
 public class ChannelCleanerDiscordModule implements DiscordCommandListener {
     private final DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService;
-    private final ConfigModel configModel;
+    private final SettingsModel settingsModel;
 
-    public ChannelCleanerDiscordModule(DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService, ConfigModel configModel) {
+    public ChannelCleanerDiscordModule(DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService, SettingsModel settingsModel) {
         this.discordDelayedMessageRemoverService = discordDelayedMessageRemoverService;
-        this.configModel = configModel;
+        this.settingsModel = settingsModel;
     }
 
     @Override
@@ -46,7 +46,7 @@ public class ChannelCleanerDiscordModule implements DiscordCommandListener {
     }
 
     private boolean hasAccess(Member member) {
-        Map<String, String> roles = configModel.getDiscord().getRoles();
+        Map<String, String> roles = settingsModel.getDiscord().getRoles();
         for (Role role : member.getRoles()) {
             if(role.getId().equals(roles.get("management"))){
                 return true;

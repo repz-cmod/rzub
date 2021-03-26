@@ -2,7 +2,7 @@ package com.github.rzub.service.api;
 
 import com.github.rzub.database.entity.CookieEntity;
 import com.github.rzub.database.repository.CookieRepository;
-import com.github.rzub.model.ConfigModel;
+import com.github.rzub.model.SettingsModel;
 import com.github.rzub.model.Iw4madminApiModel;
 import com.github.rzub.util.OffsetLimitPageable;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -30,15 +30,15 @@ import java.util.List;
 @Service
 @Slf4j
 public class IW4MAdminApiService {
-    private final ConfigModel configModel;
+    private final SettingsModel settingsModel;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
     private volatile String cachedIw4madminUrl;
     private final String execAddress;
 
     @Autowired
-    public IW4MAdminApiService(@Lazy ConfigModel configModel, ObjectMapper objectMapper) {
-        this.configModel = configModel;
+    public IW4MAdminApiService(@Lazy SettingsModel settingsModel, ObjectMapper objectMapper) {
+        this.settingsModel = settingsModel;
         this.objectMapper = objectMapper;
         this.restTemplate = new RestTemplate(new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
         execAddress = getIw4madminUrl() + "/Console/ExecuteAsync?serverId={serverId}&command={command}";
@@ -142,7 +142,7 @@ public class IW4MAdminApiService {
     private String getIw4madminUrl() {
         if(cachedIw4madminUrl != null)
             return cachedIw4madminUrl;
-        String iw4madminUrl = new String(this.configModel.getIw4madminUrl());
+        String iw4madminUrl = new String(this.settingsModel.getIw4madminUrl());
         if(iw4madminUrl.endsWith("/")){
             iw4madminUrl = iw4madminUrl.substring(0, iw4madminUrl.length() - 1);
         }

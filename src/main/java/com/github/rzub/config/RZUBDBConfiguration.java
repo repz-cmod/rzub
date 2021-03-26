@@ -1,6 +1,6 @@
 package com.github.rzub.config;
 
-import com.github.rzub.model.ConfigModel;
+import com.github.rzub.model.SettingsModel;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -24,21 +24,21 @@ import java.util.HashMap;
 public class RZUBDBConfiguration {
     @Bean("rzubDataSource")
     @Primary
-    @DependsOn("configModel")
-    public DataSource rzubDataSource(ConfigModel configModel) {
+    @DependsOn("settingsModel")
+    public DataSource rzubDataSource(SettingsModel settingsModel) {
         return DataSourceBuilder
                 .create()
-                .username(configModel.getDatabase().getUsername())
-                .password(configModel.getDatabase().getPassword())
-                .url(configModel.getDatabase().getUrl())
-                .driverClassName(configModel.getDatabase().getDriver())
+                .username(settingsModel.getDatabase().getUsername())
+                .password(settingsModel.getDatabase().getPassword())
+                .url(settingsModel.getDatabase().getUrl())
+                .driverClassName(settingsModel.getDatabase().getDriver())
                 .build();
     }
 
     @Bean("rzubEntityManager")
     @DependsOn("rzubDataSource")
     @Primary
-    public LocalContainerEntityManagerFactoryBean rzubEntityManager(@Qualifier("rzubDataSource") DataSource rzubDataSource, ConfigModel configModel) {
+    public LocalContainerEntityManagerFactoryBean rzubEntityManager(@Qualifier("rzubDataSource") DataSource rzubDataSource, SettingsModel settingsModel) {
         LocalContainerEntityManagerFactoryBean em
                 = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(rzubDataSource);
@@ -47,8 +47,8 @@ public class RZUBDBConfiguration {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
         HashMap<String, Object> properties = new HashMap<>();
-        properties.put("hibernate.hbm2ddl.auto", configModel.getDatabase().getHbm2ddl());
-        properties.put("hibernate.dialect", configModel.getDatabase().getDialect());
+        properties.put("hibernate.hbm2ddl.auto", settingsModel.getDatabase().getHbm2ddl());
+        properties.put("hibernate.dialect", settingsModel.getDatabase().getDialect());
         em.setJpaPropertyMap(properties);
 
         return em;

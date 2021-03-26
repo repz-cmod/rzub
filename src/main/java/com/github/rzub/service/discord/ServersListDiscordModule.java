@@ -2,7 +2,7 @@ package com.github.rzub.service.discord;
 
 import com.github.rzub.annotation.DiscordListenerComponent;
 import com.github.rzub.database.repository.ServerRepository;
-import com.github.rzub.model.ConfigModel;
+import com.github.rzub.model.SettingsModel;
 import com.github.rzub.service.DiscordDelayedMessageRemoverService;
 import com.github.rzub.service.listener.DiscordCommandListener;
 import com.github.rzub.util.DiscordUtil;
@@ -16,7 +16,7 @@ public class ServersListDiscordModule implements DiscordCommandListener {
     private final DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService;
 
     @Autowired
-    public ServersListDiscordModule(ConfigModel configModel, ServerRepository serverRepository, DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService) {
+    public ServersListDiscordModule(SettingsModel settingsModel, ServerRepository serverRepository, DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService) {
         this.serverRepository = serverRepository;
         this.discordDelayedMessageRemoverService = discordDelayedMessageRemoverService;
     }

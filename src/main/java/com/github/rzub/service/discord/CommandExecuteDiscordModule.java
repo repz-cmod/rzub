@@ -2,7 +2,7 @@ package com.github.rzub.service.discord;
 
 import com.github.rzub.annotation.DiscordListenerComponent;
 import com.github.rzub.database.repository.CookieRepository;
-import com.github.rzub.model.ConfigModel;
+import com.github.rzub.model.SettingsModel;
 import com.github.rzub.service.DiscordDelayedMessageRemoverService;
 import com.github.rzub.service.api.IW4MAdminApiService;
 import com.github.rzub.service.listener.DiscordCommandListener;
@@ -19,12 +19,12 @@ public class CommandExecuteDiscordModule implements DiscordCommandListener {
     private final DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService;
     private final IW4MAdminApiService iw4MAdminApiService;
 
-    private final ConfigModel configModel;
+    private final SettingsModel settingsModel;
 
-    public CommandExecuteDiscordModule(DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService, CookieRepository cookieRepository, IW4MAdminApiService iw4MAdminApiService, ConfigModel configModel) {
+    public CommandExecuteDiscordModule(DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService, CookieRepository cookieRepository, IW4MAdminApiService iw4MAdminApiService, SettingsModel settingsModel) {
         this.cookieRepository = cookieRepository;
         this.iw4MAdminApiService = iw4MAdminApiService;
-        this.configModel = configModel;
+        this.settingsModel = settingsModel;
         this.discordDelayedMessageRemoverService = discordDelayedMessageRemoverService;
     }
 
@@ -56,7 +56,7 @@ public class CommandExecuteDiscordModule implements DiscordCommandListener {
     }
 
     private boolean hasAccess(Member member) {
-        String management = configModel.getDiscord().getRoles().get("management");
+        String management = settingsModel.getDiscord().getRoles().get("management");
         for (Role role : member.getRoles()) {
             if(role.getId().equals(management))
                 return true;

@@ -2,7 +2,7 @@ package com.github.rzub.service.discord;
 
 import com.github.rzub.annotation.DiscordListenerComponent;
 import com.github.rzub.database.entity.IPRangeBlockEntity;
-import com.github.rzub.model.ConfigModel;
+import com.github.rzub.model.SettingsModel;
 import com.github.rzub.service.DiscordDelayedMessageRemoverService;
 import com.github.rzub.service.IPRangeBlockManagerService;
 import com.github.rzub.service.listener.DiscordCommandListener;
@@ -23,12 +23,12 @@ import java.util.List;
 public class IPRangeBlockControlDiscordModule implements DiscordCommandListener {
     private final DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService;
     private final IPRangeBlockManagerService ipRangeBlockManagerService;
-    private final ConfigModel configModel;
+    private final SettingsModel settingsModel;
 
-    public IPRangeBlockControlDiscordModule(DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService, IPRangeBlockManagerService ipRangeBlockManagerService, ConfigModel configModel) {
+    public IPRangeBlockControlDiscordModule(DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService, IPRangeBlockManagerService ipRangeBlockManagerService, SettingsModel settingsModel) {
         this.discordDelayedMessageRemoverService = discordDelayedMessageRemoverService;
         this.ipRangeBlockManagerService = ipRangeBlockManagerService;
-        this.configModel = configModel;
+        this.settingsModel = settingsModel;
     }
 
     @Override
@@ -111,13 +111,13 @@ public class IPRangeBlockControlDiscordModule implements DiscordCommandListener 
 
     private boolean hasAccess(Member member, String command) {
         if(command.equals("list") || command.equals("test")){
-            String management = configModel.getDiscord().getRoles().get("management");
-            String jmanagement = configModel.getDiscord().getRoles().get("jmanagement");
+            String management = settingsModel.getDiscord().getRoles().get("management");
+            String jmanagement = settingsModel.getDiscord().getRoles().get("jmanagement");
             for (Role role : member.getRoles()) {
                 if(role.getId().equals(management) || role.getId().equals(jmanagement))
                     return true;
             }
         }
-        return configModel.getDiscord().getIpb().contains(member.getId());
+        return settingsModel.getDiscord().getIpb().contains(member.getId());
     }
 }

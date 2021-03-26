@@ -8,7 +8,7 @@ import java.util.Map;
 @Getter
 @Setter
 @ToString
-public class ConfigModel {
+public class SettingsModel {
     private String iw4madminUrl;
     private Database database;
     private Discord discord;

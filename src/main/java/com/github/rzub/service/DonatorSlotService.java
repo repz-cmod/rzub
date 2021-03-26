@@ -1,7 +1,7 @@
 package com.github.rzub.service;
 
 import com.github.rzub.database.repository.CookieRepository;
-import com.github.rzub.model.ConfigModel;
+import com.github.rzub.model.SettingsModel;
 import com.github.rzub.model.Iw4madminApiModel;
 import com.github.rzub.service.api.IW4MAdminApiService;
 import lombok.AllArgsConstructor;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class DonatorSlotService {
     private final IW4MAdminApiService iw4MAdminApiService;
     private final CookieRepository cookieRepository;
-    private final ConfigModel configModel;
+    private final SettingsModel settingsModel;
     private final CacheManager donatorTicketCacheManager;
 
     public Result emptySlot(String donatorDiscordUserId, String serverId){
@@ -43,7 +43,7 @@ public class DonatorSlotService {
     }
 
     private boolean kick(String serverId, Iw4madminApiModel.Player playerToKick) {
-        String cmd = "!kick " + playerToKick.getClientNumber() + " " + configModel.getMessages().get("donatorSlotKickReason");
+        String cmd = "!kick " + playerToKick.getClientNumber() + " " + settingsModel.getMessages().get("donatorSlotKickReason");
         return iw4MAdminApiService.sendCommand(serverId, cmd, cookieRepository);
     }
 

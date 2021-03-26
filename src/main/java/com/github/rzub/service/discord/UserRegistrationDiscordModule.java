@@ -3,7 +3,7 @@ package com.github.rzub.service.discord;
 import com.github.rzub.annotation.DiscordListenerComponent;
 import com.github.rzub.database.entity.DiscordUserEntity;
 import com.github.rzub.database.repository.DiscordUserRepository;
-import com.github.rzub.model.ConfigModel;
+import com.github.rzub.model.SettingsModel;
 import com.github.rzub.service.listener.DiscordCommandListener;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -22,12 +22,12 @@ import java.util.Objects;
 @Slf4j
 public class UserRegistrationDiscordModule implements DiscordCommandListener {
     private final DiscordUserRepository discordUserRepository;
-    private final ConfigModel configModel;
+    private final SettingsModel settingsModel;
 
     @Autowired
-    public UserRegistrationDiscordModule(DiscordUserRepository discordUserRepository, ConfigModel configModel) {
+    public UserRegistrationDiscordModule(DiscordUserRepository discordUserRepository, SettingsModel settingsModel) {
         this.discordUserRepository = discordUserRepository;
-        this.configModel = configModel;
+        this.settingsModel = settingsModel;
     }
 
     @Override
@@ -67,7 +67,7 @@ public class UserRegistrationDiscordModule implements DiscordCommandListener {
     }
 
     private void sendMessage(GuildMessageReceivedEvent event, String token) {
-        String message = new String(configModel.getMessages().get("registration")).replaceAll("\\$token", token);
+        String message = new String(settingsModel.getMessages().get("registration")).replaceAll("\\$token", token);
         event.getAuthor().openPrivateChannel().flatMap(privateChannel -> privateChannel.sendMessage(message)).queue();
     }
 

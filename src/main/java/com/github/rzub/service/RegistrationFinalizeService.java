@@ -2,7 +2,7 @@ package com.github.rzub.service;
 
 import com.github.rzub.database.entity.DiscordUserEntity;
 import com.github.rzub.database.repository.DiscordUserRepository;
-import com.github.rzub.model.ConfigModel;
+import com.github.rzub.model.SettingsModel;
 import com.github.rzub.model.Iw4madminApiModel;
 import com.github.rzub.model.dto.AbstractResultDto;
 import com.github.rzub.model.dto.DiscordRegisterDto;
@@ -25,16 +25,16 @@ import javax.transaction.Transactional;
 public class RegistrationFinalizeService {
     private final JDA jda;
     private final DiscordUserRepository discordUserRepository;
-    private final ConfigModel configModel;
+    private final SettingsModel settingsModel;
     private final IW4MAdminApiService iw4MAdminApiService;
     private final DiscordUserCacheService discordUserCacheService;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @Autowired
-    public RegistrationFinalizeService(JDA jda, DiscordUserRepository discordUserRepository, ConfigModel configModel, IW4MAdminApiService iw4MAdminApiService, DiscordUserCacheService discordUserCacheService, ApplicationEventPublisher applicationEventPublisher) {
+    public RegistrationFinalizeService(JDA jda, DiscordUserRepository discordUserRepository, SettingsModel settingsModel, IW4MAdminApiService iw4MAdminApiService, DiscordUserCacheService discordUserCacheService, ApplicationEventPublisher applicationEventPublisher) {
         this.jda = jda;
         this.discordUserRepository = discordUserRepository;
-        this.configModel = configModel;
+        this.settingsModel = settingsModel;
         this.iw4MAdminApiService = iw4MAdminApiService;
         this.discordUserCacheService = discordUserCacheService;
         this.applicationEventPublisher = applicationEventPublisher;
@@ -95,7 +95,7 @@ public class RegistrationFinalizeService {
     }
 
     private String getMessage(DiscordRegisterDto discordRegisterDto) {
-        String message = new String(configModel.getMessages().get("registrationComplete"));
+        String message = new String(settingsModel.getMessages().get("registrationComplete"));
         return message.replace("$game", discordRegisterDto.getGame()).replace("$playerName", discordRegisterDto.getPlayerName());
     }
 

@@ -3,7 +3,7 @@ package com.github.rzub.service.discord;
 import com.github.rzub.annotation.DiscordListenerComponent;
 import com.github.rzub.database.entity.WhitelistEntity;
 import com.github.rzub.database.repository.WhitelistRepository;
-import com.github.rzub.model.ConfigModel;
+import com.github.rzub.model.SettingsModel;
 import com.github.rzub.service.DiscordDelayedMessageRemoverService;
 import com.github.rzub.service.listener.DiscordCommandListener;
 import net.dv8tion.jda.api.entities.Member;
@@ -16,11 +16,11 @@ import java.util.Date;
 public class WhitelistDiscordModule implements DiscordCommandListener {
     private final DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService;
     private final WhitelistRepository whitelistRepository;
-    private final ConfigModel configModel;
+    private final SettingsModel settingsModel;
 
-    public WhitelistDiscordModule(DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService, WhitelistRepository whitelistRepository, ConfigModel configModel) {
+    public WhitelistDiscordModule(DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService, WhitelistRepository whitelistRepository, SettingsModel settingsModel) {
         this.discordDelayedMessageRemoverService = discordDelayedMessageRemoverService;
-        this.configModel = configModel;
+        this.settingsModel = settingsModel;
         this.whitelistRepository = whitelistRepository;
     }
 
@@ -76,8 +76,8 @@ public class WhitelistDiscordModule implements DiscordCommandListener {
     }
 
     private boolean hasAccess(Member member) {
-            String management = configModel.getDiscord().getRoles().get("management");
-            String jmanagement = configModel.getDiscord().getRoles().get("jmanagement");
+            String management = settingsModel.getDiscord().getRoles().get("management");
+            String jmanagement = settingsModel.getDiscord().getRoles().get("jmanagement");
             for (Role role : member.getRoles()) {
                 if(role.getId().equals(management) || role.getId().equals(jmanagement))
                     return true;

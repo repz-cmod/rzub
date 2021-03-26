@@ -1,7 +1,7 @@
 package com.github.rzub.service.discord;
 
 import com.github.rzub.annotation.DiscordListenerComponent;
-import com.github.rzub.model.ConfigModel;
+import com.github.rzub.model.SettingsModel;
 import com.github.rzub.service.DiscordDelayedMessageRemoverService;
 import com.github.rzub.service.DonatorSlotService;
 import com.github.rzub.service.listener.DiscordCommandListener;
@@ -16,7 +16,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @DiscordListenerComponent(command = "join", description = "Creates a slot for donators in a specific server")
 public class DonatorSlotDiscordModule implements DiscordCommandListener {
-    private final ConfigModel configModel;
+    private final SettingsModel settingsModel;
     private final DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService;
     private final DonatorSlotService donatorSlotService;
 
@@ -45,7 +45,7 @@ public class DonatorSlotDiscordModule implements DiscordCommandListener {
 
     private boolean hasAccess(Member member){
         for (Role role : member.getRoles()) {
-            if(role.getId().equals(configModel.getDiscord().getRoles().get("donator")))
+            if(role.getId().equals(settingsModel.getDiscord().getRoles().get("donator")))
                 return true;
         }
         return false;
