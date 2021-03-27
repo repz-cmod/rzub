@@ -1,6 +1,7 @@
 //config
-const trackerBaseUrl = "http://localhost:8083/api/v1/client/"; //replace 8083 with port you are running application on
-const banMessage = "Evading Detected by IP-Range";
+const trackerBaseUrl = "http://localhost:8083/plugin/v1/client/"; //replace 8083 with port you are running application on
+const banMessage = "Evading Detected by RZUB";
+const rzubToken = "000000000000"; // replace with token from settings.json > security > token
 
 // discord config
 const discordConfig = {
@@ -69,6 +70,7 @@ var plugin = {
         try {
             var client = new System.Net.Http.HttpClient();
             client.DefaultRequestHeaders.Add("User-Agent", "iw4madmin plugin");
+            client.DefaultRequestHeaders.Add("Token", rzubToken);
             var content = new System.Net.Http.StringContent(JSON.stringify(webhookData), System.Text.Encoding.UTF8, "application/json");
             var result = client.PostAsync(discordConfig.webhookUrl, content).Result;
             result.Dispose();

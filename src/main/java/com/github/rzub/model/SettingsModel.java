@@ -15,6 +15,15 @@ public class SettingsModel {
     private Map<String, String> messages;
     private Map<String, String> links;
     private Modules modules = new Modules(true, true);
+    private Security security = new Security();
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Security {
+        private String token = "000000000000";
+    }
 
     @Getter
     @Setter

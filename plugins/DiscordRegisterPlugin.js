@@ -1,6 +1,6 @@
 //config
 const registrationUrl = "http://localhost:8083/plugin/v1/discord/register"; //replace 8083 with port you are running application on
-
+const rzubToken = "000000000000"; // replace with token from settings.json > security > token
 
 
 //plugin code here, do not make any changes unless you know what you are doing
@@ -31,6 +31,7 @@ var plugin = {
         try {
             var client = new System.Net.Http.HttpClient();
             client.DefaultRequestHeaders.Add("User-Agent", "iw4madmin plugin");
+            client.DefaultRequestHeaders.Add("Token", rzubToken);
             var content = new System.Net.Http.StringContent(JSON.stringify(data), System.Text.Encoding.UTF8, "application/json");
             var result = client.PostAsync(registrationUrl, content).Result;
             var co = result.Content;

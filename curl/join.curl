@@ -1,1 +1,1 @@
-curl -XPOST -H "Content-type: application/json" -d '{"clientId":252,"name":"SocialDistance","trackerId":100,"serverId":178634416528968}' 'http://localhost:8080/api/v1/client/join'
+curl -XPOST -H "Content-type: application/json" -H "Token: 000000000000" -d '{"ip":"127.0.0.1","clientId":252,"trackerId":100,"serverId":178634416528968}' 'http://localhost:8083/plugin/v1/client/join'
