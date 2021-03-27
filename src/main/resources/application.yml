@@ -1,9 +1,9 @@
-
 logging:
   file:
     name: rzub.log
   level:
     ROOT: info
+    com.github.rzub: debug
 rzub:
   conf:
     settings: './settings.json'
