@@ -109,7 +109,9 @@ If your access.json file is not in same location you can pass the location like:
 ## Plugins
 
 In order to have full support of all BOT features and create discord-iw4madmin mappings, you need to add javascript plugins under [plugins](https://github.com/repz-cmod/rzub/tree/main/plugins) to your IW4MAdmin Plugins directory.
+
 Make sure to first replace bot URL in those plugin files with valid ip and port of the running bot.
+
 Also, if you are opening the bot port to public, you should make sure you change the token under `security -> token` in both *settings.json* and also in plugins.
 Try a random string. You can generate one [here](https://passwordsgenerator.net/)  
 
