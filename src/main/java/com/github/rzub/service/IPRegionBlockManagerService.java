@@ -4,6 +4,7 @@ import com.github.rzub.database.entity.IPRegionBanEntity;
 import com.github.rzub.database.repository.IPRegionBanRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.rzub.model.SettingsModel;
 import com.github.rzub.service.api.IPApiService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +19,14 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class IPRegionBlockManagerService {
+public class IPRegionBlockManagerService extends ClientAwareIPBasedAntiEvade {
     private final IPRegionBanRepository ipRegionBanRepository;
     private final IPApiService ipApiService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
-    public IPRegionBlockManagerService(IPRegionBanRepository ipRegionBanRepository, IPApiService ipApiService) {
+    public IPRegionBlockManagerService(IPRegionBanRepository ipRegionBanRepository, IPApiService ipApiService, CachedIW4MAdminStatsLookupService cachedIW4MAdminStatsLookupService, SettingsModel settingsModel) {
+        super(settingsModel, cachedIW4MAdminStatsLookupService);
         this.ipRegionBanRepository = ipRegionBanRepository;
         this.ipApiService = ipApiService;
     }

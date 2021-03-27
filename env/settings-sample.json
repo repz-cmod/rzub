@@ -34,5 +34,8 @@
         "donatorSlotKickReason": "Reserved Slot",
         "registration": "Thanks for registering to our game through discord. Your private token is `$token`. To complete your registration, connect to any game server in mw2/bo2 and enter this command: `!discord $token`",
         "registrationComplete": "You have successfully registered yourself to our discord. Game: `$game`, Player Name `$playerName`"
+    },
+    "switches": {
+        "ipb-client-date-sensitive": true
     }
 }

@@ -1,13 +1,16 @@
 package com.github.rzub.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Getter
 @Setter
 @ToString
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SettingsModel {
     private String iw4madminUrl;
     private Database database;
@@ -16,6 +19,7 @@ public class SettingsModel {
     private Map<String, String> links;
     private Modules modules = new Modules(true, true);
     private Security security = new Security();
+    private Map<String, Boolean> switches = new HashMap<>();
 
     @Getter
     @Setter

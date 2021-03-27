@@ -31,7 +31,13 @@ public class PlayerTrackController {
     public @ResponseBody
     TrackResponseDto playerJoin(@RequestBody @Valid PlayerTackDto playerTackDto){
         analyticsDao.playerJoined(playerTackDto.getServerIdAsLong(), playerTackDto.getClientId(), playerTackDto.getTrackerId());
-        boolean shouldBlock = !whitelistRepository.existsByClientId(playerTackDto.getClientId()) && (ipRangeBlockManagerService.shouldBlock(playerTackDto.getIp()) || ipRegionBlockManagerService.shouldBlock(playerTackDto.getIp()));
+        boolean shouldBlock = !whitelistRepository.existsByClientId(playerTackDto.getClientId())
+                && (
+                        ipRangeBlockManagerService.shouldBlock(String.valueOf(playerTackDto.getClientId()), playerTackDto.getIp())
+                                ||
+                        ipRegionBlockManagerService.shouldBlock(String.valueOf(playerTackDto.getClientId()), playerTackDto.getIp()
+                        )
+        );
         return new TrackResponseDto(shouldBlock);
     }
 
