@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-//todo add security support
-
 @RestController
 @RequestMapping("/plugin/v1")
 public class PlayerRegistrationController {

@@ -52,7 +52,7 @@ public class IPRegionBlockControlDiscordModule extends AbstractAuthorizedCommand
                             discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("Invalid IP Addresses").complete(), 30);
                         }
                     }else {
-                        discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("Invalid arguments for adding to ban list. Try `!ipb help`.").complete(), 30);
+                        discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("Invalid arguments for adding to ban list. Try `!ipb2 help`.").complete(), 30);
                     }
                     break;
                 case "list":
@@ -86,9 +86,9 @@ public class IPRegionBlockControlDiscordModule extends AbstractAuthorizedCommand
                     break;
                 default:
                     String message = "`!ipb2 add <ip> <duration> <reason>` to add new range block item. duration is number in `day`.\n" +
-                            "`!ipb list <page=1> <autoDeleteDelay=60>` to list blocks.\n" +
-                            "`!ipb test <ip>` to test ip in block region.\n" +
-                            "`!ipb rm <id>` to delete a record";
+                            "`!ipb2 list <page=1> <autoDeleteDelay=60>` to list blocks.\n" +
+                            "`!ipb2 test <ip>` to test ip in block region.\n" +
+                            "`!ipb2 rm <id>` to delete a record";
                     discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage(message).complete(), 20);
                     break;
             }

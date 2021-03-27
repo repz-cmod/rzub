@@ -39,7 +39,6 @@ public class IPRegionBlockManagerService extends ClientAwareIPBasedAntiEvade {
         c.setTime(date);
         c.add(Calendar.DAY_OF_MONTH, duration);
         Date expiration = c.getTime();
-        log.info("expiration: " + expiration);
         add(IPRegionBanEntity.builder()
                 .blockHash(info.hashCode())
                 .expiration(expiration)
