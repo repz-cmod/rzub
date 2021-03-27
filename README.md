@@ -55,7 +55,9 @@ Instead of builting the app by yourself, you can find released JARs (in `rzub.zi
 
 ### Configuration:
 There are two configuration files that you will need in order to be able to run RZUB. These configuration files are available in [env directory](https://github.com/repz-cmod/rzub/tree/main/env).
+
 Rename them to `settings.json` and `access.json` by removing the `-sample` from their names and edit them.
+
 You may want to keep these files in same directory as `rzub.jar` or learn how to pass their location to the jar file in **Run** section below.
 
 #### settings.json
@@ -68,8 +70,12 @@ Base configuration of the bot
   - The fastest way to initialize database for the bot is to set `"hbm2ddl": "create"` in settings.json for the first run. This initializes the database for you.
   - Then, for normal runs change it to `"hbm2ddl": "validate"`. (restart is required)
   - If you are updating the bot and you need the database to be updated, probably its best choice to set `"hbm2ddl": "update"`
-  - Supporting `driver` values: `org.mariadb.jdbc.Driver` (MariaDB, default) - `com.mysql.jdbc.Driver` (MySQL)
-  - Supported `dialect` values: `org.hibernate.dialect.MariaDB103Dialect` (MariaDB, default) - `org.hibernate.dialect.MySQL5InnoDBDialect` (MySQL InnoDB)
+  - Supporting `driver` values:
+    - `org.mariadb.jdbc.Driver` (MariaDB, default)
+    - `com.mysql.jdbc.Driver` (MySQL)
+  - Supported `dialect` values:
+    - `org.hibernate.dialect.MariaDB103Dialect` (MariaDB, default)
+    - `org.hibernate.dialect.MySQL5InnoDBDialect` (MySQL InnoDB)
 - `discord -> token`: bot token on discord
 - `discord -> channels -> access-grant`: ID of the channel used for "access grant" feature (see modules, this can be disabled, empty value also works)
 - `security -> token`: setup a token here to be used in plugins in order to keep the bot safe from being abused by invalid IP-Range bans and tracking information
@@ -95,7 +101,9 @@ java -jar rzub.jar --server.port=9000
 ```
 
 You can replace `9000` with any port of your choice.
+
 If your settings.json file is not in same location you can pass the location like: `--rzub.conf.settings=/path/to/settings.json`
+
 If your access.json file is not in same location you can pass the location like: `--rzub.conf.access=/path/to/access.json`
 
 ## Plugins
