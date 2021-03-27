@@ -5,17 +5,26 @@ import com.github.rzub.database.entity.IPRangeBlockEntity;
 import com.github.rzub.database.entity.IPRegionBanEntity;
 import com.github.rzub.database.entity.ServerEntity;
 import com.github.rzub.model.IW4AdminStatResult;
+import com.github.rzub.model.SettingsModel;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
 import java.awt.*;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DiscordUtil {
     private static final DecimalFormat df2 = new DecimalFormat("#.##");
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss z");
+    private static List<String> cleanStr = new ArrayList<>();
+
+    public synchronized static void setup(SettingsModel settingsModel){
+        DiscordUtil.cleanStr = new ArrayList<>();
+        DiscordUtil.cleanStr.add(settingsModel.getClan());
+        DiscordUtil.cleanStr.add(settingsModel.getDomain());
+    }
 
     public static String argumentsAsOne(String[] args){
         StringBuilder stringBuilder = new StringBuilder();
@@ -67,11 +76,10 @@ public class DiscordUtil {
         return stringBuilder.toString();
     }
 
-    // todo: read "RepZ" and link from settings
     public static String getNames(List<ServerEntity> serverEntities){
         StringBuilder stringBuilder = new StringBuilder();
         serverEntities.forEach(serverEntity -> {
-            stringBuilder.append(GameUtil.cleanColors(serverEntity.getName().replace(" |  www.cmod.pw", "")).replace("RepZ ", ""));
+            stringBuilder.append(getCleanServerName(serverEntity.getName()));
             stringBuilder.append("\n");
         });
         return stringBuilder.toString();
@@ -179,5 +187,13 @@ public class DiscordUtil {
             stringBuilder.append("\n");
         });
         return stringBuilder.toString();
+    }
+
+    private static String getCleanServerName(String serverName){
+        for (String str: cleanStr){
+            serverName = serverName.replace(str, "");
+        }
+        serverName = serverName.replace("[]", "").replace("|", "").trim();
+        return GameUtil.cleanColors(serverName);
     }
 }

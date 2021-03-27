@@ -20,6 +20,8 @@ public class SettingsModel {
     private Modules modules = new Modules(true, true);
     private Security security = new Security();
     private Map<String, Boolean> switches = new HashMap<>();
+    private String clan = "";
+    private String domain = "";
 
     @Getter
     @Setter

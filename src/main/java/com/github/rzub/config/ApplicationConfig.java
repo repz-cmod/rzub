@@ -5,6 +5,7 @@ import com.github.rzub.model.CommandAccessModel;
 import com.github.rzub.model.RZUBBotProperties;
 import com.github.rzub.model.SettingsModel;
 import com.github.rzub.service.listener.DiscordListener;
+import com.github.rzub.util.DiscordUtil;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -58,7 +59,9 @@ public class ApplicationConfig {
     @Bean
     public SettingsModel settingsModel(@Value("${rzub.conf.settings}") String configFileAddress) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(new File(configFileAddress), SettingsModel.class);
+        SettingsModel settingsModel = objectMapper.readValue(new File(configFileAddress), SettingsModel.class);
+        DiscordUtil.setup(settingsModel);
+        return settingsModel;
     }
 
     @Bean
