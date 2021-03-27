@@ -16,7 +16,7 @@ const discordConfig = {
 //plugin code here, do not make any changes unless you know what you are doing
 var plugin = {
     author: 'sepehr-gh',
-    version: 1.2,
+    version: 1.3,
     name: 'RepZ Tracker Plugin',
     logger: null,
     manager: null,
