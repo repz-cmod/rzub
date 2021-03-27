@@ -72,6 +72,8 @@ Base configuration of the bot
   - Supported `dialect` values: `org.hibernate.dialect.MariaDB103Dialect` (MariaDB, default) - `org.hibernate.dialect.MySQL5InnoDBDialect` (MySQL InnoDB)
 - `discord -> token`: bot token on discord
 - `discord -> channels -> access-grant`: ID of the channel used for "access grant" feature (see modules, this can be disabled, empty value also works)
+- `security -> token`: setup a token here to be used in plugins in order to keep the bot safe from being abused by invalid IP-Range bans and tracking information
+- `switches -> ipb-client-date-sensitive`: if enabled, IP-Range and IP-Region bans will make sure the client to ban has playing time more than 7 hours
 
 #### access.json
 
@@ -98,7 +100,10 @@ If your access.json file is not in same location you can pass the location like:
 
 ## Plugins
 
-In order to have full support of all BOT features and create discord-iw4madmin mappings, you need to add javascript plugins under [plugins](https://github.com/repz-cmod/rzub/tree/main/plugins) to your IW4MAdmin Plugins directory. Make sure to first replace bot URL in those plugin files with valid ip and port of the running bot.
+In order to have full support of all BOT features and create discord-iw4madmin mappings, you need to add javascript plugins under [plugins](https://github.com/repz-cmod/rzub/tree/main/plugins) to your IW4MAdmin Plugins directory.
+Make sure to first replace bot URL in those plugin files with valid ip and port of the running bot.
+Also, if you are opening the bot port to public, you should make sure you change the token under `security -> token` in both *settings.json* and also in plugins.
+Try a random string. You can generate one [here](https://passwordsgenerator.net/)  
 
 ## Post Run Configuration
 
@@ -111,18 +116,18 @@ Then go to the game and type `!rt`. It will give you an ID and a token. As serve
 Here is a list of available discord commands:
 
 | Command 	 | Description                                                                          	| Example            	            |
-|----------	 |--------------------------------------------------------------------------------------	|-------------------------------	|
-| !clean  	 | Cleans 20 messages from last message in a channel till it reaches certain message id 	| `!clean <MessageId>` 	          |
+|----------	 |----------------------------------------------------------------------------------------  |-------------------------------    |
+| !clean  	 | Cleans 20 messages from last message in a channel till it reaches certain message id 	| `!clean <MessageId>` 	            |
 | !iwexec  	 | Executes commands into iw4madmin for a certain server                                	| `!iwexec <ServerId> <Command>` 	|
-| !join   	 | For donators to use to make a spot on server and join a full server                    | `!join <ServerId>`              |
-| !forum  	 | Sends back the forum link from the config file                                      	  | `!forum`                   	    |
-| !ipb       | Blocks a range of IP Addresses.                                                        | `!ipb help` to see full         |
-| !ipb2      | Blockes based on IP of same city and ISP of provided example                           | `!ipb2 help` to see full        |
-| !iwl       | Looks up in IW4MAdmin for a player                                                     |                    	            |
-| !iwstats   | Returns player stats in IW4MAdmin                                                      |  `!iwstats <ClientId>`          |
-| !servers 	 | Returns lists of server to be used to fill <ServerId> in other commands                |                    	            |
-| !register  | Sends user instrcution to map their discord to the game.                            	  |                    	            |
-| !whitelist | Adds an IW4MAdmin client id to whitelist for ipb and ipb2                              |  `!whitelist help` to see full  |
+| !join   	 | For donators to use to make a spot on server and join a full server                      | `!join <ServerId>`                |
+| !forum  	 | Sends back the forum link from the config file                                      	    | `!forum`                   	    |
+| !ipb       | Blocks a range of IP Addresses.                                                          | `!ipb help` to see full           |
+| !ipb2      | Blockes based on IP of same city and ISP of provided example                             | `!ipb2 help` to see full          |
+| !iwl       | Looks up in IW4MAdmin for a player                                                       |                    	            |
+| !iwstats   | Returns player stats in IW4MAdmin                                                        |  `!iwstats <ClientId>`            |
+| !servers 	 | Returns lists of server to be used to fill <ServerId> in other commands                  |                    	            |
+| !register  | Sends user instrcution to map their discord to the game. (Only supports iw4x and t)      |                    	            |
+| !whitelist | Adds an IW4MAdmin client id to whitelist for ipb and ipb2                                |  `!whitelist help` to see full    |
   
 ## Modules (switchable features)
 
