@@ -91,7 +91,7 @@ public class MysqlAnalyticsDao implements AnalyticsDao {
 
     private synchronized void addServer(Iw4madminApiModel.Server server){
         try{
-            if (serverRepository.existsByServerId(server.getId())) {
+            if (!serverRepository.existsByServerId(server.getId())) {
                 serverRepository.save(ServerEntity.builder()
                         .game(server.getGame())
                         .name(GameUtil.cleanColors(server.getName()))
