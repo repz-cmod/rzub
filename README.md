@@ -94,6 +94,7 @@ Linux:
 chmod +x rzub.jar
 ./rzub.jar --server.port=9000
 ```
+You can install this as a service in your linux box in order to be able to detach from the process (see [this](https://github.com/sepehr-gh/systemd-builder) example or read about `systemd`. Also, running through `screen` session is always an option)
 
 Windows:
 ```
