@@ -90,13 +90,13 @@ Using this configuration file you can determine which users or roles can access 
 Assuming you have `rzub.jar`, `settings.json` and `access.json` in same location:
 
 Linux:
-```
-chmod +x rzub.jar
+```shell
+chmod +x rzub.jar # Only one time after each update is enough. Maekes it executable.
 ./rzub.jar --server.port=9000
 ```
 You can install this as a service in your linux box in order to be able to detach from the process (see [this](https://github.com/sepehr-gh/systemd-builder) example or read about `systemd`. Also, running through `screen` session is always an option)
 
-Windows:
+Windows (also works on Linux):
 ```
 java -jar rzub.jar --server.port=9000
 ```
