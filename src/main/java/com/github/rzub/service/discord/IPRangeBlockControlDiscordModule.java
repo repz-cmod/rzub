@@ -38,7 +38,7 @@ public class IPRangeBlockControlDiscordModule extends AbstractAuthorizedCommandL
     @Override
     protected void onAuthorizedCommand(GuildMessageReceivedEvent event, String[] args) {
         if(args.length < 1){
-            discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("Invalid arguments. Try `!ipb help`. This command is only available for admins").complete(), 30);
+            discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("Invalid arguments. Try `!ipb help`.").complete(), 30);
         }else {
             String command = args[0];
             switch (command) {

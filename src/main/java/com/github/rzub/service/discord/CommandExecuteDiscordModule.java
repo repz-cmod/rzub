@@ -35,7 +35,7 @@ public class CommandExecuteDiscordModule extends AbstractAuthorizedCommandListen
         discordDelayedMessageRemoverService.scheduleRemove(event.getMessage(), 30);
 
         if(args.length < 2){
-            discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("Invalid arguments. Try `!ipb2 help`. This command is only available for admins").complete(), 30);
+            discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("Invalid arguments.").complete(), 30);
             return;
         }
 

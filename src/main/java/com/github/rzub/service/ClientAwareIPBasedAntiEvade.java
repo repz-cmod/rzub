@@ -30,7 +30,6 @@ public abstract class ClientAwareIPBasedAntiEvade implements IPBasedAntiEvade {
         }
 
         clientStats.sort(Comparator.comparingInt(Iw4madminApiModel.Stat::getTotalSecondsPlayed));
-        System.out.println(clientStats.get(clientStats.size() - 1).getTotalSecondsPlayed());
         if (clientStats.get(clientStats.size() - 1).getTotalSecondsPlayed() > IPB_SECONDS_PLAYED_IGNORE) {
             return false;
         }

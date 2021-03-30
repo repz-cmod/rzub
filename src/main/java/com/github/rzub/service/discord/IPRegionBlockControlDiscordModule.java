@@ -37,7 +37,7 @@ public class IPRegionBlockControlDiscordModule extends AbstractAuthorizedCommand
     @SneakyThrows
     protected void onAuthorizedCommand(GuildMessageReceivedEvent event, String[] args) {
         if(args.length < 1){
-            discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("Invalid arguments. Try `!ipb2 help`. This command is only available for admins").complete(), 30);
+            discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("Invalid arguments. Try `!ipb2 help`.").complete(), 30);
         }else{
             String command = args[0];
             switch (command) {
