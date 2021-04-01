@@ -2,7 +2,6 @@ package com.github.rzub.service;
 
 import com.github.rzub.database.entity.IPRangeBlockEntity;
 import com.github.rzub.database.repository.IPRangeBlockRepository;
-import com.github.rzub.model.SettingsModel;
 import com.github.rzub.util.MathUtil;
 import com.google.common.net.InetAddresses;
 import lombok.extern.slf4j.Slf4j;

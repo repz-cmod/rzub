@@ -1,8 +1,8 @@
 package com.github.rzub.service;
 
 import com.github.rzub.database.repository.CookieRepository;
-import com.github.rzub.model.SettingsModel;
 import com.github.rzub.model.Iw4madminApiModel;
+import com.github.rzub.model.SettingsModel;
 import com.github.rzub.service.api.IW4MAdminApiService;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
