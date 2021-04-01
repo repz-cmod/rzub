@@ -59,8 +59,14 @@ public class ApplicationConfig implements ApplicationContextAware {
 
     @Bean
     public CommandAccessModel commandAccessModel(@Value("${rzub.conf.access}") String configFileAddress) throws IOException {
+        File file = new File(configFileAddress);
+        if(!file.exists()){
+            log.error("access.json file was not found. Using default one which means some commands will never be available");
+            return new CommandAccessModel();
+        }
+
         ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(new File(configFileAddress), CommandAccessModel.class);
+        return objectMapper.readValue(file, CommandAccessModel.class);
     }
 
     @Bean
