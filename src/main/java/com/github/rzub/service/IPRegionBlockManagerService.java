@@ -1,10 +1,9 @@
 package com.github.rzub.service;
 
-import com.github.rzub.database.entity.IPRegionBanEntity;
-import com.github.rzub.database.repository.IPRegionBanRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.rzub.model.SettingsModel;
+import com.github.rzub.database.entity.IPRegionBanEntity;
+import com.github.rzub.database.repository.IPRegionBanRepository;
 import com.github.rzub.service.api.IPApiService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +24,8 @@ public class IPRegionBlockManagerService extends ClientAwareIPBasedAntiEvade {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
-    public IPRegionBlockManagerService(IPRegionBanRepository ipRegionBanRepository, IPApiService ipApiService, CachedIW4MAdminStatsLookupService cachedIW4MAdminStatsLookupService, SettingsModel settingsModel) {
-        super(settingsModel, cachedIW4MAdminStatsLookupService);
+    public IPRegionBlockManagerService(IPRegionBanRepository ipRegionBanRepository, IPApiService ipApiService, CachedIW4MAdminStatsLookupService cachedIW4MAdminStatsLookupService, DynamicConfigurationProvider dynamicConfigurationProvider) {
+        super(dynamicConfigurationProvider, cachedIW4MAdminStatsLookupService);
         this.ipRegionBanRepository = ipRegionBanRepository;
         this.ipApiService = ipApiService;
     }
