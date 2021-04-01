@@ -37,7 +37,10 @@
     "security": {
         "token": "000000000000"
     },
-    "switches": {
-        "ipb-client-date-sensitive": true
+    "custom": {
+        "ipb": {
+            "client-date-sensitive": true,
+            "client-date-sensitive-hours": 500
+        }
     }
 }

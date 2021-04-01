@@ -9,6 +9,8 @@ import lombok.Setter;
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class IPBConfigModel {
-    @JsonAlias({"client-date-sensitive", "clientDateSensitive"})
+    @JsonAlias({"client-date-sensitive", "clientDateSensitive", "dateSensitive"})
     private boolean dateSensitive = false;
+    @JsonAlias({"client-date-sensitive-hours", "clientDateSensitiveHours", "dateSensitiveHours"})
+    private int dateSensitiveHours = 5;
 }
