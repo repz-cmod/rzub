@@ -7,4 +7,5 @@ public interface DiscordListenerRepository {
     void addMessageListener(Object discordMessageListener);
     Object getListenerOfCommand(String command);
     List<Object> getMessageListeners();
+    void onReady();
 }

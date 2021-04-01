@@ -2,6 +2,7 @@ package com.github.rzub.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.rzub.model.CommandAccessModel;
+import com.github.rzub.model.CommandAliasModel;
 import com.github.rzub.model.RZUBBotProperties;
 import com.github.rzub.model.SettingsModel;
 import com.github.rzub.service.listener.DiscordListener;
@@ -60,12 +61,23 @@ public class ApplicationConfig implements ApplicationContextAware {
     public CommandAccessModel commandAccessModel(@Value("${rzub.conf.access}") String configFileAddress) throws IOException {
         File file = new File(configFileAddress);
         if(!file.exists()){
-            log.error("access.json file was not found. Using default one which means some commands will never be available");
+            log.error(configFileAddress + " file was not found. Using default one which means some commands will never be available");
             return new CommandAccessModel();
         }
 
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.readValue(file, CommandAccessModel.class);
+    }
+
+    @Bean
+    public CommandAliasModel commandAliasModel(@Value("${rzub.conf.alias}") String configFileAddress) throws IOException {
+        File file = new File(configFileAddress);
+        if(!file.exists()){
+            return new CommandAliasModel();
+        }
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(file, CommandAliasModel.class);
     }
 
     @Bean

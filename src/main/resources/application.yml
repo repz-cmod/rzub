@@ -10,6 +10,7 @@ rzub:
   conf:
     settings: './settings.json'
     access: './access.json'
+    alias: './alias.json'
   bot:
     responses:
       - "I'm not your google assistance, so please use valid commands to talk to me. try `!help` to see them."
