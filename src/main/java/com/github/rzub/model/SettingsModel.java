@@ -1,6 +1,7 @@
 package com.github.rzub.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.*;
 
 import java.util.HashMap;
@@ -19,7 +20,7 @@ public class SettingsModel {
     private Map<String, String> links;
     private Modules modules = new Modules(true, true);
     private Security security = new Security();
-    private Map<String, Boolean> switches = new HashMap<>();
+    private Map<String, JsonNode> custom = new HashMap<>();
     private String clan = "";
     private String domain = "";
 
