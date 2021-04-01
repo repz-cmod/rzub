@@ -2,8 +2,8 @@ package com.github.rzub.service;
 
 import com.github.rzub.database.entity.DiscordUserEntity;
 import com.github.rzub.database.repository.DiscordUserRepository;
-import com.github.rzub.model.SettingsModel;
 import com.github.rzub.model.Iw4madminApiModel;
+import com.github.rzub.model.SettingsModel;
 import com.github.rzub.model.dto.AbstractResultDto;
 import com.github.rzub.model.dto.DiscordRegisterDto;
 import com.github.rzub.model.dto.FailedResultDto;

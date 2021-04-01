@@ -1,7 +1,7 @@
 package com.github.rzub.database.entity;
 
-import com.github.rzub.config.TableName;
 import com.github.rzub.config.ColumnName;
+import com.github.rzub.config.TableName;
 import lombok.*;
 
 import javax.persistence.*;

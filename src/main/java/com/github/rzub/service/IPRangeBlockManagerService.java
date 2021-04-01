@@ -2,8 +2,6 @@ package com.github.rzub.service;
 
 import com.github.rzub.database.entity.IPRangeBlockEntity;
 import com.github.rzub.database.repository.IPRangeBlockRepository;
-import com.github.rzub.model.SettingsModel;
-import com.github.rzub.service.api.IW4MAdminApiService;
 import com.github.rzub.util.MathUtil;
 import com.google.common.net.InetAddresses;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +20,8 @@ public class IPRangeBlockManagerService extends ClientAwareIPBasedAntiEvade {
     private final IPRangeBlockRepository ipRangeBlockRepository;
 
     @Autowired
-    public IPRangeBlockManagerService(IPRangeBlockRepository ipRangeBlockRepository, CachedIW4MAdminStatsLookupService cachedIW4MAdminStatsLookupService, SettingsModel settingsModel) {
-        super(settingsModel, cachedIW4MAdminStatsLookupService);
+    public IPRangeBlockManagerService(IPRangeBlockRepository ipRangeBlockRepository, CachedIW4MAdminStatsLookupService cachedIW4MAdminStatsLookupService, DynamicConfigurationProvider dynamicConfigurationProvider) {
+        super(dynamicConfigurationProvider, cachedIW4MAdminStatsLookupService);
         this.ipRangeBlockRepository = ipRangeBlockRepository;
     }
 

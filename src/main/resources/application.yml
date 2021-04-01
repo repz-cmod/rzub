@@ -1,13 +1,17 @@
 logging:
   file:
-    name: rzub.log
+    name: './rzub.log'
+    max-history: 10
+    max-size: 20MB
   level:
     ROOT: info
     com.github.rzub: debug
 rzub:
   conf:
-    settings: './settings.json'
-    access: './access.json'
+    base: '.'
+    settings: '${rzub.conf.base}/settings.json'
+    access: '${rzub.conf.base}/access.json'
+    alias: '${rzub.conf.base}/alias.json'
   bot:
     responses:
       - "I'm not your google assistance, so please use valid commands to talk to me. try `!help` to see them."
