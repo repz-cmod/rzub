@@ -6,13 +6,18 @@ import com.github.rzub.model.RZUBBotProperties;
 import com.github.rzub.model.SettingsModel;
 import com.github.rzub.service.listener.DiscordListener;
 import com.github.rzub.util.DiscordUtil;
+import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.Compression;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -30,8 +35,10 @@ import java.util.concurrent.ThreadPoolExecutor;
 @EnableScheduling
 @EnableAsync
 @EnableConfigurationProperties(value = RZUBBotProperties.class)
-public class ApplicationConfig {
+@Slf4j
+public class ApplicationConfig implements ApplicationContextAware {
     private final DiscordListener discordListener;
+    private ApplicationContext applicationContext;
 
     public ApplicationConfig(DiscordListener discordListener) {
         this.discordListener = discordListener;
@@ -52,14 +59,26 @@ public class ApplicationConfig {
 
     @Bean
     public CommandAccessModel commandAccessModel(@Value("${rzub.conf.access}") String configFileAddress) throws IOException {
+        File file = new File(configFileAddress);
+        if(!file.exists()){
+            log.error("access.json file was not found. Using default one which means some commands will never be available");
+            return new CommandAccessModel();
+        }
+
         ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(new File(configFileAddress), CommandAccessModel.class);
+        return objectMapper.readValue(file, CommandAccessModel.class);
     }
 
     @Bean
     public SettingsModel settingsModel(@Value("${rzub.conf.settings}") String configFileAddress) throws IOException {
+        File file = new File(configFileAddress);
+        if(!file.exists()){
+            log.error("settings.json file was not found");
+            System.exit(0);
+        }
+
         ObjectMapper objectMapper = new ObjectMapper();
-        SettingsModel settingsModel = objectMapper.readValue(new File(configFileAddress), SettingsModel.class);
+        SettingsModel settingsModel = objectMapper.readValue(file, SettingsModel.class);
         DiscordUtil.setup(settingsModel);
         return settingsModel;
     }
@@ -74,5 +93,10 @@ public class ApplicationConfig {
         builder.addEventListeners(discordListener);
         builder.enableIntents(GatewayIntent.GUILD_MEMBERS);
         return builder.build();
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 }
