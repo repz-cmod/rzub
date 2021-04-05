@@ -25,6 +25,12 @@
       "roles": ["000", "000"]
     },
     {
+      "id": "iwlogin",
+      "public": false,
+      "users": ["000", "000"],
+      "roles": ["000", "000"]
+    },
+    {
       "id": "iwexec",
       "public": false,
       "users": ["000", "000"],

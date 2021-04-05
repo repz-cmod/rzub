@@ -39,7 +39,8 @@ public class CommandExecuteDiscordModule extends AbstractAuthorizedCommandListen
             return;
         }
 
-        IW4MAdminApiService.CommandResponse commandResponse = iw4MAdminApiService.execute(args[0], String.join(" ", Arrays.copyOfRange(args, 2, args.length)), cookieRepository);
+
+        IW4MAdminApiService.CommandResponse commandResponse = iw4MAdminApiService.execute(args[0], String.join(" ", Arrays.copyOfRange(args, 1, args.length)), cookieRepository);
         discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("Success: `" + commandResponse.isSuccess() +  "` | status: `" + commandResponse.getStatus() + "` | body: `" + getPartialBody(commandResponse.getBody()) + "`").complete(), 30);
 
     }
