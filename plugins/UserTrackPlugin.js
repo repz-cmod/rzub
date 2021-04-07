@@ -106,7 +106,7 @@ var plugin = {
 
             return parsedJSON;
         } catch (error) {
-            this.logger.WriteWarning('There was a problem sending ip check message to server ' + error.message);
+            this.logger.WriteError('There was a problem sending ip check message to server ' + error.message);
             return {
                 status: "fail",
                 ban: false
@@ -131,7 +131,7 @@ var plugin = {
             try{
                 this.onConnect(gameEvent, server);
             }catch (error){
-                this.logger.WriteWarning('There was a with handling IP-Range blocking: ' + error.message);
+                this.logger.WriteError('There was a with handling IP-Range blocking: ' + error.message);
             }
         }
     },
