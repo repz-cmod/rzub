@@ -41,7 +41,7 @@ var plugin = {
 
     //gets server id
     serverId: function(server){
-        return server.IP.replaceAll(".", "")+""+server.Port;
+        return server.IP.split(".").join("")+""+server.Port;
     },
 
     getRandomArbitrary: function(min, max) {
@@ -70,7 +70,6 @@ var plugin = {
         try {
             var client = new System.Net.Http.HttpClient();
             client.DefaultRequestHeaders.Add("User-Agent", "iw4madmin plugin");
-            client.DefaultRequestHeaders.Add("Token", rzubToken);
             var content = new System.Net.Http.StringContent(JSON.stringify(webhookData), System.Text.Encoding.UTF8, "application/json");
             var result = client.PostAsync(discordConfig.webhookUrl, content).Result;
             result.Dispose();
@@ -96,6 +95,7 @@ var plugin = {
 
             var client = new System.Net.Http.HttpClient();
             client.DefaultRequestHeaders.Add("User-Agent", "iw4madmin plugin");
+            client.DefaultRequestHeaders.Add("Token", rzubToken);
             var content = new System.Net.Http.StringContent(JSON.stringify(data), System.Text.Encoding.UTF8, "application/json");
             var result = client.PostAsync(url, content).Result;
             var co = result.Content;
