@@ -123,25 +123,6 @@ public class DiscordUtil {
         return stringBuilder.toString();
     }
 
-
-    private static String getEnds(List<IPRangeBlockEntity> ipRangeBlockEntities) {
-        StringBuilder stringBuilder = new StringBuilder();
-        ipRangeBlockEntities.forEach(ipRangeBlockEntity -> {
-            stringBuilder.append(ipRangeBlockEntity.getEnd());
-            stringBuilder.append("\n");
-        });
-        return stringBuilder.toString();
-    }
-
-    private static String getStarts(List<IPRangeBlockEntity> ipRangeBlockEntities) {
-        StringBuilder stringBuilder = new StringBuilder();
-        ipRangeBlockEntities.forEach(ipRangeBlockEntity -> {
-            stringBuilder.append(ipRangeBlockEntity.getStart());
-            stringBuilder.append("\n");
-        });
-        return stringBuilder.toString();
-    }
-
     private static String getNumbers(List<? extends BasicIPBanInfo> ipRangeBlockEntities) {
         StringBuilder stringBuilder = new StringBuilder();
         ipRangeBlockEntities.forEach(ipRangeBlockEntity -> {
