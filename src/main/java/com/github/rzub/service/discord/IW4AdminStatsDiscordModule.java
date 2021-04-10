@@ -2,6 +2,7 @@ package com.github.rzub.service.discord;
 
 import com.github.rzub.annotation.DiscordListenerComponent;
 import com.github.rzub.database.entity.DiscordUserEntity;
+import com.github.rzub.database.entity.IW4MAdminUserEntity;
 import com.github.rzub.database.repository.DiscordUserRepository;
 import com.github.rzub.model.IW4AdminStatResult;
 import com.github.rzub.service.CachedIW4MAdminStatsLookupService;
@@ -31,24 +32,23 @@ public class IW4AdminStatsDiscordModule implements DiscordCommandListener {
     public void onCommand(GuildMessageReceivedEvent event, String[] args) {
         try {
             MessageChannel messageChannel = event.getMessage().getChannel();
+            String userId = null;
             if(args.length > 0){
                 String clientId = args[0];
                 sendStats(messageChannel, clientId);
-            }else {
-                DiscordUserEntity discordUserEntity = discordUserRepository.findByUserId(Objects.requireNonNull(event.getMember()).getUser().getId());
-                if(discordUserEntity != null){
-                    //send mw2 stats
-                    if (discordUserEntity.getIw4madminMw2ClientId() != null) {
-                        sendStats(messageChannel, discordUserEntity.getIw4madminMw2ClientId());
-                    }
-
-                    if (discordUserEntity.getIw4madminBo2ClientId() != null) {
-                        sendStats(messageChannel, discordUserEntity.getIw4madminBo2ClientId());
-                    }
-                }else {
-                    messageChannel.sendMessage("Please provide clientId of iw4madmin `!iwstats <clientId>` or register using `!register` command").complete();
+                return;
+            } else if(event.getMessage().getMentionedMembers().size() > 0){
+                userId = event.getMessage().getMentionedMembers().get(0).getUser().getId();
+            } else {
+                userId = Objects.requireNonNull(event.getMember()).getUser().getId();
+            }
+            DiscordUserEntity discordUserEntity = discordUserRepository.findByUserId(userId);
+            if(discordUserEntity != null){
+                for (IW4MAdminUserEntity iw4MAdminUserEntity : discordUserEntity.getIw4MAdminUserEntities()) {
+                    sendStats(messageChannel, String.valueOf(iw4MAdminUserEntity.getClientId()));
                 }
-
+            }else {
+                messageChannel.sendMessage("User has not registered using `!register` command.").complete();
             }
         } catch (Exception e) {
             log.error("Failed to send response for command !iwstats", e);
