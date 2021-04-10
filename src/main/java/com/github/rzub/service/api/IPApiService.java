@@ -1,6 +1,7 @@
 package com.github.rzub.service.api;
 
 import lombok.*;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -10,6 +11,7 @@ import java.util.Objects;
 public class IPApiService {
     private final RestTemplate restTemplate = new RestTemplate();
 
+    @Cacheable(cacheNames = "ip-api", key = "#ip", unless="#result == null")
     public IpInfo getInfo(String ip){
         return restTemplate.getForEntity("http://ip-api.com/json/" + ip, IpInfo.class).getBody();
     }
