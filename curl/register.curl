@@ -1,0 +1,1 @@
+curl -XPOST -H "Content-type: application/json" -H "Token: 000000000000" -d '{"playerName":"SocialDistance","clientId":252,"xuid":"20000000000","game":"IW4","token":"QSukQe"}' 'http://localhost:8080/plugin/v1/discord/register'
