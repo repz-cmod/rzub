@@ -139,7 +139,7 @@ var plugin = {
     onLoadAsync: function (manager) {
         this.manager = manager;
         this.logger = manager.GetLogger(0);
-        this.trackerId = new Date().getTime() / 1000 + this.getRandomArbitrary(0, 500);
+        this.trackerId = new Date().getTime() / 1000 + this.getRandomArbitrary(0, 500);  // todo: create a map of user id to tracker id and generate it on client connect
     },
 
     onUnloadAsync: function () {

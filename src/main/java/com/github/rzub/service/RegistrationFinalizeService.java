@@ -1,7 +1,9 @@
 package com.github.rzub.service;
 
 import com.github.rzub.database.entity.DiscordUserEntity;
+import com.github.rzub.database.entity.IW4MAdminUserEntity;
 import com.github.rzub.database.repository.DiscordUserRepository;
+import com.github.rzub.database.repository.IW4MAdminUserRepository;
 import com.github.rzub.model.Iw4madminApiModel;
 import com.github.rzub.model.SettingsModel;
 import com.github.rzub.model.dto.AbstractResultDto;
@@ -10,7 +12,6 @@ import com.github.rzub.model.dto.FailedResultDto;
 import com.github.rzub.model.dto.SuccessResultDto;
 import com.github.rzub.model.event.DiscordPlayerRegisterEvent;
 import com.github.rzub.service.api.IW4MAdminApiService;
-import com.github.rzub.util.GameUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.User;
@@ -19,21 +20,25 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
+import java.util.Optional;
 
 @Service
 @Slf4j
 public class RegistrationFinalizeService {
     private final JDA jda;
     private final DiscordUserRepository discordUserRepository;
+    private final IW4MAdminUserRepository iw4MAdminUserRepository;
     private final SettingsModel settingsModel;
     private final IW4MAdminApiService iw4MAdminApiService;
     private final DiscordUserCacheService discordUserCacheService;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @Autowired
-    public RegistrationFinalizeService(JDA jda, DiscordUserRepository discordUserRepository, SettingsModel settingsModel, IW4MAdminApiService iw4MAdminApiService, DiscordUserCacheService discordUserCacheService, ApplicationEventPublisher applicationEventPublisher) {
+    public RegistrationFinalizeService(JDA jda, DiscordUserRepository discordUserRepository, IW4MAdminUserRepository iw4MAdminUserRepository, SettingsModel settingsModel, IW4MAdminApiService iw4MAdminApiService, DiscordUserCacheService discordUserCacheService, ApplicationEventPublisher applicationEventPublisher) {
         this.jda = jda;
         this.discordUserRepository = discordUserRepository;
+        this.iw4MAdminUserRepository = iw4MAdminUserRepository;
         this.settingsModel = settingsModel;
         this.iw4MAdminApiService = iw4MAdminApiService;
         this.discordUserCacheService = discordUserCacheService;
@@ -47,29 +52,11 @@ public class RegistrationFinalizeService {
             return FailedResultDto.getInstance();
         }
 
-        boolean changed = false;
-
-        if(discordRegisterDto.getGame().toUpperCase().equals("IW4") && discordUserEntity.getIw4madminMw2ClientId() == null){
-            discordUserEntity.setIw4madminMw2ClientId(discordRegisterDto.getClientId());
-            discordUserEntity.setMw2Name(GameUtil.cleanColors(discordRegisterDto.getPlayerName()));
-            String guid = getGUID(discordRegisterDto.getClientId());
-            discordUserEntity.setMw2Guid(guid);
-            changed = true;
-        }
-
-        if(discordRegisterDto.getGame().toUpperCase().equals("T6") && discordUserEntity.getIw4madminBo2ClientId() == null){
-            discordUserEntity.setIw4madminBo2ClientId(discordRegisterDto.getClientId());
-            discordUserEntity.setBo2Name(GameUtil.cleanColors(discordRegisterDto.getPlayerName()));
-            String guid = getGUID(discordRegisterDto.getClientId());
-            guid = String.valueOf(Integer.parseInt(guid,16));
-            discordUserEntity.setBo2Guid(guid);
-            changed = true;
-        }
+        boolean changed = handle(discordUserEntity, discordRegisterDto);
 
         boolean success = false;
-
-        try {
-            if(changed){
+        if(changed){
+            try {
                 discordUserRepository.save(discordUserEntity);
                 success = true;
                 applicationEventPublisher.publishEvent(new DiscordPlayerRegisterEvent(this, discordUserEntity, discordRegisterDto.getGame().toUpperCase().equals("IW4") ? "mw2" : "bo2"));
@@ -77,13 +64,33 @@ public class RegistrationFinalizeService {
                 if(jdaUser != null){
                     jdaUser.openPrivateChannel().flatMap(privateChannel -> privateChannel.sendMessage(getMessage(discordRegisterDto))).queue();
                 }
+            }catch (Exception e){
+                log.error("Failed to update discord user and send discord pm.", e);
             }
-        }catch (Exception e){
-            log.error("Failed to update discord user and send discord pm.", e);
         }
+
         if(success)
             return new SuccessResultDto();
         return FailedResultDto.getInstance();
+    }
+
+    private synchronized boolean handle(DiscordUserEntity discordUserEntity, DiscordRegisterDto discordRegisterDto) {
+        Optional<IW4MAdminUserEntity> iw4MAdminUserEntityOptional = iw4MAdminUserRepository.findByDiscordUserAndGame(discordUserEntity, discordRegisterDto.getGame().toUpperCase());
+        IW4MAdminUserEntity iw4MAdminUserEntity = iw4MAdminUserEntityOptional.orElseGet(IW4MAdminUserEntity::new);
+
+        if (iw4MAdminUserEntity.isDone())
+            return false;
+
+        iw4MAdminUserEntity.setClientId(Long.valueOf(discordRegisterDto.getClientId()));
+        iw4MAdminUserEntity.setGame(discordRegisterDto.getGame().toUpperCase());
+        iw4MAdminUserEntity.setGuid(getGUID(discordRegisterDto.getClientId()));
+        iw4MAdminUserEntity.setName(discordRegisterDto.getPlayerName());
+        iw4MAdminUserEntity.setDiscordUser(discordUserEntity);
+        iw4MAdminUserEntity.setDone(true);
+        iw4MAdminUserEntity.setCreationDate(new Date());
+        iw4MAdminUserRepository.save(iw4MAdminUserEntity);
+
+        return true;
     }
 
     private User getJDAUser(DiscordUserEntity discordUserEntity) {
