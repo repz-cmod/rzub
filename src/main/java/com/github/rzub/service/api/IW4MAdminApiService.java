@@ -80,7 +80,7 @@ public class IW4MAdminApiService {
         try {
             headers.put("cookie", getCookie(cookieRepository));
         } catch (Exception e) {
-            return new CommandResponse(false, -1, "");
+            return new CommandResponse(false, -1, "Failed to get cookie");
         }
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
 
@@ -104,7 +104,7 @@ public class IW4MAdminApiService {
         httpHeaders.put("Accept", Collections.singletonList("*/*"));
         httpHeaders.put("Accept-Language", Collections.singletonList("en-US,en;q=0.5"));
         httpHeaders.put("X-Requested-With", Collections.singletonList("XMLHttpRequest"));
-        httpHeaders.put("Referer", Collections.singletonList("http://admin.cmod.pw:8080/"));
+        httpHeaders.put("Referer", Collections.singletonList(settingsModel.getIw4madminUrl()));
         httpHeaders.put("DNT", Collections.singletonList("1"));
         httpHeaders.put("Pragma", Collections.singletonList("no-cache"));
         httpHeaders.put("Cache-Control", Collections.singletonList("no-cache"));

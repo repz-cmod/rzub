@@ -28,12 +28,14 @@ public class SettingsModel {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Security {
         private String token = "000000000000";
     }
 
     @Getter
     @Setter
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Database {
         private String url;
         private String username;
@@ -47,6 +49,7 @@ public class SettingsModel {
     @Setter
     @AllArgsConstructor
     @NoArgsConstructor
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Modules {
         private boolean analytics = true;
         private boolean welcome = true;
@@ -54,13 +57,13 @@ public class SettingsModel {
 
     @Getter
     @Setter
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Discord {
         private String token;
-        private Map<String, String> messages;
-        private Map<String, String> channels;
-        private Map<String, String> roles;
-        private Map<String, String> custom;
-        private List<String> ipb;
+        private Map<String, String> messages = new HashMap<>();
+        private Map<String, String> channels = new HashMap<>();
+        private Map<String, String> roles = new HashMap<>();
+        private Map<String, String> custom = new HashMap<>();
         private String welcome;
     }
 }
