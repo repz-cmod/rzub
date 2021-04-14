@@ -102,7 +102,7 @@ public class RegistrationFinalizeService {
     }
 
     private String getMessage(DiscordRegisterDto discordRegisterDto) {
-        String message = new String(settingsModel.getMessages().get("registrationComplete"));
+        String message = settingsModel.getMessages().get("registrationComplete");
         return message.replace("$game", discordRegisterDto.getGame()).replace("$playerName", discordRegisterDto.getPlayerName());
     }
 

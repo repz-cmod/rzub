@@ -16,8 +16,12 @@ var plugin = {
         var game;
         if(server.GameName  === 2){
             game = "IW4";
-        }else {
+        }else if(server.GameName === 7){
             game = "T6";
+        }else if(server.GameName === 1){
+            game = "IW3"
+        }else {
+            game = "T4"
         }
 
         var data = {

@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-import static com.github.rzub.config.ColumnName.*;
+import static com.github.rzub.config.ColumnName.DISCORD_USER_ID;
 import static com.github.rzub.config.TableName.DISCORD_USER;
 
 @Entity
