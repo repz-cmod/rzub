@@ -29,7 +29,7 @@ public class CachedIW4MAdminStatsLookupService {
 
     @Cacheable(cacheNames = "iw4madminStats", key = "#clientId", unless="#result == null")
     public IW4AdminStatResult getIW4adminStats(String clientId) throws Exception {
-        log.info("Looking up iw4madmin stats for "+ clientId);
+        log.debug("Looking up iw4madmin stats for "+ clientId);
 
         List<IW4AdminStatResult.MapRanking> mapRankings = new ArrayList<>();
 

@@ -32,7 +32,7 @@ public class DiscordUserEntity {
     private Date creationDate;
     private boolean messageSent;
 
-    @OneToMany(mappedBy = "discordUser")
+    @OneToMany(mappedBy = "discordUser", fetch = FetchType.EAGER)
     private List<IW4MAdminUserEntity> iw4MAdminUserEntities;
 
     @Override

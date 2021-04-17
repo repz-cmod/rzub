@@ -31,7 +31,7 @@ public class IW4MAdminUserEntity {
     private boolean done;
     private Date creationDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="discord_user_id", nullable=false)
     private DiscordUserEntity discordUser;
 

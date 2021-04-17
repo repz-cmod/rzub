@@ -19,11 +19,13 @@ public class DiscordUtil {
     private static final DecimalFormat df2 = new DecimalFormat("#.##");
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss z");
     private static List<String> cleanStr = new ArrayList<>();
+    private static SettingsModel settingsModel;
 
     public synchronized static void setup(SettingsModel settingsModel){
         DiscordUtil.cleanStr = new ArrayList<>();
         DiscordUtil.cleanStr.add(settingsModel.getClan());
         DiscordUtil.cleanStr.add(settingsModel.getDomain());
+        DiscordUtil.settingsModel = settingsModel;
     }
 
     public static String argumentsAsOne(String[] args){
@@ -62,7 +64,7 @@ public class DiscordUtil {
                 .setDescription("This is list of users blocked by ip region. Each page has 10 results.\nPage: `" +page+"`.\nMax results: " + max +"\n")
                 .addField("#", getNumbers(ipRangeBlockEntities), true)
                 .addField("reason", getReasons(ipRangeBlockEntities), true)
-                .addField("username", getUsernames(ipRangeBlockEntities), true)
+                .addField("admin", getUsernames(ipRangeBlockEntities), true)
                 .build();
     }
 
@@ -137,10 +139,25 @@ public class DiscordUtil {
                 .setColor(Color.BLACK)
                 .setTitle(title)
                 .setDescription("Overall K/D: "+ df2.format(iw4AdminStatResult.getKd()))
-                .addField("Server", getServers(iw4AdminStatResult), true)
-                .addField("Game", getGames(iw4AdminStatResult), true)
-                .addField("Rank", getRanks(iw4AdminStatResult), true);
+                .appendDescription("\nSee advanced statistics [here](" + settingsModel.getIw4madminUrl() + "clientstatistics/" + iw4AdminStatResult.getClientId() + "/advanced)");
+
+        if(rankingEnabled(iw4AdminStatResult)){
+            embedBuilder
+                    .addField("Server", getServers(iw4AdminStatResult), true)
+                    .addField("Game", getGames(iw4AdminStatResult), true)
+                    .addField("Rank", getRanks(iw4AdminStatResult), true);
+        }
+
         return embedBuilder.build();
+    }
+
+    private static boolean rankingEnabled(IW4AdminStatResult iw4AdminStatResult) {
+        for (IW4AdminStatResult.MapRanking ranking : iw4AdminStatResult.getRankings()) {
+            if (ranking.getRank() > 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static String getRanks(IW4AdminStatResult iw4madminStats) {
