@@ -34,11 +34,14 @@ public class IW4AdminStatsDiscordModule implements DiscordCommandListener {
             MessageChannel messageChannel = event.getMessage().getChannel();
             String userId = null;
             if(args.length > 0){
-                String clientId = args[0];
-                sendStats(messageChannel, clientId);
-                return;
-            } else if(event.getMessage().getMentionedMembers().size() > 0){
-                userId = event.getMessage().getMentionedMembers().get(0).getUser().getId();
+                if(event.getMessage().getMentionedMembers().size() > 0){
+                    System.out.println("has mentioned member");
+                    userId = event.getMessage().getMentionedMembers().get(0).getUser().getId();
+                }else {
+                    String clientId = args[0];
+                    sendStats(messageChannel, clientId);
+                    return;
+                }
             } else {
                 userId = Objects.requireNonNull(event.getMember()).getUser().getId();
             }
