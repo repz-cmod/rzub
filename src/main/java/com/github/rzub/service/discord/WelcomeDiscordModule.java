@@ -1,7 +1,7 @@
 package com.github.rzub.service.discord;
 
 import com.github.rzub.model.SettingsModel;
-import com.github.rzub.model.event.DiscordMemberJoinEVent;
+import com.github.rzub.model.event.DiscordMemberJoinEvent;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.EmbedBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import java.awt.*;
 
 @Component
 @Slf4j
-public class WelcomeDiscordModule implements ApplicationListener<DiscordMemberJoinEVent> {
+public class WelcomeDiscordModule implements ApplicationListener<DiscordMemberJoinEvent> {
     private final SettingsModel settingsModel;
 
     @Autowired
@@ -21,7 +21,7 @@ public class WelcomeDiscordModule implements ApplicationListener<DiscordMemberJo
     }
 
     @Override
-    public void onApplicationEvent(DiscordMemberJoinEVent discordMemberJoinEVent) {
+    public void onApplicationEvent(DiscordMemberJoinEvent discordMemberJoinEVent) {
         if (!settingsModel.getModules().isWelcome())
             return;
         String user = discordMemberJoinEVent.getGuildMemberJoinEvent().getUser().getAsMention();

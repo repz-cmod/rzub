@@ -3,7 +3,7 @@ package com.github.rzub.service.listener;
 import com.github.rzub.config.DiscordStateHolder;
 import com.github.rzub.database.repository.DiscordListenerRepository;
 import com.github.rzub.database.repository.GuildRepository;
-import com.github.rzub.model.event.DiscordMemberJoinEVent;
+import com.github.rzub.model.event.DiscordMemberJoinEvent;
 import com.github.rzub.model.event.DiscordReadyEvent;
 import com.github.rzub.service.DiscordUserCacheService;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +44,7 @@ public class DiscordListener extends ListenerAdapter {
     public void onGuildMemberJoin(@Nonnull GuildMemberJoinEvent event) {
         log.info("User joined: "+ event.getUser().getName());
         discordUserCacheService.addToCache(event.getUser());
-        applicationEventPublisher.publishEvent(new DiscordMemberJoinEVent(this, event));
+        applicationEventPublisher.publishEvent(new DiscordMemberJoinEvent(this, event));
     }
 
     @Override
