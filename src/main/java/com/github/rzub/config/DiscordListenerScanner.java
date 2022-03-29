@@ -1,9 +1,7 @@
 package com.github.rzub.config;
 
 import com.github.rzub.annotation.DiscordListenerComponent;
-import com.github.rzub.database.repository.CommandDescRepository;
 import com.github.rzub.database.repository.DiscordListenerRepository;
-import com.github.rzub.service.listener.DiscordCommandListener;
 import com.github.rzub.service.listener.DiscordMessageListener;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.support.AopUtils;
@@ -16,11 +14,9 @@ import java.util.Map;
 @Slf4j
 public class DiscordListenerScanner {
     private final DiscordListenerRepository discordListenerRepository;
-    private final CommandDescRepository commandDescRepository;
 
-    public DiscordListenerScanner(DiscordListenerRepository discordListenerRepository, CommandDescRepository commandDescRepository) {
+    public DiscordListenerScanner(DiscordListenerRepository discordListenerRepository) {
         this.discordListenerRepository = discordListenerRepository;
-        this.commandDescRepository = commandDescRepository;
     }
 
     public void scan(ApplicationContext applicationContext){
@@ -32,19 +28,13 @@ public class DiscordListenerScanner {
                     DiscordListenerComponent discordListenerComponent = aClass.getAnnotation(DiscordListenerComponent.class);
                     if(discordListenerComponent == null)
                         return;
-                    if(bean instanceof DiscordCommandListener){
-                        discordListenerRepository.addCommandListener(discordListenerComponent.command(), bean);
-                        if(!discordListenerComponent.hidden())
-                            commandDescRepository.addCommand(discordListenerComponent.command(), discordListenerComponent.description());
-                    }else if(bean instanceof DiscordMessageListener){
+                    if(bean instanceof DiscordMessageListener){
                         discordListenerRepository.addMessageListener(bean);
                     }
                 }
 
             });
         }
-
-        discordListenerRepository.onReady();
 
     }
 }

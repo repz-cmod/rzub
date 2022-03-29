@@ -14,7 +14,4 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DiscordListenerComponent {
-    String command() default "";
-    boolean hidden() default false;
-    String description() default "";
 }

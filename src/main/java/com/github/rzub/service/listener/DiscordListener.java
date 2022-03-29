@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Nonnull;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 
 @Component
 @Slf4j
@@ -60,32 +59,14 @@ public class DiscordListener extends ListenerAdapter {
 
         discordUserCacheService.addToCache(event.getAuthor());
 
-        if(messageContent.startsWith("!")){
-            String substring = messageContent.substring(1);
-            String[] commandAndArgs = substring.split(" ");
-            Object listenerOfCommand = discordListenerRepository.getListenerOfCommand(commandAndArgs[0]);
-            if(listenerOfCommand != null){
-                try {
-                    String[] args;
-                    if(commandAndArgs.length > 1){
-                        args = Arrays.copyOfRange(commandAndArgs, 1, commandAndArgs.length);
-                    }else {
-                        args = new String[]{};
-                    }
-                    listenerOfCommand.getClass().getMethod("onCommand", GuildMessageReceivedEvent.class, String[].class).invoke(listenerOfCommand, event, args);
-                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                    log.error("Failed to invoke method `onCommand()`", e);
-                }
+        discordListenerRepository.getMessageListeners().forEach(discordMessageListener -> {
+            try {
+                discordMessageListener.getClass().getMethod("onMessage", GuildMessageReceivedEvent.class).invoke(discordMessageListener, event);
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                log.error("Failed to invoke method `onMessage()`", e);
             }
-        }else {
-            discordListenerRepository.getMessageListeners().forEach(discordMessageListener -> {
-                try {
-                    discordMessageListener.getClass().getMethod("onMessage", GuildMessageReceivedEvent.class).invoke(discordMessageListener, event);
-                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                    log.error("Failed to invoke method `onMessage()`", e);
-                }
-            });
-        }
+        });
+
 
     }
 }

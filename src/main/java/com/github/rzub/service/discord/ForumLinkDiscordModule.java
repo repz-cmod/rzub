@@ -1,14 +1,15 @@
 package com.github.rzub.service.discord;
 
-import com.github.rzub.annotation.DiscordListenerComponent;
 import com.github.rzub.model.SettingsModel;
-import com.github.rzub.service.listener.DiscordCommandListener;
+import io.github.sepgh.sbdiscord.annotations.DiscordCommand;
+import io.github.sepgh.sbdiscord.annotations.DiscordController;
+import io.github.sepgh.sbdiscord.command.context.CommandContextHolder;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@DiscordListenerComponent(command = "forum", description = "Sends the link to forum")
-public class ForumLinkDiscordModule implements DiscordCommandListener {
+@DiscordController
+public class ForumLinkDiscordModule {
     private final String text;
 
     @Autowired
@@ -16,9 +17,9 @@ public class ForumLinkDiscordModule implements DiscordCommandListener {
         text = "Visit [Forum]("+ settingsModel.getLinks().get("forum")+").";
     }
 
-
-    @Override
-    public void onCommand(GuildMessageReceivedEvent event, String[] args) {
-        event.getAuthor().openPrivateChannel().flatMap(privateChannel -> privateChannel.sendMessage(new EmbedBuilder().setDescription(text).build())).queue();
+    @DiscordCommand(name = "forum", description = "Sends the link to forum")
+    public void onCommand() {
+        SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
+        event.replyEmbeds(new EmbedBuilder().setDescription(text).build()).queue();
     }
 }

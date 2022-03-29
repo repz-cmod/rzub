@@ -35,16 +35,19 @@ public class IW4MAdminApiService {
     private final ObjectMapper objectMapper;
     private volatile String cachedIw4madminUrl;
     private final String execAddress;
+    private final CookieRepository cookieRepository;
+
 
     @Autowired
-    public IW4MAdminApiService(@Lazy SettingsModel settingsModel, ObjectMapper objectMapper) {
+    public IW4MAdminApiService(@Lazy SettingsModel settingsModel, ObjectMapper objectMapper, CookieRepository cookieRepository) {
         this.settingsModel = settingsModel;
         this.objectMapper = objectMapper;
+        this.cookieRepository = cookieRepository;
         this.restTemplate = new RestTemplate(new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
         execAddress = getIw4madminUrl() + "/Console/ExecuteAsync?serverId={serverId}&command={command}";
     }
 
-    public boolean logIn(String cid, String passwd, CookieRepository cookieRepository){
+    public boolean logIn(String cid, String passwd){
         String addr = getIw4madminUrl() + "/Account/LoginAsync?clientId="+cid+"&password="+passwd;
         try {
             ResponseEntity<String> responseEntity = restTemplate.getForEntity(addr, String.class);
@@ -75,10 +78,10 @@ public class IW4MAdminApiService {
         return cookie;
     }
 
-    public CommandResponse execute(String serverId, String command, CookieRepository cookieRepository){
+    public CommandResponse execute(String serverId, String command){
         HttpHeaders headers = getBasicHeaders();
         try {
-            headers.put("cookie", getCookie(cookieRepository));
+            headers.put("cookie", getCookie());
         } catch (Exception e) {
             return new CommandResponse(false, -1, "Failed to get cookie");
         }
@@ -94,8 +97,8 @@ public class IW4MAdminApiService {
         }
     }
 
-    public boolean sendCommand(String serverId, String command, CookieRepository cookieRepository){
-        return this.execute(serverId, command, cookieRepository).isSuccess();
+    public boolean sendCommand(String serverId, String command){
+        return this.execute(serverId, command).isSuccess();
     }
 
     private HttpHeaders getBasicHeaders() {
@@ -111,7 +114,7 @@ public class IW4MAdminApiService {
         return httpHeaders;
     }
 
-    private List<String> getCookie(CookieRepository cookieRepository) throws Exception {
+    private List<String> getCookie() throws Exception {
         List<CookieEntity> content = cookieRepository.findAll(new OffsetLimitPageable(0, 1, Sort.by(Sort.Direction.DESC, "id"))).getContent();
         if(content.size() > 0){
             String[] strings = objectMapper.readValue(content.get(0).getCookie(), String[].class);

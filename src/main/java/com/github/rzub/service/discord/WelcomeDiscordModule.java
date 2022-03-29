@@ -28,7 +28,7 @@ public class WelcomeDiscordModule implements ApplicationListener<DiscordMemberJo
         String welcome = settingsModel.getDiscord().getWelcome();
         String result = welcome.replace("$user", user).replace("$infoLink", settingsModel.getLinks().get("infoChannel")).replace("$rulesToAccess", settingsModel.getLinks().get("rulesToAccessChannel"));
         try {
-            discordMemberJoinEVent.getGuildMemberJoinEvent().getUser().openPrivateChannel().flatMap(privateChannel -> privateChannel.sendMessage(new EmbedBuilder()
+            discordMemberJoinEVent.getGuildMemberJoinEvent().getUser().openPrivateChannel().flatMap(privateChannel -> privateChannel.sendMessageEmbeds(new EmbedBuilder()
                     .setColor(Color.GREEN)
                     .setDescription(result)
                     .build())).queue();

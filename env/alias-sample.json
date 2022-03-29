@@ -1,6 +1,0 @@
-{
-  "aliases": {
-    "ipb": ["ip-ban", "a"],
-    "ipb2": ["ip-range-ban", "b"]
-  }
-}

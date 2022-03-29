@@ -1,112 +1,91 @@
 package com.github.rzub.service.discord;
 
-import com.github.rzub.annotation.DiscordListenerComponent;
 import com.github.rzub.database.entity.IPRangeBlockEntity;
-import com.github.rzub.model.SettingsModel;
-import com.github.rzub.service.CommandAccessService;
-import com.github.rzub.service.DiscordDelayedMessageRemoverService;
 import com.github.rzub.service.IPRangeBlockManagerService;
-import com.github.rzub.service.listener.AbstractAuthorizedCommandListener;
 import com.github.rzub.util.DiscordUtil;
 import com.github.rzub.util.MathUtil;
 import com.google.common.net.InetAddresses;
+import io.github.sepgh.sbdiscord.annotations.DiscordCommand;
+import io.github.sepgh.sbdiscord.annotations.DiscordController;
+import io.github.sepgh.sbdiscord.annotations.DiscordParameter;
+import io.github.sepgh.sbdiscord.command.context.CommandContextHolder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-@DiscordListenerComponent(command = "ipb", description = "Not available", hidden = true)
-public class IPRangeBlockControlDiscordModule extends AbstractAuthorizedCommandListener {
-    private final DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService;
+
+@DiscordController
+public class IPRangeBlockControlDiscordModule {
     private final IPRangeBlockManagerService ipRangeBlockManagerService;
 
-    public IPRangeBlockControlDiscordModule(CommandAccessService commandAccessService, DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService, IPRangeBlockManagerService ipRangeBlockManagerService, SettingsModel settingsModel) {
-        super(commandAccessService, discordDelayedMessageRemoverService);
-        this.discordDelayedMessageRemoverService = discordDelayedMessageRemoverService;
+    public IPRangeBlockControlDiscordModule(IPRangeBlockManagerService ipRangeBlockManagerService) {
         this.ipRangeBlockManagerService = ipRangeBlockManagerService;
     }
 
-    @Override
-    public void onCommand(GuildMessageReceivedEvent event, String[] args) {
-        discordDelayedMessageRemoverService.scheduleRemove(event.getMessage(), 30);
-        super.onCommand(event, args);
+    @DiscordCommand(name = "ipb-add", description = "Ban IP range")
+    public void onAdd(
+            @DiscordParameter(name="from") String ipFrom,
+            @DiscordParameter(name="to") String ipTo,
+            @DiscordParameter(name = "duration", description = "duration of block in days") Integer duration,
+            @DiscordParameter(name = "reason", description = "reason of block") String reason
+        ) {
+        SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
+
+        if(InetAddresses.isInetAddress(ipFrom) && InetAddresses.isInetAddress(ipTo)){
+            Date date = new Date();
+            Calendar c = Calendar.getInstance();
+            c.setTime(date);
+            c.add(Calendar.DAY_OF_MONTH, duration);
+            Date expiration = c.getTime();
+            ipRangeBlockManagerService.add(IPRangeBlockEntity.builder()
+                    .startLong(MathUtil.ipToLong(InetAddresses.forString(ipFrom)))
+                    .endLong(MathUtil.ipToLong(InetAddresses.forString(ipTo)))
+                    .start(ipFrom)
+                    .end(ipTo)
+                    .reason(reason)
+                    .creationDate(date)
+                    .expiration(expiration)
+                    .username(event.getMember().getEffectiveName())
+                    .build());
+            event.reply("Added ip address range to blocking range for "+duration+" days.").queue();
+        }
     }
 
-    @Override
-    protected void onAuthorizedCommand(GuildMessageReceivedEvent event, String[] args) {
-        if(args.length < 1){
-            discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("Invalid arguments. Try `!ipb help`.").complete(), 30);
+    @DiscordCommand(name = "ipb-list", description = "List IP Range blocks")
+    public void onList(
+            @DiscordParameter(name="page") int page
+    ) {
+        SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
+
+        List<IPRangeBlockEntity> ipRangeBlockEntities = ipRangeBlockManagerService.get(page);
+        if(ipRangeBlockEntities.size() == 0){
+            event.reply("List is empty ATM.").queue();
         }else {
-            String command = args[0];
-            switch (command) {
-                case "add":
-                    if(args.length > 4){
-                        if(InetAddresses.isInetAddress(args[1]) && InetAddresses.isInetAddress(args[2])){
-                            Integer duration = Integer.parseInt(args[3]);
-                            String reason = DiscordUtil.argumentsAsOne(Arrays.copyOfRange(args, 4, args.length));
-                            Date date = new Date();
-                            Calendar c = Calendar.getInstance();
-                            c.setTime(date);
-                            c.add(Calendar.DAY_OF_MONTH, duration);
-                            Date expiration = c.getTime();
-                            ipRangeBlockManagerService.add(IPRangeBlockEntity.builder()
-                                    .startLong(MathUtil.ipToLong(InetAddresses.forString(args[1])))
-                                    .endLong(MathUtil.ipToLong(InetAddresses.forString(args[2])))
-                                    .start(args[1])
-                                    .end(args[2])
-                                    .reason(reason)
-                                    .creationDate(date)
-                                    .expiration(expiration)
-                                    .username(event.getMember().getEffectiveName())
-                                    .build());
-                            discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("Added ip address range to blocking range for "+duration+" days.").complete(), 30);
-                        }else {
-                            discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("Invalid IP Addresses").complete(), 30);
-                        }
-                    }else {
-                        discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("Invalid arguments for adding to ban list. Try `!ipb help`.").complete(), 30);
-                    }
-                    break;
-                case "list":
-                    int page = 0;
-                    if(args.length > 1){
-                        page = Integer.parseInt(args[1]);
-                    }
-                    List<IPRangeBlockEntity> ipRangeBlockEntities = ipRangeBlockManagerService.get(page);
-                    if(ipRangeBlockEntities.size() == 0){
-                        discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("List is empty ATM.").complete(), 30);
-                    }else {
-                        MessageEmbed messageEmbed = DiscordUtil.getBlockedIpRange(ipRangeBlockEntities, page, ipRangeBlockManagerService.count());
-                        //Remove results after 60 seconds unless arg 2 is passed as seconds to keep this results
-                        discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage(messageEmbed).complete(), args.length > 2 ? Integer.parseInt(args[2]) : 60);
-                    }
-                    break;
-                case "rm":
-                    if(args.length > 1){
-                        int id = Integer.parseInt(args[1]);
-                        ipRangeBlockManagerService.remove(id);
-                        discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("Removed item").complete(), 30);
-                    }
-                    break;
-                case "test":
-                    if(args.length > 1){
-                        String testIp = args[1];
-                        boolean b = ipRangeBlockManagerService.shouldBlock(testIp);
-                        String mid = b ? "is" : "is NOT";
-                        discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("IP `"+testIp+"` " + mid + " in block range").complete(), 20);
-                    }
-                    break;
-                default:
-                    String message = "`!ipb add <start> <end> <duration=5> <reason>` to add new block item. duration is number in `day`.\n" +
-                            "`!ipb list <page=1> <autoDeleteDelay=60>` to list blocks.\n" +
-                            "`!ipb test <ip>` to test ip in block range.\n" +
-                            "`!ipb rm <id>` to delete an ip ban.";
-                    discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage(message).complete(), 20);
-                    break;
-            }
+            MessageEmbed messageEmbed = DiscordUtil.getBlockedIpRange(ipRangeBlockEntities, page, ipRangeBlockManagerService.count());
+            //Remove results after 60 seconds unless arg 2 is passed as seconds to keep this results
+            event.replyEmbeds(messageEmbed).queue();
         }
+    }
+
+    @DiscordCommand(name = "ipb-rm", description = "Remove IP Range block")
+    public void onRemove(
+            @DiscordParameter(name="id") int id
+    ) {
+        SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
+        ipRangeBlockManagerService.remove(id);
+        event.reply("Removed item").queue();
+    }
+
+    @DiscordCommand(name = "ipb-test", description = "Test IP Range block")
+    public void onTest(
+            @DiscordParameter(name="ip") String ip
+    ) {
+        boolean b = ipRangeBlockManagerService.shouldBlock(ip);
+        String mid = b ? "is" : "is NOT";
+        SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
+        event.reply("IP `"+ip+"` " + mid + " in block range").queue();
     }
 }

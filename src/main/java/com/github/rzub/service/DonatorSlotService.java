@@ -44,7 +44,7 @@ public class DonatorSlotService {
 
     private boolean kick(String serverId, Iw4madminApiModel.Player playerToKick) {
         String cmd = "!kick " + playerToKick.getClientNumber() + " " + settingsModel.getMessages().get("donatorSlotKickReason");
-        return iw4MAdminApiService.sendCommand(serverId, cmd, cookieRepository);
+        return iw4MAdminApiService.sendCommand(serverId, cmd);
     }
 
     private void updateTicket(String donatorDiscordUserId) {

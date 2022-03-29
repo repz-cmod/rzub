@@ -1,44 +1,100 @@
-{
-  "commands": [
-    {
-      "id": "ipb",
-      "public": false,
-      "users": ["000", "000"],
-      "roles": ["000", "000"]
-    },
-    {
-      "id": "ipb2",
-      "public": false,
-      "users": ["000", "000"],
-      "roles": ["000", "000"]
-    },
-    {
-      "id": "whitelist",
-      "public": false,
-      "users": ["000", "000"],
-      "roles": ["000", "000"]
-    },
-    {
-      "id": "clean",
-      "public": false,
-      "users": ["000", "000"],
-      "roles": ["000", "000"]
-    },
-    {
-      "id": "iwlogin",
-      "public": false,
-      "users": ["000", "000"],
-      "roles": ["000", "000"]
-    },
-    {
-      "id": "iwexec",
-      "public": false,
-      "users": ["000", "000"],
-      "roles": ["000", "000"]
-    },{
-      "id": "join",
-      "public": false,
-      "roles": ["000", "000"]
-    }
-  ]
-}
+[
+  {
+    "commandName": "ipb-add",
+    "privileges": [
+      {"type": "USER", "id": 0},
+      {"type": "ROLE", "id": 0}
+    ]
+  },
+  {
+    "commandName": "ipb-list",
+    "privileges": [
+      {"type": "USER", "id": 0},
+      {"type": "ROLE", "id": 0}
+    ]
+  },
+  {
+    "commandName": "ipb-rm",
+    "privileges": [
+      {"type": "USER", "id": 0},
+      {"type": "ROLE", "id": 0}
+    ]
+  },
+  {
+    "commandName": "ipb-test",
+    "privileges": [
+      {"type": "USER", "id": 0},
+      {"type": "ROLE", "id": 0}
+    ]
+  },
+  {
+    "commandName": "ipb2-add",
+    "privileges": [
+      {"type": "USER", "id": 0},
+      {"type": "ROLE", "id": 0}
+    ]
+  },
+  {
+    "commandName": "ipb2-list",
+    "privileges": [
+      {"type": "USER", "id": 0},
+      {"type": "ROLE", "id": 0}
+    ]
+  },
+  {
+    "commandName": "ipb2-rm",
+    "privileges": [
+      {"type": "USER", "id": 0},
+      {"type": "ROLE", "id": 0}
+    ]
+  },
+  {
+    "commandName": "ipb2-test",
+    "privileges": [
+      {"type": "USER", "id": 0},
+      {"type": "ROLE", "id": 0}
+    ]
+  },
+  {
+    "commandName": "whitelist",
+    "privileges": [
+      {"type": "USER", "id": 0},
+      {"type": "ROLE", "id": 0}
+    ]
+  },
+  {
+    "commandName": "clean",
+    "privileges": [
+      {"type": "USER", "id": 0},
+      {"type": "ROLE", "id": 0}
+    ]
+  },
+  {
+    "commandName": "botiwlogin",
+    "privileges": [
+      {"type": "USER", "id": 0},
+      {"type": "ROLE", "id": 0}
+    ]
+  },
+  {
+    "commandName": "iwlogin",
+    "privileges": [
+      {"type": "USER", "id": 0},
+      {"type": "ROLE", "id": 0}
+    ]
+  },
+  {
+    "commandName": "iwexec",
+    "privileges": [
+      {"type": "USER", "id": 0},
+      {"type": "ROLE", "id": 0}
+    ]
+  },
+  {
+    "commandName": "join",
+    "privileges": [
+      {"type": "USER", "id": 0},
+      {"type": "ROLE", "id": 0}
+    ]
+  }
+]

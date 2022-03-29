@@ -2,25 +2,24 @@ package com.github.rzub.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.rzub.model.CommandAccessModel;
-import com.github.rzub.model.CommandAliasModel;
 import com.github.rzub.model.RZUBBotProperties;
 import com.github.rzub.model.SettingsModel;
 import com.github.rzub.service.listener.DiscordListener;
 import com.github.rzub.util.DiscordUtil;
+import io.github.sepgh.sbdiscord.config.DiscordCommandListener;
+import io.github.sepgh.sbdiscord.config.DiscordReadyListener;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.Compression;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -36,13 +35,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 @EnableAsync
 @EnableConfigurationProperties(value = RZUBBotProperties.class)
 @Slf4j
-public class ApplicationConfig implements ApplicationContextAware {
-    private final DiscordListener discordListener;
-    private ApplicationContext applicationContext;
-
-    public ApplicationConfig(DiscordListener discordListener) {
-        this.discordListener = discordListener;
-    }
+public class ApplicationConfig  {
 
     @Bean("messageRemoveTaskScheduler")
     public synchronized TaskScheduler messageRemoveTaskScheduler() {
@@ -70,17 +63,6 @@ public class ApplicationConfig implements ApplicationContextAware {
     }
 
     @Bean
-    public CommandAliasModel commandAliasModel(@Value("${rzub.conf.alias}") String configFileAddress) throws IOException {
-        File file = new File(configFileAddress);
-        if(!file.exists()){
-            return new CommandAliasModel();
-        }
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(file, CommandAliasModel.class);
-    }
-
-    @Bean
     public SettingsModel settingsModel(@Value("${rzub.conf.settings}") String configFileAddress) throws IOException {
         File file = new File(configFileAddress);
         if(!file.exists()){
@@ -95,19 +77,19 @@ public class ApplicationConfig implements ApplicationContextAware {
     }
 
     @Bean
+    @Primary
     @DependsOn("settingsModel")
-    public JDA discord(SettingsModel settingsModel) throws LoginException {
+    public JDA jda(
+            SettingsModel settingsModel,
+            DiscordListener discordListener,
+            DiscordReadyListener discordReadyListener,
+            DiscordCommandListener discordCommandListener) throws LoginException {
         JDABuilder builder = JDABuilder.createDefault(settingsModel.getDiscord().getToken());
         builder.disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE);
         builder.setBulkDeleteSplittingEnabled(false);
         builder.setCompression(Compression.NONE);
-        builder.addEventListeners(discordListener);
+        builder.addEventListeners(discordListener, discordReadyListener, discordCommandListener);
         builder.enableIntents(GatewayIntent.GUILD_MEMBERS);
         return builder.build();
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
     }
 }

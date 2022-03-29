@@ -1,31 +1,29 @@
 package com.github.rzub.service.discord;
 
-import com.github.rzub.annotation.DiscordListenerComponent;
 import com.github.rzub.database.repository.ServerRepository;
 import com.github.rzub.model.SettingsModel;
 import com.github.rzub.service.DiscordDelayedMessageRemoverService;
-import com.github.rzub.service.listener.DiscordCommandListener;
 import com.github.rzub.util.DiscordUtil;
+import io.github.sepgh.sbdiscord.annotations.DiscordCommand;
+import io.github.sepgh.sbdiscord.annotations.DiscordController;
+import io.github.sepgh.sbdiscord.command.context.CommandContextHolder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@DiscordListenerComponent(command = "servers", description = "Lists server names, ids, and game types")
-public class ServersListDiscordModule implements DiscordCommandListener {
+@DiscordController
+public class ServersListDiscordModule {
     private final ServerRepository serverRepository;
-    private final DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService;
 
     @Autowired
-    public ServersListDiscordModule(SettingsModel settingsModel, ServerRepository serverRepository, DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService) {
+    public ServersListDiscordModule(ServerRepository serverRepository) {
         this.serverRepository = serverRepository;
-        this.discordDelayedMessageRemoverService = discordDelayedMessageRemoverService;
     }
 
-
-    @Override
-    public void onCommand(GuildMessageReceivedEvent event, String[] args) {
-        discordDelayedMessageRemoverService.scheduleRemove(event.getMessage(), 20);
+    @DiscordCommand(name = "servers", description = "Lists server names, ids, and game types")
+    public void onCommand() {
+        SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
         MessageEmbed serversList = DiscordUtil.getServersList(serverRepository.findAll());
-        discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage(serversList).complete(), 30);
+        event.replyEmbeds(serversList).queue();
     }
 }

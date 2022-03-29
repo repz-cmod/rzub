@@ -14,7 +14,7 @@ rzub:
     alias: '${rzub.conf.base}/alias.json'
   bot:
     responses:
-      - "I'm not your google assistance, so please use valid commands to talk to me. try `!help` to see them."
+      - "I'm not your google assistance, please use valid commands to talk to me. try `!help` to see them."
       - "My developer is not smart enough to make me as smart as himself!  try `!help` to see commands I support."
       - "Ssshhh, just use my commands. (see `!help`)"
       - "Yes master?"
@@ -24,5 +24,10 @@ rzub:
       - "Try `!help`. Thanks."
 debug: false
 spring:
+  main:
+    allow-bean-definition-overriding: true
   jpa:
     open-in-view: false
+  discord:
+    enabled: true
+    guild-id: 745213074759352410

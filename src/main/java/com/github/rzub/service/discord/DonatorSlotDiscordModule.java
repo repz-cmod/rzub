@@ -1,44 +1,30 @@
 package com.github.rzub.service.discord;
 
-import com.github.rzub.annotation.DiscordListenerComponent;
-import com.github.rzub.service.CommandAccessService;
-import com.github.rzub.service.DiscordDelayedMessageRemoverService;
 import com.github.rzub.service.DonatorSlotService;
-import com.github.rzub.service.listener.AbstractAuthorizedCommandListener;
 import com.github.rzub.util.GameUtil;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import io.github.sepgh.sbdiscord.annotations.DiscordCommand;
+import io.github.sepgh.sbdiscord.annotations.DiscordController;
+import io.github.sepgh.sbdiscord.annotations.DiscordParameter;
+import io.github.sepgh.sbdiscord.command.context.CommandContextHolder;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 
-@DiscordListenerComponent(command = "join", description = "Creates a slot for donators in a specific server")
-public class DonatorSlotDiscordModule extends AbstractAuthorizedCommandListener {
-    private final DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService;
+@DiscordController
+public class DonatorSlotDiscordModule {
     private final DonatorSlotService donatorSlotService;
 
-    public DonatorSlotDiscordModule(CommandAccessService commandAccessService, DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService, DonatorSlotService donatorSlotService) {
-        super(commandAccessService, discordDelayedMessageRemoverService);
-        this.discordDelayedMessageRemoverService = discordDelayedMessageRemoverService;
+    public DonatorSlotDiscordModule(DonatorSlotService donatorSlotService) {
         this.donatorSlotService = donatorSlotService;
     }
 
-    @Override
-    public void onCommand(GuildMessageReceivedEvent event, String[] args) {
-        discordDelayedMessageRemoverService.scheduleRemove(event.getMessage(), 20);
-        super.onCommand(event, args);
-    }
-
-    @Override
-    protected void onAuthorizedCommand(GuildMessageReceivedEvent event, String[] args) {
-
-
-        if(args.length < 1){
-            discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("Invalid Arguments. Try `!join <serverId>` and replace `<serverId>` with id of the server you want to join to. See servers and Ids: `!servers`").complete(), 30);
-            return;
-        }
-
-        DonatorSlotService.Result result = donatorSlotService.emptySlot(event.getMember().getId(), args[0]);
+    @DiscordCommand(name = "join", description = "Creates a slot for donators in a specific server (by kicking last joined player)")
+    public void onCommand(@DiscordParameter(name="serverId") String serverId) {
+        SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
+        DonatorSlotService.Result result = donatorSlotService.emptySlot(event.getMember().getId(), serverId);
         if (result.isSuccess()) {
-            discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("A slot is now empty in \""+ GameUtil.cleanColors(result.getServerName()) +"\"").complete(), 30);
+            event.reply("A slot is now empty in \""+ GameUtil.cleanColors(result.getServerName()) +"\"").queue();
         }else {
-            discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("Failed. Reason: `"+result.getError()+"`").complete(), 30);
+            event.reply("Failed. Reason: `"+result.getError()+"`").queue();
         }
     }
+
 }

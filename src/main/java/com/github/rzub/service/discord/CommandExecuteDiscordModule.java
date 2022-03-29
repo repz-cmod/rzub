@@ -1,48 +1,27 @@
 package com.github.rzub.service.discord;
 
-import com.github.rzub.annotation.DiscordListenerComponent;
-import com.github.rzub.database.repository.CookieRepository;
-import com.github.rzub.service.CommandAccessService;
-import com.github.rzub.service.DiscordDelayedMessageRemoverService;
 import com.github.rzub.service.api.IW4MAdminApiService;
-import com.github.rzub.service.listener.AbstractAuthorizedCommandListener;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import io.github.sepgh.sbdiscord.annotations.DiscordCommand;
+import io.github.sepgh.sbdiscord.annotations.DiscordController;
+import io.github.sepgh.sbdiscord.annotations.DiscordParameter;
+import io.github.sepgh.sbdiscord.command.context.CommandContextHolder;
+import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 
-import java.util.Arrays;
 
-@DiscordListenerComponent(command = "iwexec", description = "Executes command in iw4madmin", hidden = true)
-public class CommandExecuteDiscordModule extends AbstractAuthorizedCommandListener {
-    private final CookieRepository cookieRepository;
-    private final DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService;
+@DiscordController
+public class CommandExecuteDiscordModule {
     private final IW4MAdminApiService iw4MAdminApiService;
 
 
-    public CommandExecuteDiscordModule(CommandAccessService commandAccessService, DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService, CookieRepository cookieRepository, IW4MAdminApiService iw4MAdminApiService) {
-        super(commandAccessService, discordDelayedMessageRemoverService);
-        this.cookieRepository = cookieRepository;
+    public CommandExecuteDiscordModule(IW4MAdminApiService iw4MAdminApiService) {
         this.iw4MAdminApiService = iw4MAdminApiService;
-        this.discordDelayedMessageRemoverService = discordDelayedMessageRemoverService;
     }
 
-    @Override
-    public void onCommand(GuildMessageReceivedEvent event, String[] args) {
-        discordDelayedMessageRemoverService.scheduleRemove(event.getMessage(), 20);
-        super.onCommand(event, args);
-    }
-
-    @Override
-    protected void onAuthorizedCommand(GuildMessageReceivedEvent event, String[] args) {
-        discordDelayedMessageRemoverService.scheduleRemove(event.getMessage(), 30);
-
-        if(args.length < 2){
-            discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("Invalid arguments.").complete(), 30);
-            return;
-        }
-
-
-        IW4MAdminApiService.CommandResponse commandResponse = iw4MAdminApiService.execute(args[0], String.join(" ", Arrays.copyOfRange(args, 1, args.length)), cookieRepository);
-        discordDelayedMessageRemoverService.scheduleRemove(event.getMessage().getChannel().sendMessage("Success: `" + commandResponse.isSuccess() +  "` | status: `" + commandResponse.getStatus() + "` | body: `" + getPartialBody(commandResponse.getBody()) + "`").complete(), 30);
-
+    @DiscordCommand(name = "iwexec", description = "Executes command in iw4madmin")
+    public void onCommand(@DiscordParameter(name = "serverId") String serverId, @DiscordParameter(name="command") String command) {
+        IW4MAdminApiService.CommandResponse commandResponse = iw4MAdminApiService.execute(serverId, command);
+        SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
+        event.reply("Success: `" + commandResponse.isSuccess() +  "` | status: `" + commandResponse.getStatus() + "` | body: `" + getPartialBody(commandResponse.getBody()) + "`").queue();
     }
 
     private String getPartialBody(String body){

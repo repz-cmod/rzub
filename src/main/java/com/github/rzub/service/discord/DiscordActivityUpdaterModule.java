@@ -10,10 +10,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 public class DiscordActivityUpdaterModule implements ApplicationListener<ServerStatusEvent> {
-    private final JDA discord;
+    private final JDA jda;
 
-    public DiscordActivityUpdaterModule(JDA discord) {
-        this.discord = discord;
+    public DiscordActivityUpdaterModule(JDA jda) {
+        this.jda = jda;
     }
 
     @Override
@@ -25,6 +25,6 @@ public class DiscordActivityUpdaterModule implements ApplicationListener<ServerS
             activePlayers.addAndGet(server.getCurrentPlayers());
         });
 
-        discord.getPresence().setActivity(Activity.watching(activePlayers + " players out of " + maxPlayers));
+        jda.getPresence().setActivity(Activity.watching(activePlayers + " players out of " + maxPlayers));
     }
 }
