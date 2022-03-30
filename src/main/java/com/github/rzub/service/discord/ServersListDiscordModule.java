@@ -1,8 +1,6 @@
 package com.github.rzub.service.discord;
 
 import com.github.rzub.database.repository.ServerRepository;
-import com.github.rzub.model.SettingsModel;
-import com.github.rzub.service.DiscordDelayedMessageRemoverService;
 import com.github.rzub.util.DiscordUtil;
 import io.github.sepgh.sbdiscord.annotations.DiscordCommand;
 import io.github.sepgh.sbdiscord.annotations.DiscordController;
