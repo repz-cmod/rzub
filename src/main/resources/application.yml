@@ -31,4 +31,4 @@ spring:
     open-in-view: false
   discord:
     enabled: true
-    guild-id: 745213074759352410
+    guild-id: 521338205555916825
