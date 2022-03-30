@@ -1,7 +1,6 @@
 package com.github.rzub.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.rzub.model.CommandAccessModel;
 import com.github.rzub.model.RZUBBotProperties;
 import com.github.rzub.model.SettingsModel;
 import com.github.rzub.service.listener.DiscordListener;
@@ -48,18 +47,6 @@ public class ApplicationConfig  {
         taskScheduler.setWaitForTasksToCompleteOnShutdown(false);
         taskScheduler.afterPropertiesSet();
         return taskScheduler;
-    }
-
-    @Bean
-    public CommandAccessModel commandAccessModel(@Value("${rzub.conf.access}") String configFileAddress) throws IOException {
-        File file = new File(configFileAddress);
-        if(!file.exists()){
-            log.error(configFileAddress + " file was not found. Using default one which means some commands will never be available");
-            return new CommandAccessModel();
-        }
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.readValue(file, CommandAccessModel.class);
     }
 
     @Bean
