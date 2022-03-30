@@ -20,7 +20,7 @@ public class WhitelistDiscordModule {
     }
 
     @DiscordCommand(name = "whitelist-add", description = "Add client to `ipb` and `ipb2` whitelist")
-    public void onAdd(@DiscordParameter(name = "clientId") Integer clientId) {
+    public void onAdd(@DiscordParameter(name = "client-id") Integer clientId) {
         SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
 
         try {
@@ -36,13 +36,13 @@ public class WhitelistDiscordModule {
     }
 
     @DiscordCommand(name = "whitelist-test", description = "Test client availability in `ipb` and `ipb2` whitelist")
-    public void onTest(@DiscordParameter(name = "clientId") Integer clientId) {
+    public void onTest(@DiscordParameter(name = "client-id") Integer clientId) {
         SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
         event.reply(whitelistRepository.existsByClientId(clientId) ? "+" : "-" + " `" + clientId + "`").queue();
     }
 
     @DiscordCommand(name = "whitelist-rm", description = "Remove client from `ipb` and `ipb2` whitelist")
-    public void onRemove(@DiscordParameter(name = "clientId") Integer clientId) {
+    public void onRemove(@DiscordParameter(name = "client-id") Integer clientId) {
         SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
         whitelistRepository.deleteByClientId(clientId);
         event.reply("Client is removed").queue();

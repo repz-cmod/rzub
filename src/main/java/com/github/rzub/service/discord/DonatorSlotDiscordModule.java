@@ -17,7 +17,7 @@ public class DonatorSlotDiscordModule {
     }
 
     @DiscordCommand(name = "join", description = "Creates a slot for donators in a specific server (by kicking last joined player)")
-    public void onCommand(@DiscordParameter(name="serverId") String serverId) {
+    public void onCommand(@DiscordParameter(name="server-id") String serverId) {
         SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
         DonatorSlotService.Result result = donatorSlotService.emptySlot(event.getMember().getId(), serverId);
         if (result.isSuccess()) {

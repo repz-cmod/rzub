@@ -32,7 +32,7 @@ public class IW4AdminStatsDiscordModule {
 
     @DiscordCommand(name = "iwstats", description = "returns player stats in iw4madmin")
     public void onCommand(
-            @DiscordParameter(name = "clientId", required = false, description = "(optional) client id") String clientId,
+            @DiscordParameter(name = "client-id", required = false, description = "(optional) client id") String clientId,
             @DiscordParameter(name = "member", required = false, description = "(optional) another member in server") Member member
             ) {
         try {

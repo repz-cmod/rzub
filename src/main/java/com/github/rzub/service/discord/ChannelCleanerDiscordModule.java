@@ -21,7 +21,7 @@ public class ChannelCleanerDiscordModule {
     }
 
     @DiscordCommand(name = "clean", description = "Clean messages of channel till <param> message id. Max: 20")
-    public void onCommand(@DiscordParameter(name = "messageId") String messageId, @DiscordParameter(name = "max", required = false) Integer max) {
+    public void onCommand(@DiscordParameter(name = "message-id") String messageId, @DiscordParameter(name = "max", required = false) Integer max) {
         if (max == null){
             max = 20;
         }

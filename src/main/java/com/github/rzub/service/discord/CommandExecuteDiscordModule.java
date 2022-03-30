@@ -18,7 +18,7 @@ public class CommandExecuteDiscordModule {
     }
 
     @DiscordCommand(name = "iwexec", description = "Executes command in iw4madmin")
-    public void onCommand(@DiscordParameter(name = "serverId") String serverId, @DiscordParameter(name="command") String command) {
+    public void onCommand(@DiscordParameter(name = "server-id") String serverId, @DiscordParameter(name="command") String command) {
         IW4MAdminApiService.CommandResponse commandResponse = iw4MAdminApiService.execute(serverId, command);
         SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
         event.reply("Success: `" + commandResponse.isSuccess() +  "` | status: `" + commandResponse.getStatus() + "` | body: `" + getPartialBody(commandResponse.getBody()) + "`").queue();
