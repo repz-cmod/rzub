@@ -31,9 +31,9 @@ public class IPRegionBlockControlDiscordModule {
         SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
         if(InetAddresses.isInetAddress(ip)) {
             String info = ipRegionBlockManagerService.add(ip, reason, event.getMember().getEffectiveName(), duration);
-            event.reply("Added ip address region to blocking list: `"+info+"`").queue();
+            event.getHook().sendMessage("Added ip address region to blocking list: `"+info+"`").queue();
         }else {
-            event.reply("Invalid IP Addresses").queue();
+            event.getHook().sendMessage("Invalid IP Addresses").queue();
         }
     }
 
@@ -42,10 +42,10 @@ public class IPRegionBlockControlDiscordModule {
         SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
         List<IPRegionBanEntity> ipRangeBlockEntities = ipRegionBlockManagerService.get(page);
         if(ipRangeBlockEntities.size() == 0){
-            event.reply("List is empty ATM.").queue();
+            event.getHook().sendMessage("List is empty ATM.").queue();
         }else {
             MessageEmbed messageEmbed = DiscordUtil.getBlockedIpRegion(ipRangeBlockEntities, page, ipRegionBlockManagerService.count());
-            event.replyEmbeds(messageEmbed).queue();
+            event.getHook().sendMessageEmbeds(messageEmbed).queue();
         }
     }
 
@@ -53,7 +53,7 @@ public class IPRegionBlockControlDiscordModule {
     public void onRemove(@DiscordParameter(name = "page") Integer id) {
         SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
         ipRegionBlockManagerService.remove(id);
-        event.reply("Item is removed").queue();
+        event.getHook().sendMessage("Item is removed").queue();
     }
 
     @DiscordCommand(name = "ipb2-test", description = "Test IP Ban V2 (region based)")
@@ -61,7 +61,7 @@ public class IPRegionBlockControlDiscordModule {
         SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
         boolean b = ipRegionBlockManagerService.shouldBlock(testIp);
         String mid = b ? "is" : "is NOT";
-        event.reply("IP `"+testIp+"` " + mid + " in block range").queue();
+        event.getHook().sendMessage("IP `"+testIp+"` " + mid + " in block range").queue();
     }
 
 }

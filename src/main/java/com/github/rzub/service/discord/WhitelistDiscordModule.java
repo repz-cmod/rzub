@@ -29,23 +29,23 @@ public class WhitelistDiscordModule {
                     .username(event.getMember().getEffectiveName())
                     .creationDate(new Date())
                     .build());
-            event.reply("Added client to whitelist.").queue();
+            event.getHook().sendMessage("Added client to whitelist.").queue();
         }catch (Exception e){
-            event.reply("Failed: `"+e.getMessage()+"`").queue();
+            event.getHook().sendMessage("Failed: `"+e.getMessage()+"`").queue();
         }
     }
 
     @DiscordCommand(name = "whitelist-test", description = "Test client availability in `ipb` and `ipb2` whitelist")
     public void onTest(@DiscordParameter(name = "client-id") Integer clientId) {
         SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
-        event.reply(whitelistRepository.existsByClientId(clientId) ? "+" : "-" + " `" + clientId + "`").queue();
+        event.getHook().sendMessage(whitelistRepository.existsByClientId(clientId) ? "+" : "-" + " `" + clientId + "`").queue();
     }
 
     @DiscordCommand(name = "whitelist-rm", description = "Remove client from `ipb` and `ipb2` whitelist")
     public void onRemove(@DiscordParameter(name = "client-id") Integer clientId) {
         SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
         whitelistRepository.deleteByClientId(clientId);
-        event.reply("Client is removed").queue();
+        event.getHook().sendMessage("Client is removed").queue();
     }
 
 }

@@ -36,14 +36,14 @@ public class IW4AdminSearchDiscordModule {
             findApiResult.getClients().forEach(basicClient -> {
                 stringBuilder.append(basicClient.getName() + " ("+ basicClient.getClientId() + ")\n");
             });
-            event.replyEmbeds(new EmbedBuilder()
+            event.getHook().sendMessageEmbeds(new EmbedBuilder()
                     .setColor(Color.BLACK)
                     .setTitle("IW4Admin search results for *" + searchTerm + "*")
                     .appendDescription(stringBuilder.toString())
                     .build()).queue();
         }catch (Exception e){
             log.error("Failed to send findClient request to iw4madmin");
-            event.reply("Can't process your message atm! try again later.").queue();
+            event.getHook().sendMessage("Can't process your message atm! try again later.").queue();
         }
     }
 }

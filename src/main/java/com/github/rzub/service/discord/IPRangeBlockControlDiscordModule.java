@@ -50,7 +50,7 @@ public class IPRangeBlockControlDiscordModule {
                     .expiration(expiration)
                     .username(event.getMember().getEffectiveName())
                     .build());
-            event.reply("Added ip address range to blocking range for "+duration+" days.").queue();
+            event.getHook().sendMessage("Added ip address range to blocking range for "+duration+" days.").queue();
         }
     }
 
@@ -62,11 +62,11 @@ public class IPRangeBlockControlDiscordModule {
 
         List<IPRangeBlockEntity> ipRangeBlockEntities = ipRangeBlockManagerService.get(page);
         if(ipRangeBlockEntities.size() == 0){
-            event.reply("List is empty ATM.").queue();
+            event.getHook().sendMessage("List is empty ATM.").queue();
         }else {
             MessageEmbed messageEmbed = DiscordUtil.getBlockedIpRange(ipRangeBlockEntities, page, ipRangeBlockManagerService.count());
             //Remove results after 60 seconds unless arg 2 is passed as seconds to keep this results
-            event.replyEmbeds(messageEmbed).queue();
+            event.getHook().sendMessageEmbeds(messageEmbed).queue();
         }
     }
 
@@ -76,7 +76,7 @@ public class IPRangeBlockControlDiscordModule {
     ) {
         SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
         ipRangeBlockManagerService.remove(id);
-        event.reply("Removed item").queue();
+        event.getHook().sendMessage("Removed item").queue();
     }
 
     @DiscordCommand(name = "ipb-test", description = "Test IP Range block")
@@ -86,6 +86,6 @@ public class IPRangeBlockControlDiscordModule {
         boolean b = ipRangeBlockManagerService.shouldBlock(ip);
         String mid = b ? "is" : "is NOT";
         SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
-        event.reply("IP `"+ip+"` " + mid + " in block range").queue();
+        event.getHook().sendMessage("IP `"+ip+"` " + mid + " in block range").queue();
     }
 }

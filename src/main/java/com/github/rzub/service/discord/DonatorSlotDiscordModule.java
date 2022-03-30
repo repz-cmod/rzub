@@ -21,9 +21,9 @@ public class DonatorSlotDiscordModule {
         SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
         DonatorSlotService.Result result = donatorSlotService.emptySlot(event.getMember().getId(), serverId);
         if (result.isSuccess()) {
-            event.reply("A slot is now empty in \""+ GameUtil.cleanColors(result.getServerName()) +"\"").queue();
+            event.getHook().sendMessage("A slot is now empty in \""+ GameUtil.cleanColors(result.getServerName()) +"\"").queue();
         }else {
-            event.reply("Failed. Reason: `"+result.getError()+"`").queue();
+            event.getHook().sendMessage("Failed. Reason: `"+result.getError()+"`").queue();
         }
     }
 

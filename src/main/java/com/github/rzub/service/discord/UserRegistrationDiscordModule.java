@@ -56,7 +56,7 @@ public class UserRegistrationDiscordModule  {
             }else if(!discordUserEntity.isMessageSent()){
                 sendMessage(event, discordUserEntity);
             }else {
-                event.reply("Your token has been sent to you before").queue();
+                event.getHook().sendMessage("Your token has been sent to you before").queue();
             }
 
         }catch (Exception e){
@@ -65,7 +65,7 @@ public class UserRegistrationDiscordModule  {
     }
 
     private void sendMessage(SlashCommandEvent event, DiscordUserEntity discordUserEntity) {
-        event.reply("Sending you a private message ...").queue();
+        event.getHook().sendMessage("Sending you a private message ...").queue();
         String message = new String(settingsModel.getMessages().get("registration")).replaceAll("\\$token", discordUserEntity.getToken());
         event.getUser().openPrivateChannel().flatMap(privateChannel -> privateChannel.sendMessage(message)).queue(message1 -> {
             discordUserEntity.setMessageSent(true);

@@ -52,7 +52,7 @@ public class IW4AdminStatsDiscordModule {
                     sendStats(event, String.valueOf(iw4MAdminUserEntity.getClientId()));
                 }
             }else {
-                event.reply("User has not registered using `!register` command.").queue();
+                event.getHook().sendMessage("User has not registered using `!register` command.").queue();
             }
         } catch (Exception e) {
             log.error("Failed to send response for command !iwstats", e);
@@ -61,7 +61,7 @@ public class IW4AdminStatsDiscordModule {
 
     public void sendStats(SlashCommandEvent event, String clientId) throws Exception {
         IW4AdminStatResult iw4madminStats = cachedIW4MAdminStatsLookupService.getIW4adminStats(clientId);
-        event.replyEmbeds(DiscordUtil.getEmbedFromIW4AdminStatResult(iw4madminStats, "IW4Admin stats results for client *" + iw4madminStats.getClientId() + "*")).queue();
+        event.getHook().sendMessageEmbeds(DiscordUtil.getEmbedFromIW4AdminStatResult(iw4madminStats, "IW4Admin stats results for client *" + iw4madminStats.getClientId() + "*")).queue();
     }
 
 }

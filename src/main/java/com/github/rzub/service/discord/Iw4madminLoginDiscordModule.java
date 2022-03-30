@@ -21,9 +21,9 @@ public class Iw4madminLoginDiscordModule {
     public void onCommand(@DiscordParameter(name="client-id") String clientId, @DiscordParameter(name="password") String password) {
         SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
         if (iw4MAdminApiService.logIn(clientId, password)){
-            event.reply("Successfully logged in to iw4madmin :)").queue();
+            event.getHook().sendMessage("Successfully logged in to iw4madmin :)").queue();
         }else {
-            event.reply("Error while logging in to iw4madmin :(").queue();
+            event.getHook().sendMessage("Error while logging in to iw4madmin :(").queue();
         }
     }
 

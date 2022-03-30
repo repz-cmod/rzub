@@ -22,6 +22,6 @@ public class ServersListDiscordModule {
     public void onCommand() {
         SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
         MessageEmbed serversList = DiscordUtil.getServersList(serverRepository.findAll());
-        event.replyEmbeds(serversList).queue();
+        event.getHook().sendMessageEmbeds(serversList).queue();
     }
 }

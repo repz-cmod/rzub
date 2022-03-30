@@ -20,6 +20,6 @@ public class ForumLinkDiscordModule {
     @DiscordCommand(name = "forum", description = "Sends the link to forum")
     public void onCommand() {
         SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
-        event.replyEmbeds(new EmbedBuilder().setDescription(text).build()).queue();
+        event.getHook().sendMessageEmbeds(new EmbedBuilder().setDescription(text).build()).queue();
     }
 }
