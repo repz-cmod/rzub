@@ -6,6 +6,7 @@ logging:
   level:
     ROOT: info
     com.github.rzub: debug
+    io.github.sepgh: trace
 rzub:
   conf:
     base: '.'
