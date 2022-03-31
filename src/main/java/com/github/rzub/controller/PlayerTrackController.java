@@ -1,6 +1,5 @@
 package com.github.rzub.controller;
 
-import com.github.rzub.database.AnalyticsDao;
 import com.github.rzub.database.repository.WhitelistRepository;
 import com.github.rzub.model.dto.PlayerTackDto;
 import com.github.rzub.model.dto.TrackResponseDto;
@@ -14,14 +13,12 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/plugin/v1")
 public class PlayerTrackController {
-    private final AnalyticsDao analyticsDao;
     private final IPRangeBlockManagerService ipRangeBlockManagerService;
     private final IPRegionBlockManagerService ipRegionBlockManagerService;
     private final WhitelistRepository whitelistRepository;
 
     @Autowired
-    public PlayerTrackController(AnalyticsDao analyticsDao, IPRangeBlockManagerService ipRangeBlockManagerService, IPRegionBlockManagerService ipRegionBlockManagerService, WhitelistRepository whitelistRepository) {
-        this.analyticsDao = analyticsDao;
+    public PlayerTrackController(IPRangeBlockManagerService ipRangeBlockManagerService, IPRegionBlockManagerService ipRegionBlockManagerService, WhitelistRepository whitelistRepository) {
         this.ipRangeBlockManagerService = ipRangeBlockManagerService;
         this.ipRegionBlockManagerService = ipRegionBlockManagerService;
         this.whitelistRepository = whitelistRepository;
@@ -30,7 +27,6 @@ public class PlayerTrackController {
     @PostMapping("/client/join")
     public @ResponseBody
     TrackResponseDto playerJoin(@RequestBody @Valid PlayerTackDto playerTackDto){
-        analyticsDao.playerJoined(playerTackDto.getServerIdAsLong(), playerTackDto.getClientId(), playerTackDto.getTrackerId());
         boolean shouldBlock = !whitelistRepository.existsByClientId(playerTackDto.getClientId())
                 && (
                         ipRangeBlockManagerService.shouldBlock(String.valueOf(playerTackDto.getClientId()), playerTackDto.getIp())
@@ -39,13 +35,6 @@ public class PlayerTrackController {
                         )
         );
         return new TrackResponseDto(shouldBlock);
-    }
-
-    @PostMapping("/client/leave")
-    public @ResponseBody
-    TrackResponseDto playerLeft(@RequestBody @Valid PlayerTackDto playerTackDto){
-        analyticsDao.playerLeft(playerTackDto.getServerIdAsLong(), playerTackDto.getClientId(), playerTackDto.getTrackerId());
-        return new TrackResponseDto(false);
     }
 
 }

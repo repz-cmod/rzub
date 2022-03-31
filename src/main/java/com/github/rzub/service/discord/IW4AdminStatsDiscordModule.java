@@ -35,8 +35,8 @@ public class IW4AdminStatsDiscordModule {
             @DiscordParameter(name = "client-id", required = false, description = "(optional) client id") String clientId,
             @DiscordParameter(name = "member", required = false, description = "(optional) another member in server") Member member
             ) {
+        SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
         try {
-            SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
             String userId = null;
             if(clientId != null){
                 sendStats(event, clientId);
@@ -56,6 +56,7 @@ public class IW4AdminStatsDiscordModule {
             }
         } catch (Exception e) {
             log.error("Failed to send response for command !iwstats", e);
+            event.getHook().sendMessage("Exception while processing.").queue();
         }
     }
 
