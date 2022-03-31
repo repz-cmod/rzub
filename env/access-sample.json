@@ -77,7 +77,21 @@
     ]
   },
   {
+    "commandName": "botiwlogin",
+    "privileges": [
+      {"type": "USER", "id": 0},
+      {"type": "ROLE", "id": 0}
+    ]
+  },
+  {
     "commandName": "iwlogin",
+    "privileges": [
+      {"type": "USER", "id": 0},
+      {"type": "ROLE", "id": 0}
+    ]
+  },
+  {
+    "commandName": "botiwexec",
     "privileges": [
       {"type": "USER", "id": 0},
       {"type": "ROLE", "id": 0}

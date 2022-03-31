@@ -3,6 +3,7 @@ package com.github.rzub.service.api;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.rzub.database.entity.CookieEntity;
+import com.github.rzub.database.entity.IW4MAdminUserEntity;
 import com.github.rzub.database.repository.CookieRepository;
 import com.github.rzub.model.Iw4madminApiModel;
 import com.github.rzub.model.SettingsModel;
@@ -20,12 +21,14 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -47,41 +50,34 @@ public class IW4MAdminApiService {
         execAddress = getIw4madminUrl() + "/Console/ExecuteAsync?serverId={serverId}&command={command}";
     }
 
-    public boolean logIn(String cid, String passwd){
-        String addr = getIw4madminUrl() + "/Account/LoginAsync?clientId="+cid+"&password="+passwd;
-        try {
-            ResponseEntity<String> responseEntity = restTemplate.getForEntity(addr, String.class);
-            List<String> cookie = getCookie(responseEntity);
-            if(cookie != null){
-                try {
-                    String s = objectMapper.writeValueAsString(cookie.toArray(new String[0]));
-                    cookieRepository.save(CookieEntity.builder()
-                            .cookie(s)
-                            .build());
-                } catch (JsonProcessingException e) {
-                    log.error("Error while parsing json", e);
-                    return false;
-                }
-                return true;
-            }
-        }catch (Exception e){
-            log.error("Failed to send req", e);
-        }
-
-        return false;
+    public CookieEntity logIn(String cid, String password) throws Exception {
+        return this.logIn(cid, password, null);
     }
 
-    private List<String> getCookie(ResponseEntity<String> responseEntity) {
-        List<String> cookie = responseEntity.getHeaders().get("Set-Cookie");
-        if(cookie == null)
-            cookie = responseEntity.getHeaders().get("cookie");
-        return cookie;
+    public CookieEntity logIn(String cid, String passwd, @Nullable IW4MAdminUserEntity iw4MAdminUserEntity) throws Exception {
+        String addr = getIw4madminUrl() + "/Account/LoginAsync?clientId="+cid+"&password="+passwd;
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(addr, String.class);
+        List<String> cookie = extractCookies(responseEntity);
+        if(cookie != null){
+            String s = objectMapper.writeValueAsString(cookie.toArray(new String[0]));
+            return cookieRepository.save(CookieEntity.builder()
+                    .iw4MAdminUser(iw4MAdminUserEntity)
+                    .cookie(s)
+                    .build());
+        }else {
+            throw new Exception("Failed to login. Null cookie");
+        }
+
     }
 
     public CommandResponse execute(String serverId, String command){
+        return this.execute(serverId, command, null);
+    }
+
+    public CommandResponse execute(String serverId, String command, @Nullable IW4MAdminUserEntity iw4MAdminUserEntity){
         HttpHeaders headers = getBasicHeaders();
         try {
-            headers.put("cookie", getCookie());
+            headers.put("cookie", getCookie(iw4MAdminUserEntity));
         } catch (Exception e) {
             return new CommandResponse(false, -1, "Failed to get cookie");
         }
@@ -101,26 +97,8 @@ public class IW4MAdminApiService {
         return this.execute(serverId, command).isSuccess();
     }
 
-    private HttpHeaders getBasicHeaders() {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.put("User-Agent", Collections.singletonList("Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:84.0) Gecko/20100101 Firefox/84.0"));
-        httpHeaders.put("Accept", Collections.singletonList("*/*"));
-        httpHeaders.put("Accept-Language", Collections.singletonList("en-US,en;q=0.5"));
-        httpHeaders.put("X-Requested-With", Collections.singletonList("XMLHttpRequest"));
-        httpHeaders.put("Referer", Collections.singletonList(settingsModel.getIw4madminUrl()));
-        httpHeaders.put("DNT", Collections.singletonList("1"));
-        httpHeaders.put("Pragma", Collections.singletonList("no-cache"));
-        httpHeaders.put("Cache-Control", Collections.singletonList("no-cache"));
-        return httpHeaders;
-    }
-
-    private List<String> getCookie() throws Exception {
-        List<CookieEntity> content = cookieRepository.findAll(new OffsetLimitPageable(0, 1, Sort.by(Sort.Direction.DESC, "id"))).getContent();
-        if(content.size() > 0){
-            String[] strings = objectMapper.readValue(content.get(0).getCookie(), String[].class);
-            return Arrays.asList(strings);
-        }
-        throw new Exception("No cookie found");
+    public boolean sendCommand(String serverId, String command, @Nullable IW4MAdminUserEntity iw4MAdminUserEntity){
+        return this.execute(serverId, command, null).isSuccess();
     }
 
     public List<Iw4madminApiModel.Server> getServerList(){
@@ -140,6 +118,39 @@ public class IW4MAdminApiService {
                 HttpMethod.GET, null, new ParameterizedTypeReference<List<Iw4madminApiModel.Stat>>() {
                 });
         return responseEntity.getBody();
+    }
+
+    private HttpHeaders getBasicHeaders() {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.put("User-Agent", Collections.singletonList("Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:84.0) Gecko/20100101 Firefox/84.0"));
+        httpHeaders.put("Accept", Collections.singletonList("*/*"));
+        httpHeaders.put("Accept-Language", Collections.singletonList("en-US,en;q=0.5"));
+        httpHeaders.put("X-Requested-With", Collections.singletonList("XMLHttpRequest"));
+        httpHeaders.put("Referer", Collections.singletonList(settingsModel.getIw4madminUrl()));
+        httpHeaders.put("DNT", Collections.singletonList("1"));
+        httpHeaders.put("Pragma", Collections.singletonList("no-cache"));
+        httpHeaders.put("Cache-Control", Collections.singletonList("no-cache"));
+        return httpHeaders;
+    }
+
+    private List<String> getCookie(@Nullable IW4MAdminUserEntity iw4MAdminUserEntity) throws Exception {
+        Optional<CookieEntity> optionalCookieEntity;
+        if (iw4MAdminUserEntity == null) {
+            optionalCookieEntity = cookieRepository.findTop1ByIw4MAdminUserIsNullOrderByIdDesc();
+        }else {
+            optionalCookieEntity = cookieRepository.findTop1ByIw4MAdminUserOrderByIdDesc(iw4MAdminUserEntity);
+        }
+        if (!optionalCookieEntity.isPresent())
+            throw new Exception("No cookie found");
+        String[] strings = objectMapper.readValue(optionalCookieEntity.get().getCookie(), String[].class);
+        return Arrays.asList(strings);
+    }
+
+    private List<String> extractCookies(ResponseEntity<String> responseEntity) {
+        List<String> cookie = responseEntity.getHeaders().get("Set-Cookie");
+        if(cookie == null)
+            cookie = responseEntity.getHeaders().get("cookie");
+        return cookie;
     }
 
     private String getIw4madminUrl() {

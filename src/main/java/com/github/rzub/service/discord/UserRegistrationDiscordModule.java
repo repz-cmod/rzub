@@ -7,6 +7,7 @@ import io.github.sepgh.sbdiscord.annotations.DiscordCommand;
 import io.github.sepgh.sbdiscord.annotations.DiscordController;
 import io.github.sepgh.sbdiscord.command.context.CommandContextHolder;
 import lombok.extern.slf4j.Slf4j;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,15 +34,15 @@ public class UserRegistrationDiscordModule  {
     @DiscordCommand(name = "register", description = "registers your discord account to our servers")
     public void onCommand() {
         SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
-
+        Member eventMember = event.getMember();
         try {
-            DiscordUserEntity discordUserEntity = discordUserRepository.findByUserId(Objects.requireNonNull(event.getMember()).getUser().getId());
+            DiscordUserEntity discordUserEntity = discordUserRepository.findByUserId(Objects.requireNonNull(eventMember).getUser().getId());
             if(discordUserEntity == null){
                 discordUserEntity = new DiscordUserEntity();
-                discordUserEntity.setUserId(event.getMember().getUser().getId());
+                discordUserEntity.setUserId(eventMember.getUser().getId());
                 discordUserEntity.setCreationDate(new Date());
-                discordUserEntity.setNickname(event.getMember().getNickname());
-                discordUserEntity.setUsername(event.getMember().getUser().getName());
+                discordUserEntity.setNickname(eventMember.getNickname());
+                discordUserEntity.setUsername(eventMember.getUser().getName());
                 boolean saved = false;
                 String token = "";
                 while (!saved){

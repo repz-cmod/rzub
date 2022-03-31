@@ -1,6 +1,5 @@
 package com.github.rzub.database.entity;
 
-import com.github.rzub.database.repository.CookieRepository;
 import lombok.*;
 
 import javax.persistence.*;
@@ -35,9 +34,5 @@ public class IW4MAdminUserEntity {
     @ManyToOne
     @JoinColumn(name="discord_user_id", nullable=false)
     private DiscordUserEntity discordUser;
-
-    @OneToOne
-    @JoinColumn(name="cookie_id", nullable=false)
-    private CookieEntity cookie;
 
 }

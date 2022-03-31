@@ -21,4 +21,8 @@ public class CookieEntity {
     @Column(name = "cookie", length = 100000, columnDefinition = "text")
     @Type(type="text")
     private String cookie;
+
+    @OneToOne
+    @JoinColumn(name="iw4madmin_user_id")
+    private IW4MAdminUserEntity iw4MAdminUser;
 }
