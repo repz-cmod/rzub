@@ -10,6 +10,7 @@ import io.github.sepgh.sbdiscord.annotations.DiscordParameter;
 import io.github.sepgh.sbdiscord.command.context.CommandContextHolder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import org.hibernate.Hibernate;
 
 import java.util.List;
 import java.util.Objects;
@@ -45,6 +46,7 @@ public class IW4MAdminCommandExecuteDiscordModule {
             return;
         }
 
+        Hibernate.initialize(discordUserEntity.getIw4MAdminUserEntities());
         List<IW4MAdminUserEntity> iw4MAdminUserEntities = discordUserEntity.getIw4MAdminUserEntities();
         if (iw4MAdminUserEntities.size() == 0){
             event.getHook().sendMessage("There are no IW4MAdmin matching to your discord in our DB").queue();
