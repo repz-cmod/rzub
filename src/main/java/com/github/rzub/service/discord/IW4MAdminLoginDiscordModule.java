@@ -66,6 +66,7 @@ public class IW4MAdminLoginDiscordModule {
 
             // Get iw4MAdminUserEntity of the logged in client id if already exists
             List<IW4MAdminUserEntity> iw4MAdminUserEntities = discordUserEntity.getIw4MAdminUserEntities();
+            Hibernate.initialize(discordUserEntity.getIw4MAdminUserEntities());
             IW4MAdminUserEntity iw4MAdminUserEntity = getIW4MAdminUserEntityOfClientId(iw4MAdminUserEntities, clientId);
 
             // Get iw4MAdminUserEntity of the logged in client id if doesnt already exist
