@@ -1,6 +1,5 @@
 package com.github.rzub.service.discord;
 
-import com.github.rzub.service.DiscordDelayedMessageRemoverService;
 import io.github.sepgh.sbdiscord.annotations.DiscordCommand;
 import io.github.sepgh.sbdiscord.annotations.DiscordController;
 import io.github.sepgh.sbdiscord.annotations.DiscordParameter;
@@ -25,7 +24,7 @@ public class ChannelCleanerDiscordModule {
         int i = 0;
         while (i < 20 && i < messageList.size()){
             String latestMessageId = messageList.get(i).getId();
-            messageList.get(i).delete().complete();
+            messageList.get(i).delete().queue();
             if(latestMessageId.equals(messageId)){
                 break;
             }
