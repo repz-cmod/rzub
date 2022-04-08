@@ -13,11 +13,6 @@ import java.util.List;
 
 @DiscordController
 public class ChannelCleanerDiscordModule {
-    private final DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService;
-
-    public ChannelCleanerDiscordModule(DiscordDelayedMessageRemoverService discordDelayedMessageRemoverService) {
-        this.discordDelayedMessageRemoverService = discordDelayedMessageRemoverService;
-    }
 
     @DiscordCommand(name = "clean", description = "Clean messages of channel till <param> message id. Max: 20")
     public void onCommand(@DiscordParameter(name = "message-id") String messageId, @DiscordParameter(name = "max", required = false) Integer max) {
@@ -36,7 +31,7 @@ public class ChannelCleanerDiscordModule {
             }
             i++;
         }
-        discordDelayedMessageRemoverService.scheduleRemove(event.getChannel().sendMessage("Cleaned "+(i+1)+" messages far from " + messageId).complete(), 10);
+        event.reply("Cleaned "+(i+1)+" messages far from " + messageId).queue();
     }
 
 }
