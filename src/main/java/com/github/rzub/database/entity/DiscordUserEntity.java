@@ -3,6 +3,7 @@ package com.github.rzub.database.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class DiscordUserEntity {
     private boolean messageSent;
 
     @OneToMany(mappedBy = "discordUser")
-    private List<IW4MAdminUserEntity> iw4MAdminUserEntities;
+    private List<IW4MAdminUserEntity> iw4MAdminUserEntities = new ArrayList<>();
 
     @Override
     public String toString() {

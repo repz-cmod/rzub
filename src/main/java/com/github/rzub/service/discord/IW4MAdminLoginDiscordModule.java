@@ -95,6 +95,8 @@ public class IW4MAdminLoginDiscordModule {
     }
 
     private IW4MAdminUserEntity getIW4MAdminUserEntityOfClientId(List<IW4MAdminUserEntity> iw4MAdminUserEntities, String clientId) {
+        if (iw4MAdminUserEntities == null)
+            return null;
         for (IW4MAdminUserEntity iw4MAdminUserEntity : iw4MAdminUserEntities) {
             if (Long.parseLong(clientId) == iw4MAdminUserEntity.getClientId()) {
                 return iw4MAdminUserEntity;
