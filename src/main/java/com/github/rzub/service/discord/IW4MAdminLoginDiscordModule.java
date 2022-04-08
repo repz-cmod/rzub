@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import org.hibernate.Hibernate;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -40,7 +39,6 @@ public class IW4MAdminLoginDiscordModule {
     }
 
     @DiscordCommand(name = "botiwlogin", description = "Log the bot into iw4madmin")
-    @Transactional
     public void onBotLogin(@DiscordParameter(name="client-id") String clientId, @DiscordParameter(name="password") String password) {
         SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
         try {
@@ -54,7 +52,6 @@ public class IW4MAdminLoginDiscordModule {
 
 
     @DiscordCommand(name = "iwlogin", description = "Log the user into iw4madmin")
-    @Transactional
     public void onUserLogin(@DiscordParameter(name="client-id") String clientId, @DiscordParameter(name="password") String password) {
         SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
         Member eventMember = event.getMember();
