@@ -27,14 +27,14 @@ public class IW4MAdminCommandExecuteDiscordModule {
         this.discordUserRepository = discordUserRepository;
     }
 
-    @DiscordCommand(name = "botiwexec", description = "Executes command in iw4madmin as bot")
+    @DiscordCommand(name = "botiwexec", description = "Executes command in iw4madmin as bot", ephemeralDiffer = true)
     public void onBotIWExec(@DiscordParameter(name = "server-id") String serverId, @DiscordParameter(name="command") String command) {
         IW4MAdminApiService.CommandResponse commandResponse = iw4MAdminApiService.execute(serverId, command);
         SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
         event.getHook().sendMessage("Success: `" + commandResponse.isSuccess() +  "` | status: `" + commandResponse.getStatus() + "` | body: `" + getPartialBody(commandResponse.getBody()) + "`").queue();
     }
 
-    @DiscordCommand(name = "iwexec", description = "Executes command in iw4madmin as bot")
+    @DiscordCommand(name = "iwexec", description = "Executes command in iw4madmin as bot", ephemeralDiffer = true)
     public void onUserIWExec(@DiscordParameter(name = "server-id") String serverId, @DiscordParameter(name="command") String command, @DiscordParameter(name = "client-id", required = false) Long clientId) {
         SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
         Member eventMember = event.getMember();

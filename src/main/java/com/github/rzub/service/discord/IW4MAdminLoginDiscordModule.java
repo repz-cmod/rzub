@@ -38,7 +38,7 @@ public class IW4MAdminLoginDiscordModule {
         this.cookieRepository = cookieRepository;
     }
 
-    @DiscordCommand(name = "botiwlogin", description = "Log the bot into iw4madmin")
+    @DiscordCommand(name = "botiwlogin", description = "Log the bot into iw4madmin", ephemeralDiffer = true)
     public void onBotLogin(@DiscordParameter(name="client-id") String clientId, @DiscordParameter(name="password") String password) {
         SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
         try {
@@ -51,7 +51,7 @@ public class IW4MAdminLoginDiscordModule {
     }
 
 
-    @DiscordCommand(name = "iwlogin", description = "Log the user into iw4madmin")
+    @DiscordCommand(name = "iwlogin", description = "Log the user into iw4madmin", ephemeralDiffer = true)
     public void onUserLogin(@DiscordParameter(name="client-id") String clientId, @DiscordParameter(name="password") String password) {
         SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
         Member eventMember = event.getMember();

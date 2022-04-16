@@ -26,7 +26,7 @@ public class IW4AdminSearchDiscordModule {
         this.iw4MAdminApiService = iw4MAdminApiService;
     }
 
-    @DiscordCommand(name = "iwl", description = "looks up for a player in iw4madmin")
+    @DiscordCommand(name = "iwl", description = "looks up for a player in iw4madmin", ephemeralDiffer = true)
     public void onCommand(@DiscordParameter(name = "name") String searchTerm) {
         SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
 

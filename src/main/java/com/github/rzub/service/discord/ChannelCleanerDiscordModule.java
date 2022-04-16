@@ -13,7 +13,7 @@ import java.util.List;
 @DiscordController
 public class ChannelCleanerDiscordModule {
 
-    @DiscordCommand(name = "clean", description = "Clean messages of channel till <param> message id. Max: 20")
+    @DiscordCommand(name = "clean", description = "Clean messages of channel till <param> message id. Max: 20", ephemeralDiffer = true)
     public void onCommand(@DiscordParameter(name = "message-id") String messageId, @DiscordParameter(name = "max", required = false) Integer max) {
         if (max == null){
             max = 20;
@@ -22,7 +22,7 @@ public class ChannelCleanerDiscordModule {
         List<Message> messageList = event.getChannel().getHistory().retrievePast(max).complete();
 
         int i = 0;
-        while (i < 20 && i < messageList.size()){
+        while (i < max && i < messageList.size()){
             String latestMessageId = messageList.get(i).getId();
             messageList.get(i).delete().queue();
             if(latestMessageId.equals(messageId)){
@@ -30,7 +30,7 @@ public class ChannelCleanerDiscordModule {
             }
             i++;
         }
-        event.reply("Cleaned "+(i+1)+" messages far from " + messageId).queue();
+        event.getHook().sendMessage("Cleaned "+(i+1)+" messages far from " + messageId).queue();
     }
 
 }
