@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
-@Document("iw4madminuser")
+@Document("iw4madminUsers")
 @Getter
 @Setter
 @AllArgsConstructor

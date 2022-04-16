@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
 
-@Document("ipb2")
+@Document("ipRegionBans")
 @Getter
 @Setter
 @Builder
