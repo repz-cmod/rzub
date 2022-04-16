@@ -4,11 +4,7 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
-import static com.github.rzub.config.ColumnName.DISCORD_USER_ID;
 
 @Document("discordusers")
 @Getter
