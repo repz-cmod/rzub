@@ -14,7 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class IPRegionBanEntity implements BasicIPBanInfo{
     @Id
-    private Integer id;
+    private String id;
     private String json;
     private int blockHash;
     private String info;

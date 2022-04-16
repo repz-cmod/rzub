@@ -13,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class WhitelistEntity {
-    private int id;
+    private String id;
     private Integer clientId;
     private String username;
     private Date creationDate;

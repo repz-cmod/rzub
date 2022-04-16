@@ -14,7 +14,7 @@ import java.util.Date;
 @ToString
 @Builder
 public class IW4MAdminUserEntity {
-    private long id;
+    private String id;
     private String game;
     private String name;
     private Long clientId;

@@ -14,7 +14,7 @@ import java.util.Date;
 @Builder
 public class DiscordUserEntity {
     @Id
-    private long id;
+    private String id;
     private String userId;
     private String nickname;
     private String username;

@@ -14,7 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class IPRangeBlockEntity  implements BasicIPBanInfo{
     @Id
-    private Integer id;
+    private String id;
     public String start;
     public long startLong;
     public String end;
