@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.github</groupId>
     <artifactId>rzub</artifactId>
-    <version>v2.0.1</version>
+    <version>v2.1.0</version>
     <name>RepZ Ultimate Bot Application</name>
     <description>RepZ analytics and discord commands application</description>
     <developers>
