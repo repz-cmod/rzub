@@ -110,5 +110,19 @@
       {"type": "USER", "id": 0},
       {"type": "ROLE", "id": 0}
     ]
+  },
+  {
+    "commandName": "configuration-txt",
+    "privileges": [
+      {"type": "USER", "id": 0},
+      {"type": "ROLE", "id": 0}
+    ]
+  },
+  {
+    "commandName": "configuration-txt-names",
+    "privileges": [
+      {"type": "USER", "id": 0},
+      {"type": "ROLE", "id": 0}
+    ]
   }
 ]
