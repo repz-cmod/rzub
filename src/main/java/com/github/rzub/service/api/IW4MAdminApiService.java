@@ -1,20 +1,17 @@
 package com.github.rzub.service.api;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.rzub.database.entity.CookieEntity;
 import com.github.rzub.database.entity.IW4MAdminUserEntity;
 import com.github.rzub.database.repository.CookieRepository;
 import com.github.rzub.model.Iw4madminApiModel;
 import com.github.rzub.model.SettingsModel;
-import com.github.rzub.util.OffsetLimitPageable;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
