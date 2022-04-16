@@ -84,6 +84,12 @@ public class IW4MAdminLoginDiscordModule {
                 }
             }
 
+            // We failed to get client?
+            if (iw4MAdminUserEntity == null){
+                event.getHook().sendMessage("Strange error happened. Error ID: #1").queue();
+                return;
+            }
+
             // Set iw4MAdminUserEntity of the logged in client on the cookie
             cookieEntity.setIw4MAdminUser(iw4MAdminUserEntity);
             cookieRepository.save(cookieEntity);
