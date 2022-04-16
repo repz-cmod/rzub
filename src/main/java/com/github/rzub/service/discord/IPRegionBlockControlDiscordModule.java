@@ -50,14 +50,14 @@ public class IPRegionBlockControlDiscordModule {
     }
 
     @DiscordCommand(name = "ipb2-rm", description = "List IP Ban V2 (region based)")
-    public void onRemove(@DiscordParameter(name = "page") Integer id) {
+    public void onRemove(@DiscordParameter(name = "page") String id) {
         SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
         ipRegionBlockManagerService.remove(id);
         event.getHook().sendMessage("Item is removed").queue();
     }
 
     @DiscordCommand(name = "ipb2-test", description = "Test IP Ban V2 (region based)")
-    public void onRemove(@DiscordParameter(name = "ip") String testIp) {
+    public void onTest(@DiscordParameter(name = "ip") String testIp) {
         SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
         boolean b = ipRegionBlockManagerService.shouldBlock(testIp);
         String mid = b ? "is" : "is NOT";

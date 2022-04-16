@@ -32,3 +32,6 @@ spring:
   discord:
     enabled: true
     guild-id: 521338205555916825
+  data:
+    mongodb:
+      database:

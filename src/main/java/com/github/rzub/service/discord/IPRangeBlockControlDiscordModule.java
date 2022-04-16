@@ -72,7 +72,7 @@ public class IPRangeBlockControlDiscordModule {
 
     @DiscordCommand(name = "ipb-rm", description = "Remove IP Range block")
     public void onRemove(
-            @DiscordParameter(name="id") Integer id
+            @DiscordParameter(name="id") String id
     ) {
         SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
         ipRangeBlockManagerService.remove(id);

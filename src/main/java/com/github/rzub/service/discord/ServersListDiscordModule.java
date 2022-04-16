@@ -1,6 +1,6 @@
 package com.github.rzub.service.discord;
 
-import com.github.rzub.database.repository.ServerRepository;
+import com.github.rzub.service.CachedIW4MAdminStatsLookupService;
 import com.github.rzub.util.DiscordUtil;
 import io.github.sepgh.sbdiscord.annotations.DiscordCommand;
 import io.github.sepgh.sbdiscord.annotations.DiscordController;
@@ -11,17 +11,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @DiscordController
 public class ServersListDiscordModule {
-    private final ServerRepository serverRepository;
+    private final CachedIW4MAdminStatsLookupService cachedIW4MAdminStatsLookupService;
 
     @Autowired
-    public ServersListDiscordModule(ServerRepository serverRepository) {
-        this.serverRepository = serverRepository;
+    public ServersListDiscordModule(CachedIW4MAdminStatsLookupService cachedIW4MAdminStatsLookupService) {
+        this.cachedIW4MAdminStatsLookupService = cachedIW4MAdminStatsLookupService;
     }
 
     @DiscordCommand(name = "servers", description = "Lists server names, ids, and game types")
     public void onCommand() {
         SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
-        MessageEmbed serversList = DiscordUtil.getServersList(serverRepository.findAll());
+        MessageEmbed serversList = DiscordUtil.getServersList(cachedIW4MAdminStatsLookupService.getServerList());
         event.getHook().sendMessageEmbeds(serversList).queue();
     }
 }

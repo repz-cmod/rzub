@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.Optional;
 
@@ -45,7 +44,6 @@ public class RegistrationFinalizeService {
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
-    @Transactional(Transactional.TxType.REQUIRES_NEW)
     public AbstractResultDto completeRegistration(DiscordRegisterDto discordRegisterDto){
         DiscordUserEntity discordUserEntity = discordUserRepository.findByToken(discordRegisterDto.getToken());
         if(discordUserEntity == null){

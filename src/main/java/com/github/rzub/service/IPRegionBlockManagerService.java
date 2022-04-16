@@ -11,7 +11,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -54,7 +53,6 @@ public class IPRegionBlockManagerService extends ClientAwareIPBasedAntiEvade {
     }
 
     @Scheduled(fixedRate = 60000)
-    @Transactional
     public void deleteExpired(){
         log.debug("Running ipb2 clean task");
         ipRegionBanRepository.deleteAllByExpirationBefore(new Date());
@@ -68,7 +66,7 @@ public class IPRegionBlockManagerService extends ClientAwareIPBasedAntiEvade {
         }
     }
 
-    public void remove(int id){
+    public void remove(String id){
         ipRegionBanRepository.deleteById(id);
     }
 

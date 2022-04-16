@@ -3,6 +3,7 @@ package com.github.rzub.service.discord;
 import com.github.rzub.database.entity.DiscordUserEntity;
 import com.github.rzub.database.entity.IW4MAdminUserEntity;
 import com.github.rzub.database.repository.DiscordUserRepository;
+import com.github.rzub.database.repository.IW4MAdminUserRepository;
 import com.github.rzub.service.api.IW4MAdminApiService;
 import io.github.sepgh.sbdiscord.annotations.DiscordCommand;
 import io.github.sepgh.sbdiscord.annotations.DiscordController;
@@ -10,7 +11,6 @@ import io.github.sepgh.sbdiscord.annotations.DiscordParameter;
 import io.github.sepgh.sbdiscord.command.context.CommandContextHolder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import org.hibernate.Hibernate;
 
 import java.util.List;
 import java.util.Objects;
@@ -19,11 +19,13 @@ import java.util.Objects;
 @DiscordController
 public class IW4MAdminCommandExecuteDiscordModule {
     private final IW4MAdminApiService iw4MAdminApiService;
+    private final IW4MAdminUserRepository iw4MAdminUserRepository;
     private final DiscordUserRepository discordUserRepository;
 
 
-    public IW4MAdminCommandExecuteDiscordModule(IW4MAdminApiService iw4MAdminApiService, DiscordUserRepository discordUserRepository) {
+    public IW4MAdminCommandExecuteDiscordModule(IW4MAdminApiService iw4MAdminApiService, IW4MAdminUserRepository iw4MAdminUserRepository, DiscordUserRepository discordUserRepository) {
         this.iw4MAdminApiService = iw4MAdminApiService;
+        this.iw4MAdminUserRepository = iw4MAdminUserRepository;
         this.discordUserRepository = discordUserRepository;
     }
 
@@ -46,8 +48,7 @@ public class IW4MAdminCommandExecuteDiscordModule {
             return;
         }
 
-        Hibernate.initialize(discordUserEntity.getIw4MAdminUserEntities());
-        List<IW4MAdminUserEntity> iw4MAdminUserEntities = discordUserEntity.getIw4MAdminUserEntities();
+        List<IW4MAdminUserEntity> iw4MAdminUserEntities = iw4MAdminUserRepository.findAllByDiscordUser(discordUserEntity);
         if (iw4MAdminUserEntities.size() == 0){
             event.getHook().sendMessage("There are no IW4MAdmin matching to your discord in our DB").queue();
             return;

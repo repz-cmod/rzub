@@ -3,8 +3,8 @@ package com.github.rzub.util;
 import com.github.rzub.database.entity.BasicIPBanInfo;
 import com.github.rzub.database.entity.IPRangeBlockEntity;
 import com.github.rzub.database.entity.IPRegionBanEntity;
-import com.github.rzub.database.entity.ServerEntity;
 import com.github.rzub.model.IW4AdminStatResult;
+import com.github.rzub.model.Iw4madminApiModel;
 import com.github.rzub.model.SettingsModel;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -45,7 +45,7 @@ public class DiscordUtil {
                 .build();
     }
 
-    public static MessageEmbed getServersList(List<ServerEntity> serverEntities){
+    public static MessageEmbed getServersList(List<Iw4madminApiModel.Server> serverEntities){
         return new EmbedBuilder()
                 .setColor(Color.RED)
                 .setTitle("Servers List")
@@ -67,7 +67,7 @@ public class DiscordUtil {
     }
 
 
-    public static String getGames(List<ServerEntity> serverEntities){
+    public static String getGames(List<Iw4madminApiModel.Server> serverEntities){
         StringBuilder stringBuilder = new StringBuilder();
         serverEntities.forEach(serverEntity -> {
             stringBuilder.append(serverEntity.getGame());
@@ -76,7 +76,7 @@ public class DiscordUtil {
         return stringBuilder.toString();
     }
 
-    public static String getNames(List<ServerEntity> serverEntities){
+    public static String getNames(List<Iw4madminApiModel.Server> serverEntities){
         StringBuilder stringBuilder = new StringBuilder();
         serverEntities.forEach(serverEntity -> {
             stringBuilder.append(getCleanServerName(serverEntity.getName()));
@@ -85,10 +85,10 @@ public class DiscordUtil {
         return stringBuilder.toString();
     }
 
-    public static String getIds(List<ServerEntity> serverEntities){
+    public static String getIds(List<Iw4madminApiModel.Server> serverEntities){
         StringBuilder stringBuilder = new StringBuilder();
         serverEntities.forEach(serverEntity -> {
-            stringBuilder.append(serverEntity.getServerId());
+            stringBuilder.append(serverEntity.getId());
             stringBuilder.append("\n");
         });
         return stringBuilder.toString();

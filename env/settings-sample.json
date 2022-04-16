@@ -4,14 +4,7 @@
         "welcome": false
     },
     "iw4madminUrl": "http://localhost:8080/",
-    "database": {
-        "url": "jdbc:mysql://localhost:3306/rzub",
-        "username": "username",
-        "password": "password",
-        "hbm2ddl": "update",
-        "driver": "org.mariadb.jdbc.Driver",
-        "dialect": "org.hibernate.dialect.MariaDB103Dialect"
-    },
+    "database": "mongodb://root:root@localhost:27017/test_db",
     "discord": {
         "token": "",
         "channels": {

@@ -1,6 +1,5 @@
 package com.github.rzub.service;
 
-import com.github.rzub.database.repository.CookieRepository;
 import com.github.rzub.model.Iw4madminApiModel;
 import com.github.rzub.model.SettingsModel;
 import com.github.rzub.service.api.IW4MAdminApiService;
@@ -20,7 +19,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class DonatorSlotService {
     private final IW4MAdminApiService iw4MAdminApiService;
-    private final CookieRepository cookieRepository;
     private final SettingsModel settingsModel;
     private final CacheManager donatorTicketCacheManager;
 

@@ -3,6 +3,7 @@ package com.github.rzub.service.discord;
 import com.github.rzub.database.entity.DiscordUserEntity;
 import com.github.rzub.database.entity.IW4MAdminUserEntity;
 import com.github.rzub.database.repository.DiscordUserRepository;
+import com.github.rzub.database.repository.IW4MAdminUserRepository;
 import com.github.rzub.model.IW4AdminStatResult;
 import com.github.rzub.service.CachedIW4MAdminStatsLookupService;
 import com.github.rzub.util.DiscordUtil;
@@ -24,10 +25,12 @@ import java.util.Objects;
 public class IW4AdminStatsDiscordModule {
     private final CachedIW4MAdminStatsLookupService cachedIW4MAdminStatsLookupService;
     private final DiscordUserRepository discordUserRepository;
+    private final IW4MAdminUserRepository iw4MAdminUserRepository;
 
-    public IW4AdminStatsDiscordModule(CachedIW4MAdminStatsLookupService cachedIW4MAdminStatsLookupService, DiscordUserRepository discordUserRepository) {
+    public IW4AdminStatsDiscordModule(CachedIW4MAdminStatsLookupService cachedIW4MAdminStatsLookupService, DiscordUserRepository discordUserRepository, IW4MAdminUserRepository iw4MAdminUserRepository) {
         this.cachedIW4MAdminStatsLookupService = cachedIW4MAdminStatsLookupService;
         this.discordUserRepository = discordUserRepository;
+        this.iw4MAdminUserRepository = iw4MAdminUserRepository;
     }
 
     @DiscordCommand(name = "iwstats", description = "returns player stats in iw4madmin")
@@ -48,7 +51,7 @@ public class IW4AdminStatsDiscordModule {
             }
             DiscordUserEntity discordUserEntity = discordUserRepository.findByUserId(userId);
             if(discordUserEntity != null){
-                for (IW4MAdminUserEntity iw4MAdminUserEntity : discordUserEntity.getIw4MAdminUserEntities()) {
+                for (IW4MAdminUserEntity iw4MAdminUserEntity : iw4MAdminUserRepository.findAllByDiscordUser(discordUserEntity)) {
                     sendStats(event, String.valueOf(iw4MAdminUserEntity.getClientId()));
                 }
             }else {

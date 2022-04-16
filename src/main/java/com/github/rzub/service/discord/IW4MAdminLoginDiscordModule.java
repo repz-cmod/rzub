@@ -15,7 +15,6 @@ import io.github.sepgh.sbdiscord.command.context.CommandContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
-import org.hibernate.Hibernate;
 
 import java.util.Date;
 import java.util.List;
@@ -65,8 +64,7 @@ public class IW4MAdminLoginDiscordModule {
             }
 
             // Get iw4MAdminUserEntity of the logged in client id if already exists
-            List<IW4MAdminUserEntity> iw4MAdminUserEntities = discordUserEntity.getIw4MAdminUserEntities();
-            Hibernate.initialize(discordUserEntity.getIw4MAdminUserEntities());
+            List<IW4MAdminUserEntity> iw4MAdminUserEntities = iw4MAdminUserRepository.findAllByDiscordUser(discordUserEntity);
             IW4MAdminUserEntity iw4MAdminUserEntity = getIW4MAdminUserEntityOfClientId(iw4MAdminUserEntities, clientId);
 
             // Get iw4MAdminUserEntity of the logged in client id if doesnt already exist
@@ -86,7 +84,7 @@ public class IW4MAdminLoginDiscordModule {
 
             // We failed to get client?
             if (iw4MAdminUserEntity == null){
-                event.getHook().sendMessage("Strange error happened. Error ID: #1").queue();
+                event.getHook().sendMessage("We couldn't find your client in iw4madmin. Make sure you have some kills/stats in our server.").queue();
                 return;
             }
 
@@ -135,8 +133,6 @@ public class IW4MAdminLoginDiscordModule {
         discordUserEntity.setMessageSent(true);
         discordUserEntity.setToken(UUID.randomUUID().toString());
         discordUserRepository.save(discordUserEntity);
-        Hibernate.initialize(discordUserEntity);
-        Hibernate.initialize(discordUserEntity.getIw4MAdminUserEntities());
         return discordUserEntity;
     }
 

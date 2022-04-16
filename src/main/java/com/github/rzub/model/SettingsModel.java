@@ -13,7 +13,7 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SettingsModel {
     private String iw4madminUrl;
-    private Database database;
+    private String database;
     private Discord discord;
     private Map<String, String> messages;
     private Map<String, String> links;
@@ -30,18 +30,6 @@ public class SettingsModel {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Security {
         private String token = "000000000000";
-    }
-
-    @Getter
-    @Setter
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    public static class Database {
-        private String url;
-        private String username;
-        private String password;
-        private String driver = "com.mysql.jdbc.Driver";
-        private String dialect = "org.hibernate.dialect.MySQL5InnoDBDialect";
-        private String hbm2ddl = "none";
     }
 
     @Getter

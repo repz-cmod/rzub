@@ -27,6 +27,12 @@ public class CachedIW4MAdminStatsLookupService {
         return iw4MAdminApiService.getClientStats(clientId);
     }
 
+
+    @Cacheable(cacheNames = "iw4madminServerList", unless="#result == null || #result.size() == 0")
+    public List<Iw4madminApiModel.Server> getServerList(){
+        return iw4MAdminApiService.getServerList();
+    }
+
     @Cacheable(cacheNames = "iw4madminStats", key = "#clientId", unless="#result == null")
     public IW4AdminStatResult getIW4adminStats(String clientId) throws Exception {
         log.info("Looking up iw4madmin stats for "+ clientId);

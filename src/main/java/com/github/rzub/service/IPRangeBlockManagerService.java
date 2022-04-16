@@ -44,7 +44,7 @@ public class IPRangeBlockManagerService extends ClientAwareIPBasedAntiEvade {
         }
     }
 
-    public void remove(int id){
+    public void remove(String id){
         ipRangeBlockRepository.deleteById(id);
     }
 
