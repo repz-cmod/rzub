@@ -28,9 +28,10 @@ public class DemoDiscordModule {
                                 "2. Open your console with ` or ~ (The key under ESC)" + "\n" +
                                 "3. Write /demo DEMOFILE (demofile from userraw\\demos folder) " + "\n" +
                                 "4. Watch through the demo. " + "\n" +
-                                "5. If it is the correct demo, upload it to your Ban Appeal channel. ``` ```",
+                                "5. If it is the correct demo, upload it to your Ban Appeal channel. ```",
                         false)
                 .addField("**NOTE:**", "ONLY UPLOAD THE DEMOFILE WITH THE `.DM_13` FILE EXTENSION!**", false)
+                .setColor(15531776)
                 .build();
         event.getHook().sendMessageEmbeds(messageEmbed).queue();
     }
