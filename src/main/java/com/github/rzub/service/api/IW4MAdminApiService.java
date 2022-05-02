@@ -52,7 +52,7 @@ public class IW4MAdminApiService {
     }
 
     public CookieEntity logIn(String cid, String passwd, @Nullable IW4MAdminUserEntity iw4MAdminUserEntity) throws Exception {
-        String addr = getIw4madminUrl() + "/Account/LoginAsync?clientId="+cid+"&password="+passwd;
+        String addr = getIw4madminUrl() + "/Account/Login?clientId="+cid+"&password="+passwd;
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(addr, String.class);
         List<String> cookie = extractCookies(responseEntity);
         if(cookie != null){
