@@ -44,7 +44,7 @@ public class IW4MAdminApiService {
         this.objectMapper = objectMapper;
         this.cookieRepository = cookieRepository;
         this.restTemplate = new RestTemplate(new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
-        execAddress = getIw4madminUrl() + "/Console/ExecuteAsync?serverId={serverId}&command={command}";
+        execAddress = getIw4madminUrl() + "/Console/Execute?serverId={serverId}&command={command}";
     }
 
     public CookieEntity logIn(String cid, String password) throws Exception {
