@@ -16,6 +16,7 @@ public class DemoDiscordModule {
         SlashCommandEvent event = CommandContextHolder.getContext().getSlashCommandEvent().get();
         MessageEmbed messageEmbed = new EmbedBuilder()
                 .setTitle("Tutorial on how-to find and watch demo's.")
+                .setDescription("Demo is a built-in functionality in IW4x that records your games and allows others to watch it through a single file with DM_13 extention")
                 .addField("**How do I find my demo?**",
                         "**FOLLOW THESE INSTRUCTIONS CLOSELY:**" + "\n" +
                                 "```1. Open your MW2 folder " + "\n" +
@@ -30,7 +31,10 @@ public class DemoDiscordModule {
                                 "4. Watch through the demo. " + "\n" +
                                 "5. If it is the correct demo, upload it to your Ban Appeal channel. ```",
                         false)
-                .addField("**NOTE:**", "ONLY UPLOAD THE DEMOFILE WITH THE `.DM_13` FILE EXTENSION!", false)
+                .addField("**NOTE:**", "ONLY UPLOAD THE DEMOFILE WITH THE `.DM_13` FILE EXTENSION! \n" +
+                        "\n" +
+                        "Watch the demo in-game to make sure it is the match you were originally banned in. Demos of subsequent attempts to join the server do not count. \n" +
+                        "**Uploading incorrect demos will result in your ticket being closed.**", false)
                 .setColor(15531776)
                 .build();
         event.getHook().sendMessageEmbeds(messageEmbed).queue();
